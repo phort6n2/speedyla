@@ -87,6 +87,21 @@ These already exist on a GHL contact.
 All **Text (single line)** unless noted. Naming the field key to match the JSON key
 keeps the mapping obvious a year from now.
 
+> **You do not have to map all 24.** The minimum honest set is 11: `gclid`, `gbraid`,
+> `wbraid`, `utm_campaign`, `utm_term`, `page_path`, `service`, `vehicle`, `vin`,
+> `insurance`, `carrier`. Everything else is either a constant (`utm_source` and
+> `utm_medium` are `google`/`cpc` on every lead), a channel you do not run (`msclkid`,
+> `fbclid`, `ttclid`, `li_fat_id`), or a duplicate of something GHL already stores
+> (`phone_formatted`, `full_name`, `page`, `submitted_at`).
+>
+> The three click IDs are the ones not to defer. **Adding a field later does not
+> backfill it** — leads that arrive before the field exists lose that value for good, so
+> a `gclid` field created at day 30 leaves the first thirty days of jobs permanently
+> unattributable, which is exactly the window offline conversion import needs.
+>
+> The page sends all 31 keys regardless. Unmapped keys are discarded silently; no code
+> change is needed to start using one later.
+
 ### Tier 1 — attribution. Create these first; without them ad spend is unattributable.
 
 | JSON key | Field name | Why it matters |
