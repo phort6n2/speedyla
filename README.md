@@ -95,15 +95,17 @@ attribution from form conversions and GA4 session data instead of call-level DNI
 
 | Field | Status |
 |---|---|
-| `ads.conversionId` / `ads.conversionLabel` | **empty** — Ads → Tools → Conversions → action → Tag setup |
-| `ghl.webhook` / `ghl.locationId` / `ghl.poolId` | **empty** — HighLevel inbound webhook + number pool |
-| `email` | `quotes@speedywindshield.com` is a **guess** — not published on either existing site |
-| `geo.lat` / `geo.lng` | **approximated** from the Pacific Beach address — verify |
+| `ads.conversionId` / `ads.conversionLabel` | ❌ **EMPTY — the only thing blocking conversion reporting.** Ads → Tools → Conversions → action → Tag setup |
+| `ghl.webhook` / `ghl.locationId` | ✅ set — leads are delivering |
+| `ghl.poolId` | ⏸ deliberately empty — call tracking stays off until BAR rules on § 3371.2 |
+| `email` | ⚠️ `quotes@speedywindshield.com` is a **guess** and is live on the site — replace it |
+| `geo.lat` / `geo.lng` | ⚠️ **approximated** from the Pacific Beach address — verify |
 | `barArd` | empty by choice; see the ARD note above. Optional, but § 3371.2 asks for it |
 | `legalName` | should match the BAR certificate exactly if the ARD block is switched on |
-| `GOOGLE_PLACES_API_KEY` (repo **secret**) | **required for reviews to ever appear** |
+| `GOOGLE_PLACES_API_KEY` (repo secret) | ✅ set — reviews are live at 4.9 from 1,110 |
 
-Place ID `ChIJPwUJ9McB3IARzGaoGOoPHLw` is baked into `landing/fetch-reviews.cjs`.
+Place ID `ChIJPwUJ9McB3IARzGaoGOoPHLw` is baked into `landing/fetch-reviews.cjs` and has
+been **verified** — it resolves to Speedy Windshield Repair, 2710 Garnet Ave, San Diego.
 
 Empty values are safe to deploy: with no Ads ID the whole tracking block is a no-op,
 with no webhook the form still reports a conversion and shows success, and with no
