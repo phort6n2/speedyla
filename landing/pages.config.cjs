@@ -45,11 +45,16 @@ module.exports = {
     phoneFormatted: '(619) 761-4887',
     phoneE164: '+16197614887',
 
-    /* BAR-registered number for the § 3371.2 compliance block. Static, never
-     * swapped. VERIFY this is the number on file with the Bureau. */
+    /* Static footer number, never swapped by DNI. Google verifies its call-asset
+     * number appears on the site, so this one must stay fixed regardless. */
     barPhoneFormatted: '(619) 761-4887',
     barPhoneE164: '+16197614887',
-    barArd: 'ARD-VERIFY-BEFORE-LAUNCH',
+
+    /* California Bureau of Automotive Repair ARD registration number.
+     * EMPTY = the compliance block degrades to plain name/phone/address.
+     * Fill it in and the full 16 CCR § 3371.2 block renders automatically —
+     * it is on the shop's BAR certificate and on its invoices. */
+    barArd: '',
 
     /* Second number from the client's existing site. Held here for a Google Ads
      * call asset; it must also be excluded from DNI wherever it is displayed. */

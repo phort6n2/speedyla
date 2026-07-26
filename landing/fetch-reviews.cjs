@@ -32,7 +32,15 @@ const OUT = path.join(__dirname, 'reviews.json');
  * completely silently because the numbers it returns look plausible.
  * The EXPECT_* guards below are the defence. Do not remove them.
  * ---------------------------------------------------------------------- */
-const PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
+/* Client-supplied Place ID for Speedy Windshield Repair. Place IDs are public —
+ * they appear in Google Maps URLs — so this is safe to commit. Only the API key
+ * is secret. Override with GOOGLE_PLACE_ID if it ever changes. */
+const PLACE_ID = process.env.GOOGLE_PLACE_ID || 'ChIJPwUJ9McB3IARzGaoGOoPHLw';
+
+/* --dry-run resolves the listing and prints what it found WITHOUT writing
+ * reviews.json. Run this once before trusting a Place ID:
+ *   GOOGLE_PLACES_API_KEY=... node landing/fetch-reviews.cjs --dry-run          */
+const DRY_RUN = process.argv.includes('--dry-run');
 
 /* The resolved listing must look like THIS business in THIS market, or we bail
  * without writing anything. Tuned for: Speedy Windshield Repair, San Diego CA. */
@@ -147,6 +155,20 @@ function get(url, fieldMask, apiKey) {
     }))
     .filter((r) => r.stars === 5 && r.text.length >= 60 && r.text.length <= 400)
     .slice(0, 3);
+
+  if (DRY_RUN) {
+    console.log('[fetch-reviews] DRY RUN — nothing written.');
+    console.log('  place id : ' + PLACE_ID);
+    console.log('  business : ' + placeName);
+    console.log('  address  : ' + addr);
+    console.log('  rating   : ' + rating + ' from ' + count + ' reviews');
+    console.log('  maps     : ' + (d.googleMapsUri || '(none)'));
+    console.log('');
+    console.log('  >> Confirm the business name and address above are Speedy Windshield');
+    console.log('  >> Repair before running without --dry-run. A wrong Place ID returns');
+    console.log('  >> perfectly plausible numbers for somebody else\'s business.');
+    process.exit(0);
+  }
 
   const out = {
     fetched_at: new Date().toISOString(),

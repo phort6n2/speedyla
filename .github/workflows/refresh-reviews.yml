@@ -34,7 +34,7 @@ jobs:
       - name: Fetch Google reviews
         env:
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-          GOOGLE_PLACE_ID: ${{ vars.GOOGLE_PLACE_ID }}
+          GOOGLE_PLACE_ID: ${{ vars.GOOGLE_PLACE_ID }}   # optional override; default is baked into the script
         run: node landing/fetch-reviews.cjs
 
       - name: Rebuild site

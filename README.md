@@ -49,10 +49,21 @@ considered misleading and would not meet the regulatory requirements."**
 A GHL number pool does precisely what that guidance describes.
 
 **Mitigation built into this site:**
-- A persistent compliance block in the footer of all 25 pages carries the registered
-  firm name, the ARD number and the BAR-registered phone as **static text**, marked
-  `class="ghl-no-swap" data-no-swap="true"` so DNI can never rewrite it.
+- A persistent block in the footer of all 25 pages carries the firm name, a static
+  phone number and the address, marked `class="ghl-no-swap" data-no-swap="true"` so
+  DNI can never rewrite it.
 - DNI swapping is confined to the header and CTA numbers.
+
+**Currently the ARD registration number is NOT displayed**, because `site.barArd` is
+empty — a placeholder on a live page is worse than an omission. The block degrades
+automatically to name / phone / address. **Set `site.barArd` and the full compliance
+block renders on every page with no other change.**
+
+> *What an ARD number is:* every automotive repair dealer in California must be
+> registered with the Bureau of Automotive Repair, and the registration number is on
+> the certificate the shop is required to display and on its invoices. Speedy almost
+> certainly has one. You can look it up by business name at
+> <https://www.bar.ca.gov/services/verify-a-license>.
 
 **Action required:** confirm with the BAR Licensing Unit that a static registered
 number in a compliance block satisfies § 3371.2 while tracking numbers appear
@@ -84,14 +95,15 @@ attribution from form conversions and GA4 session data instead of call-level DNI
 
 | Field | Status |
 |---|---|
-| `barArd` | **`ARD-VERIFY-BEFORE-LAUNCH`** — get from the BAR certificate |
-| `legalName` | must match the ARD certificate **exactly** |
-| `barPhoneFormatted` / `barPhoneE164` | must be the number on file with BAR |
-| `email` | `quotes@speedywindshield.com` is a guess — not published on either existing site |
-| `geo.lat` / `geo.lng` | approximated from the Pacific Beach address — verify |
-| `ads.conversionId` / `ads.conversionLabel` | Ads → Tools → Conversions → action → Tag setup |
-| `ghl.webhook` / `ghl.locationId` / `ghl.poolId` | HighLevel inbound webhook + number pool |
-| `GOOGLE_PLACE_ID` (repo variable) | **verify it resolves to the right business first** |
+| `ads.conversionId` / `ads.conversionLabel` | **empty** — Ads → Tools → Conversions → action → Tag setup |
+| `ghl.webhook` / `ghl.locationId` / `ghl.poolId` | **empty** — HighLevel inbound webhook + number pool |
+| `email` | `quotes@speedywindshield.com` is a **guess** — not published on either existing site |
+| `geo.lat` / `geo.lng` | **approximated** from the Pacific Beach address — verify |
+| `barArd` | empty by choice; see the ARD note above. Optional, but § 3371.2 asks for it |
+| `legalName` | should match the BAR certificate exactly if the ARD block is switched on |
+| `GOOGLE_PLACES_API_KEY` (repo **secret**) | **required for reviews to ever appear** |
+
+Place ID `ChIJPwUJ9McB3IARzGaoGOoPHLw` is baked into `landing/fetch-reviews.cjs`.
 
 Empty values are safe to deploy: with no Ads ID the whole tracking block is a no-op,
 with no webhook the form still reports a conversion and shows success, and with no
@@ -107,7 +119,8 @@ npm run verify          # 12 build/SEO/a11y/tracking assertions — exits non-ze
 npm run qa:render       # real browser: overflow, console errors, tap targets, screenshots
 npm run qa:tracking     # real browser: full form submit, asserts dataLayer + webhook payload
 npm run qa              # all of the above
-npm run fetch:reviews   # Google Places (New) — needs GOOGLE_PLACES_API_KEY + GOOGLE_PLACE_ID
+npm run check:placeid   # resolve the Place ID and PRINT the business, writing nothing
+npm run fetch:reviews   # Google Places (New) — needs GOOGLE_PLACES_API_KEY
 ```
 
 `npm run verify` currently passes **0 failures, 0 warnings, 25 pages**, with worst
@@ -230,6 +243,16 @@ Settings → Environments → Production → Branch Tracking, not Settings → G
 `fetch-reviews.cjs` pulls the real Google rating, count and quotes once a week from
 Places API (New) and bakes them into the HTML. One API call per week; the key never
 reaches the browser.
+
+**Verify the Place ID before the first real run:**
+
+```bash
+GOOGLE_PLACES_API_KEY=xxxx npm run check:placeid
+```
+
+That resolves the listing, prints the business name, address and rating, and writes
+nothing. Confirm it says Speedy Windshield Repair at the Garnet Ave address before
+letting the weekly job run for real.
 
 **The wrong-business guard is not optional.** A client-supplied Place ID once resolved
 to a different company two doors down and published *their* rating across every page —

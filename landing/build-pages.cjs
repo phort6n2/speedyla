@@ -348,6 +348,22 @@ function jsonLdHtml(page) {
     .join('\n');
 }
 
+/* ------------------------------------------------ BAR compliance block state
+ * 16 CCR § 3371.2 requires a registered Automotive Repair Dealer's internet
+ * advertising to show the registered firm name, the ARD registration number and
+ * the BAR-registered phone. With no ARD number configured we cannot show a real
+ * one, and a placeholder on a live page is worse than omitting it — so the block
+ * degrades to plain name / phone / address (still DNI-excluded, which the Google
+ * call asset needs anyway).
+ *
+ * Set site.barArd to the real number to restore the full compliance block. */
+function applyBarBlock(s) {
+  if (site.barArd) return s;
+  return s
+    .replace(/ · Bureau of Automotive Repair ARD Registration <b>\{\{BAR_ARD\}\}<\/b>/g, '')
+    .replace(/Registered telephone: /g, '');
+}
+
 /* ------------------------------------------------------------ page renderer */
 
 const template = fs.readFileSync(path.join(__dirname, 'speedy.html'), 'utf8');
@@ -424,6 +440,8 @@ function renderPage(page) {
       .replace(/\{\{RATING\}\}/g, esc(reviews.rating))
       .replace(/\{\{REVIEW_COUNT\}\}/g, esc(reviews.count));
   }
+
+  s = applyBarBlock(s);
 
   /* ---- site-wide tokens ---- */
   s = s
@@ -548,6 +566,7 @@ function build() {
     s = region(s, 'FOOTER_SERVICES', footerServices);
     s = region(s, 'FOOTER_OC', footerOC);
     s = region(s, 'FOOTER_LA', footerLA);
+    s = applyBarBlock(s);
     s = s
       .replace(/\{\{PHONE_E164\}\}/g, esc(site.phoneE164))
       .replace(/\{\{PHONE\}\}/g, esc(site.phoneFormatted))
