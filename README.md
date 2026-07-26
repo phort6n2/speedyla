@@ -198,20 +198,30 @@ does not include Inbound Webhook, which is exactly why forms are reported from t
 
 ## Deploy
 
-One Vercel project, its own domain.
+One Vercel project (`speedyla`), its own domain, git-connected to this repo.
 
-1. Vercel → Add New → Project → import this repo
-2. **Root Directory → `quote-site`** ← the setting that matters
-3. Framework Preset → **Other**; Build, Output and Install commands all empty
-4. Deploy, then Settings → Domains → add `la.speedywindshield.com`
+**Deployment is configured in `vercel.json` at the repo root**, not in the Vercel
+dashboard:
 
-Because Root Directory is set, Vercel reads `quote-site/vercel.json`, not any repo-root
-one. The domain is already live, so **verify the Vercel preview URL fully before
-repointing DNS** — that is a live cutover.
+```json
+{ "outputDirectory": "quote-site", "trailingSlash": false, "headers": [ … ] }
+```
 
-Two Vercel gotchas: the Root Directory picker only reads the **default branch**, so
-`quote-site/` has to exist there before it appears; and Production Branch now lives
-under Settings → Environments → Production → Branch Tracking.
+With no `buildCommand`, Vercel treats this as a static deploy and serves
+`quote-site/` directly. Nothing needs setting in the dashboard, and the config is
+version-controlled rather than living as invisible project state — which also
+sidesteps the Root Directory picker only reading the default branch.
+
+Because Root Directory is *not* set, **the repo-root `vercel.json` is the one Vercel
+reads**, so the cache and security headers live there. `landing/vercel-static.json`
+is still copied to `quote-site/vercel.json` for the alternative setup (Root Directory
+= `quote-site`), but in the current configuration it is inert — edit the root file.
+
+Production deploys from the **`main`** branch. Pushing to `main` deploys live;
+pushing any other branch produces a preview URL only.
+
+Vercel gotcha still worth knowing: Production Branch now lives under
+Settings → Environments → Production → Branch Tracking, not Settings → Git.
 
 ---
 
