@@ -6,8 +6,63 @@ Speedy subaccount.
 **Webhook:** `https://services.leadconnectorhq.com/hooks/bEPjxnxSU2AfYQ1PIhK1/webhook-trigger/D6EuRh5CTS1KweBrURkM`
 **Location ID:** `bEPjxnxSU2AfYQ1PIhK1`
 
-A sample request with all 31 keys populated has already been sent, so the schema is
-captured and every field will appear in the mapping dropdown.
+---
+
+## 0. Capture the schema FIRST — with every key populated
+
+Read this before mapping anything. It is the one step that silently breaks the rest.
+
+The Inbound Webhook trigger builds its list of mappable variables from the **sample
+request** it captured. The form always sends all 31 keys, but a submission made from a
+direct visit — no `?gclid=…&utm_…` in the URL — sends the click-ID and UTM keys as
+**empty strings**, because the payload builder does `payload[k] = attribution[k] || ''`.
+GHL routinely omits empty-valued keys from the mapping picker, so if the captured sample
+came from a plain visit, those fields never became mappable and every contact after it
+shows them blank. The lead is fine; the schema is what is wrong.
+
+Fix it by sending one sample where nothing is empty:
+
+```bash
+curl -X POST 'https://services.leadconnectorhq.com/hooks/bEPjxnxSU2AfYQ1PIhK1/webhook-trigger/D6EuRh5CTS1KweBrURkM' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "full_name":"Schema Test","first_name":"Schema","last_name":"Test",
+  "email":"schema-test@example.com","phone":"+15555550142",
+  "phone_formatted":"(555) 555-0142","postal_code":"92618",
+  "vehicle":"2021 Toyota RAV4","vin":"JTMRWRFV0MD012345",
+  "service":"windshield-replacement","insurance":"yes","carrier":"State Farm",
+  "source":"landing:speedy-oc-la","page_path":"/windshield-replacement",
+  "page":"https://la.speedywindshield.com/windshield-replacement",
+  "submitted_at":"2026-01-01T00:00:00.000Z",
+  "gclid":"SCHEMA_GCLID","gbraid":"SCHEMA_GBRAID","wbraid":"SCHEMA_WBRAID",
+  "gclsrc":"aw.ds","msclkid":"SCHEMA_MSCLKID","fbclid":"SCHEMA_FBCLID",
+  "ttclid":"SCHEMA_TTCLID","li_fat_id":"SCHEMA_LIFATID",
+  "utm_source":"google","utm_medium":"cpc","utm_campaign":"OC-LAC-Core-Glass",
+  "utm_term":"windshield replacement irvine","utm_content":"rsa-a",
+  "landing_page":"https://la.speedywindshield.com/windshield-replacement",
+  "referrer":"https://www.google.com/"
+}'
+```
+
+This creates a real contact and fires whatever workflow is attached, so do it while the
+workflow is still in draft, then delete the contact. Afterwards **re-open the trigger and
+re-fetch the sample** — GHL does not refresh it on its own — and all 31 keys will be in
+the dropdown.
+
+### Which failure do you have?
+
+Six keys are populated on *every* submission regardless of query parameters: `source`,
+`page_path`, `page`, `submitted_at`, `landing_page`, `referrer`. Check those on the
+contact that came through:
+
+| What you see | Cause | Fix |
+|---|---|---|
+| Those six are blank too | Sample/mapping problem — the fields were never mapped, or the sample did not expose them | Re-capture the sample above, then map each field |
+| Those six populated, only click IDs and UTMs blank | You submitted from a direct visit | Nothing is broken. Retest with the URL in *Verify it end to end* below |
+
+Each custom field has to be mapped explicitly in the workflow's Create/Update Contact
+action — GHL auto-maps only the standard fields. The merge field is
+`{{inboundWebhookRequest.<json_key>}}`, e.g. `{{inboundWebhookRequest.gclid}}`.
 
 ---
 
