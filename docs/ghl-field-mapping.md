@@ -86,6 +86,83 @@ ever added — no code change needed later.
 
 ---
 
+## Copy/paste build list
+
+GHL generates the field's unique key by slugifying the name, so **these exact names
+produce keys that match the incoming JSON keys** (`UTM Source` → `utm_source`,
+`VIN` → `vin`). Use them verbatim and the mapping dropdown lines up one-to-one.
+
+All 24 are **Text (single line)**. Create in this order — tier 1 first.
+
+| # | Field Name | Type | JSON key | Tier |
+|---|---|---|---|---|
+| 1 | `GCLID` | Text | `gclid` | 1 |
+| 2 | `GBRAID` | Text | `gbraid` | 1 |
+| 3 | `WBRAID` | Text | `wbraid` | 1 |
+| 4 | `UTM Source` | Text | `utm_source` | 1 |
+| 5 | `UTM Medium` | Text | `utm_medium` | 1 |
+| 6 | `UTM Campaign` | Text | `utm_campaign` | 1 |
+| 7 | `UTM Term` | Text | `utm_term` | 1 |
+| 8 | `UTM Content` | Text | `utm_content` | 1 |
+| 9 | `Landing Page` | Text | `landing_page` | 1 |
+| 10 | `Page Path` | Text | `page_path` | 1 |
+| 11 | `Service` | Text | `service` | 2 |
+| 12 | `Vehicle` | Text | `vehicle` | 2 |
+| 13 | `VIN` | Text | `vin` | 2 |
+| 14 | `Insurance` | Text | `insurance` | 2 |
+| 15 | `Carrier` | Text | `carrier` | 2 |
+| 16 | `Phone Formatted` | Text | `phone_formatted` | 3 |
+| 17 | `Page` | Text | `page` | 3 |
+| 18 | `Referrer` | Text | `referrer` | 3 |
+| 19 | `Submitted At` | Text | `submitted_at` | 3 |
+| 20 | `GCLSRC` | Text | `gclsrc` | 3 |
+| 21 | `MSCLKID` | Text | `msclkid` | 3 |
+| 22 | `FBCLID` | Text | `fbclid` | 3 |
+| 23 | `TTCLID` | Text | `ttclid` | 3 |
+| 24 | `LI FAT ID` | Text | `li_fat_id` | 3 |
+
+Names only, for fast entry:
+
+```
+GCLID
+GBRAID
+WBRAID
+UTM Source
+UTM Medium
+UTM Campaign
+UTM Term
+UTM Content
+Landing Page
+Page Path
+Service
+Vehicle
+VIN
+Insurance
+Carrier
+Phone Formatted
+Page
+Referrer
+Submitted At
+GCLSRC
+MSCLKID
+FBCLID
+TTCLID
+LI FAT ID
+```
+
+### Standard fields — do not create these
+
+| JSON key | Existing GHL field |
+|---|---|
+| `first_name` | First Name |
+| `last_name` | Last Name |
+| `full_name` | Name |
+| `email` | Email |
+| `phone` | Phone |
+| `postal_code` | Postal Code |
+| `source` | Source |
+---
+
 ## 3. The one setting that will otherwise double-count every lead
 
 **Inside the workflow this webhook triggers, do NOT add a Google Ads conversion
