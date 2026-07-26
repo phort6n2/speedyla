@@ -96,8 +96,14 @@ module.exports = {
     /* HighLevel. Empty webhook = form still reports the conversion and shows
      * success. Empty pool/location = the DNI scripts are not emitted at all. */
     ghl: {
-      webhook: '',
-      locationId: '',
+      /* Inbound Webhook (premium trigger). This URL is visible in page source —
+       * unavoidable for any browser-side post. It is write-only, but anyone can
+       * call it, so keep spam filtering on in GHL. */
+      webhook: 'https://services.leadconnectorhq.com/hooks/bEPjxnxSU2AfYQ1PIhK1/webhook-trigger/D6EuRh5CTS1KweBrURkM',
+      locationId: 'bEPjxnxSU2AfYQ1PIhK1',
+      /* Number pool for DNI. Empty = the pool scripts are not emitted at all.
+       * Do not fill this in until BAR has confirmed the § 3371.2 position on
+       * tracking numbers — see the README. */
       poolId: ''
     }
   },
