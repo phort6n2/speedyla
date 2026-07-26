@@ -65,7 +65,7 @@ module.exports = {
      * A 949 area code, which also reads as local to Orange County. */
     callAsset: { formatted: '(949) 736-5211', e164: '+19497365211' },
 
-    email: 'quotes@speedywindshield.com',   /* VERIFY — not published on the existing sites */
+    email: 'Speedywindshieldrepairsd@gmail.com',
 
     address: {
       street: '2710 Garnet Ave Suite 201',

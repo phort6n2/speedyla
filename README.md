@@ -95,10 +95,10 @@ attribution from form conversions and GA4 session data instead of call-level DNI
 
 | Field | Status |
 |---|---|
-| `ads.conversionId` / `ads.conversionLabel` | ❌ **EMPTY — the only thing blocking conversion reporting.** Ads → Tools → Conversions → action → Tag setup |
+| `ads.conversionId` / `ads.conversionLabel` | ✅ set — `AW-10977214637/tZMWCPuP6dYcEK2BrPIo` |
 | `ghl.webhook` / `ghl.locationId` | ✅ set — leads are delivering |
-| `ghl.poolId` | ⏸ deliberately empty — call tracking stays off until BAR rules on § 3371.2 |
-| `email` | ⚠️ `quotes@speedywindshield.com` is a **guess** and is live on the site — replace it |
+| `ghl.poolId` | ✅ set — DNI live. BAR has still not ruled on § 3371.2; the no-swap footer block is the mitigation |
+| `email` | ✅ set — `Speedywindshieldrepairsd@gmail.com` |
 | `geo.lat` / `geo.lng` | ⚠️ **approximated** from the Pacific Beach address — verify |
 | `barArd` | empty by choice; see the ARD note above. Optional, but § 3371.2 asks for it |
 | `legalName` | should match the BAR certificate exactly if the ARD block is switched on |
