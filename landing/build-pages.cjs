@@ -422,9 +422,13 @@ function jsonLdHtml(page) {
  * Set site.barArd to the real number to restore the full compliance block. */
 function applyBarBlock(s) {
   if (site.barArd) return s;
+  /* Drop the ARD line AND the registered-telephone line entirely — with no ARD
+   * number there is nothing to comply with, and leaving a bare unlabelled number
+   * next to the call-asset number just reads as two random phone numbers.
+   * The call-asset line stays: Google verifies that number appears on the site. */
   return s
     .replace(/ · Bureau of Automotive Repair ARD Registration <b>\{\{BAR_ARD\}\}<\/b>/g, '')
-    .replace(/Registered telephone: /g, '');
+    .replace(/\s*Registered telephone: <a[^>]*>\{\{BAR_PHONE\}\}<\/a><br>/g, '');
 }
 
 /* ------------------------------------------------------------ page renderer */
@@ -681,6 +685,8 @@ function build() {
     s = s
       .replace(/\{\{PHONE_E164\}\}/g, esc(site.phoneE164))
       .replace(/\{\{PHONE\}\}/g, esc(site.phoneFormatted))
+      .replace(/\{\{CALL_ASSET_E164\}\}/g, esc(site.callAsset.e164))
+      .replace(/\{\{CALL_ASSET\}\}/g, esc(site.callAsset.formatted))
       .replace(/\{\{BAR_PHONE_E164\}\}/g, esc(site.barPhoneE164))
       .replace(/\{\{BAR_PHONE\}\}/g, esc(site.barPhoneFormatted))
       .replace(/\{\{BAR_ARD\}\}/g, esc(site.barArd))

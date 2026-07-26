@@ -41,12 +41,15 @@ module.exports = {
     name: 'Speedy Windshield Repair',
     legalName: 'Speedy Windshield Repair',
 
-    /* Header/CTA number — this is the one DNI may swap. */
-    phoneFormatted: '(619) 761-4887',
-    phoneE164: '+16197614887',
+    /* Header / CTA / form-error number — THIS is the one the GHL number pool
+     * swaps. A 949 area code, so it reads local to Orange County rather than
+     * advertising a San Diego number on an OC/LA landing page. */
+    phoneFormatted: '(949) 400-0096',
+    phoneE164: '+19494000096',
 
-    /* Static footer number, never swapped by DNI. Google verifies its call-asset
-     * number appears on the site, so this one must stay fixed regardless. */
+    /* The BAR-registered line, shown only when barArd is set. Left as the San
+     * Diego number because that is the registered place of business — confirm
+     * against what BAR actually has on file before switching the ARD block on. */
     barPhoneFormatted: '(619) 761-4887',
     barPhoneE164: '+16197614887',
 
@@ -56,9 +59,11 @@ module.exports = {
      * it is on the shop's BAR certificate and on its invoices. */
     barArd: '',
 
-    /* Second number from the client's existing site. Held here for a Google Ads
-     * call asset; it must also be excluded from DNI wherever it is displayed. */
-    callAsset: { formatted: '(619) 257-4417', e164: '+16192574417' },
+    /* Google Ads call-asset number. Google verifies this number actually appears
+     * on the site, so it is rendered in the footer and marked ghl-no-swap —
+     * if DNI ever rewrote it, call-asset verification would fail.
+     * A 949 area code, which also reads as local to Orange County. */
+    callAsset: { formatted: '(949) 736-5211', e164: '+19497365211' },
 
     email: 'quotes@speedywindshield.com',   /* VERIFY — not published on the existing sites */
 

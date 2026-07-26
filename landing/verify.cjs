@@ -327,7 +327,23 @@ if (home) {
 
 /* ------------------------------- 10. call-asset number must not be swappable */
 
-head('10. Google call-asset number is excluded from DNI');
+head('10. Google call-asset number is present and excluded from DNI');
+
+/* Google verifies the call-asset number appears on the site. If DNI ever rewrote
+ * it, or it silently dropped out of the footer, call-asset verification fails —
+ * and nothing on the page would look broken. Assert it explicitly. */
+const cfgSite = require('./pages.config.cjs').site;
+const assetDigits = String(cfgSite.callAsset.e164).replace(/\D/g, '');
+for (const p of contentPages) {
+  const tel = new RegExp('<a[^>]*href="tel:\\+?' + assetDigits + '"[^>]*>', 'i');
+  const m = p.html.match(tel);
+  if (!m) fail(p.slug + ' does not display the Google call-asset number ' + cfgSite.callAsset.formatted);
+  else if (!/ghl-no-swap|data-no-swap/.test(m[0])) {
+    fail(p.slug + ' shows the call-asset number but it is NOT marked no-swap — DNI would rewrite it');
+  }
+}
+pass('call-asset number present and no-swap on every content page');
+
 for (const p of pages) {
   const callAssetLinks = p.html.match(/<a[^>]*href="tel:\+1[0-9]+"[^>]*>/g) || [];
   const noSwap = callAssetLinks.filter((a) => /ghl-no-swap|data-no-swap/.test(a));
