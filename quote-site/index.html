@@ -201,6 +201,9 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 .sec-dark a{ color:var(--cyan-light); }
 .sec-head{ max-width:60ch; margin:0 0 32px; }
 .sec-head.center{ margin-inline:auto; text-align:center; }
+/* A centred lead is only ever 1–2 short lines here; balancing stops the second
+   line from being a single orphaned word. Never applied to .prose paragraphs. */
+.sec-head.center .lead{ text-wrap:balance; }
 .eyebrow{
   display:block; font-size:.8125rem; font-weight:700; letter-spacing:.09em;
   text-transform:uppercase; color:var(--navy); margin:0 0 10px;
@@ -434,7 +437,14 @@ a.card:hover{ border-color:var(--line-strong); box-shadow:var(--sh-md); transfor
 a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px var(--ring),var(--sh-md); }
 
 /* ---------------------------------------------------------- prose body */
-.prose{ max-width:72ch; }
+/* The reading column stays at a 72ch measure and stays LEFT-ALIGNED — centring
+   the text itself would give it a ragged left edge and wreck readability.
+   What gets centred is the COLUMN, not the words: at desktop widths a 641px
+   column pinned to the left of an 1180px container strands ~645px of dead air
+   on the right, which is the "lots of space on the right" complaint. Auto
+   inline margins are a no-op below ~680px, where the column already fills the
+   container, so this needs no media query and cannot affect mobile. */
+.prose{ max-width:72ch; margin-inline:auto; }
 .prose h2{ margin:34px 0 12px; }
 .prose h2:first-child{ margin-top:0; }
 .prose h3{ margin:26px 0 10px; }
@@ -478,8 +488,15 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 .rev figcaption{ font-size:.875rem; font-weight:700; color:var(--text); }
 .rev-when{ font-weight:400; color:var(--text-muted); }
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
-.rev-empty{ grid-column:1/-1; }
-.rev-empty p{ color:var(--text-2); margin-bottom:16px; }
+/* Empty state = one short sentence plus a button, so the whole band is narrow
+   content in a wide container. Centre it, and centre the section head with it —
+   :has() scopes that to the empty state only, so the moment fetch:reviews
+   returns quotes the head snaps back to left-aligned above the 3-up card grid,
+   which is where it belongs. Browsers without :has() just keep today's layout. */
+.rev-empty{ grid-column:1/-1; max-width:62ch; margin-inline:auto; text-align:center; }
+.rev-empty p{ color:var(--text-2); margin-bottom:16px; text-wrap:balance; }
+.sec:has(.rev-empty) .sec-head{ margin-inline:auto; text-align:center; }
+.sec:has(.rev-empty) .eyebrow::before{ margin-inline:auto; }
 
 /* ------------------------------------------------------------ area map */
 .areas{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 18px; list-style:none; padding:0; margin:0; }
@@ -487,7 +504,9 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 .areas a:hover{ color:#fff; text-decoration:underline; }
 
 /* ---------------------------------------------------------------- FAQ */
-.faqs{ max-width:80ch; }
+/* Same treatment as .prose: 80ch column centred in the container, answers still
+   left-aligned. The section head above it carries .center so the two agree. */
+.faqs{ max-width:80ch; margin-inline:auto; }
 .faq{ border-top:1px solid var(--line); }
 .faq:last-child{ border-bottom:1px solid var(--line); }
 .faq h3{ margin:0; font-size:1.0625rem; }
@@ -515,6 +534,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 .final h2{ color:#fff; }
 .final p{ color:var(--text-on-dark-2); }
 .final-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
+/* The closing CTA is a standalone short block — eyebrow, one H2, one line of
+   lead, two buttons — with nothing beside it to align to. Left-pinned it left
+   ~750px of empty navy to its right. Buttons follow the text. */
+.sec-head.center .final-actions{ justify-content:center; }
 
 /* ------------------------------------------------------------- footer */
 .ftr{ background:var(--band-dark-2); color:var(--text-on-dark-2); padding:44px 0 24px; font-size:.9375rem; }
@@ -1032,7 +1055,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ FAQ ============ -->
 <section class="sec">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head center">
       <span class="eyebrow">Questions</span>
       <h2>Frequently asked</h2>
     </div>
@@ -1047,7 +1070,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ FINAL CTA ============ -->
 <section class="final">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:0">
+    <div class="sec-head center" style="margin-bottom:0">
       <span class="eyebrow">Ready when you are</span>
       <h2>Get your glass sorted this week</h2>
       <p class="lead" style="color:var(--text-on-dark-2)">Send the form and we'll confirm your glass, your coverage and a time — or just call and talk to somebody now.</p>
