@@ -90,7 +90,7 @@ module.exports = [
     navLabel: 'Santa Ana',
     shortLabel: 'Santa Ana',
     title: 'Auto Glass Repair Santa Ana | Registered Shop | Speedy',
-    desc: 'Mobile auto glass repair in Santa Ana. A registered California repair dealer — our BAR number is on the page. Hablamos español. Windshields, chips and side glass.',
+    desc: 'Mobile auto glass repair in Santa Ana. Windshield replacement, chip repair and side glass, at your home or work. Hablamos español. Free quote in under a minute.',
     eyebrow: 'Santa Ana, CA',
     h1: 'Auto glass repair in Santa Ana from a registered shop',
     sub: '<p>Santa Ana has no shortage of people who will fit a windshield out of the back of a van. Fewer of them are registered with the state. We are, our registration number is at the bottom of this page, and we quote a firm number before we drive out.</p>',
@@ -616,7 +616,7 @@ module.exports = [
 <h2>Four questions to ask before anyone touches your glass</h2>
 <p>Whoever you end up using — us or somebody else — these are worth asking, because the answers separate a proper installation from a fast one:</p>
 <ol>
-  <li><strong>"What is your BAR number?"</strong> Every California repair dealer must hold one. Ours sits at the foot of this page with our registered name and registered line, so you can check it in a minute. Somebody who cannot produce one is operating outside the system, and you will have nowhere to go if the bond leaks.</li>
+  <li><strong>"What is your BAR number?"</strong> Every California repair dealer must hold one, and it is public — the Bureau of Automotive Repair publishes a licence lookup you can check in a minute. Ask for the number and check it. Somebody who cannot produce one is operating outside the system, and you will have nowhere to go if the bond leaks.</li>
   <li><strong>"Are you cleaning and priming the pinchweld?"</strong> The channel your glass bonds into decides whether the job holds. Skipping that prep is invisible on the day and shows up as a wet footwell in January.</li>
   <li><strong>"Does my car need a camera recalibration, and will you do it?"</strong> If the answer is a shrug, walk. Half the vehicles on Firestone Boulevard have a camera behind the glass.</li>
   <li><strong>"What is the safe drive-away time for the adhesive you are using?"</strong> A real answer names the product and the conditions. "About an hour" is a guess.</li>

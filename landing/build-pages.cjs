@@ -717,6 +717,53 @@ function build() {
     writeFile(legal.slug + '/index.html', s);
   }
 
+  /* 404 — Vercel serves /404.html for any unmatched path. A typo'd final URL or
+     an expired ad otherwise lands on Vercel's generic page: no logo, no phone,
+     no way back, which on a paid click is a guaranteed bounce. Deliberately
+     standalone rather than rendered through the template — it must keep working
+     even if the template is mid-edit, and it carries no form or tracking. */
+  writeFile(
+    '404.html',
+    '<!doctype html>\n<html lang="en">\n<head>\n' +
+      '<meta charset="utf-8">\n' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">\n' +
+      '<meta name="robots" content="noindex,follow">\n' +
+      '<title>Page not found — ' + esc(site.legalName) + '</title>\n' +
+      '<style>\n' +
+      'body{margin:0;background:#F5FCFE;color:#0B1B2B;font:400 17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}\n' +
+      '.w{max-width:640px;margin:0 auto;padding:56px 20px 72px;text-align:center}\n' +
+      'h1{font-size:clamp(28px,6vw,40px);line-height:1.15;margin:24px 0 12px;letter-spacing:-.02em}\n' +
+      'p{color:#4C5C6B;margin:0 0 28px}\n' +
+      '.cta{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;' +
+      'border-radius:12px;background:#CB4E1A;color:#fff;font-weight:700;text-decoration:none;font-size:18px}\n' +
+      '.cta.alt{background:#fff;color:#0A2650;border:2px solid #C9DCE8;margin-left:10px}\n' +
+      'nav{margin-top:40px;border-top:1px solid #D8E7EF;padding-top:28px}\n' +
+      'nav b{display:block;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#4C5C6B;margin-bottom:14px}\n' +
+      'nav a{display:inline-block;margin:0 10px 12px;color:#0A2650;font-weight:600}\n' +
+      '@media(max-width:520px){.cta,.cta.alt{display:flex;margin:0 0 12px}}\n' +
+      '</style>\n</head>\n<body>\n<div class="w">\n' +
+      /* plain img/… path: applyImageHashes() rewrites it to the content-hashed
+         filename below, the same as every other page. */
+      '<img src="' + (BASE ? BASE : '') + '/img/logo-wordmark.webp" width="156" height="64" alt="' +
+      esc(site.legalName) + '">\n' +
+      '<h1>That page has moved or never existed</h1>\n' +
+      '<p>We still come to you across Orange County and LA County. Call us and we will quote your glass on the phone.</p>\n' +
+      '<a class="cta" href="tel:' + esc(site.phoneE164) + '">Call ' + esc(site.phoneFormatted) + '</a>' +
+      '<a class="cta alt" href="' + url('/') + '">Get a free quote</a>\n' +
+      '<nav><b>Popular pages</b>\n' +
+      [
+        ['windshield-replacement', 'Windshield replacement'],
+        ['windshield-repair', 'Chip &amp; crack repair'],
+        ['adas-calibration', 'ADAS calibration'],
+        ['mobile-auto-glass', 'Mobile auto glass'],
+        ['auto-glass-repair-orange-county', 'Orange County'],
+        ['auto-glass-repair-los-angeles-county', 'LA County']
+      ]
+        .map((x) => '<a href="' + url(x[0]) + '">' + x[1] + '</a>')
+        .join('\n') +
+      '\n</nav>\n</div>\n</body>\n</html>\n'
+  );
+
   /* images + static assets */
   copyDir(path.join(__dirname, 'img'), path.join(OUTDIR, 'img'));
 
@@ -751,14 +798,14 @@ function build() {
     )
   );
 
-  /* sitemap — content pages plus legal */
+  /* sitemap — content pages only. The legal pages are deliberately noindex, and
+     submitting a noindex URL just files a "Submitted URL marked noindex" error in
+     Search Console against a report you want clean enough to read. */
   const today = new Date().toISOString().slice(0, 10);
-  const sitemapUrls = contentPages
-    .map((p) => ({ loc: absUrl(p.slug), pri: p.slug === '/' ? '1.0' : p.kind === 'city' ? '0.7' : '0.8' }))
-    .concat([
-      { loc: absUrl('privacy'), pri: '0.2' },
-      { loc: absUrl('terms'), pri: '0.2' }
-    ]);
+  const sitemapUrls = contentPages.map((p) => ({
+    loc: absUrl(p.slug),
+    pri: p.slug === '/' ? '1.0' : p.kind === 'city' ? '0.7' : '0.8'
+  }));
 
   writeFile(
     'sitemap.xml',

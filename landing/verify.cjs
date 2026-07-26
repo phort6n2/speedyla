@@ -289,12 +289,17 @@ for (const f of ['sitemap.xml', 'robots.txt', 'site.webmanifest', 'vercel.json']
 if (fs.existsSync(path.join(OUTDIR, 'favicon.ico'))) pass('favicon.ico');
 else warn('missing favicon.ico (add landing/img/favicon.ico)');
 
-/* sitemap should list every content page */
+/* The sitemap lists every indexable page and nothing else. Submitting a noindex
+   URL earns a "Submitted URL marked noindex" error in Search Console, so the
+   legal pages must be absent, not present. */
 if (fs.existsSync(path.join(OUTDIR, 'sitemap.xml'))) {
   const sm = fs.readFileSync(path.join(OUTDIR, 'sitemap.xml'), 'utf8');
   for (const p of pages) {
     const suffix = p.slug === '/' ? '/</loc>' : '/' + p.slug + '</loc>';
-    if (sm.indexOf(suffix) === -1) fail('sitemap.xml missing ' + p.slug);
+    const noindex = /content="noindex/.test(p.html);
+    const listed = sm.indexOf(suffix) !== -1;
+    if (noindex && listed) fail('sitemap.xml lists noindex page ' + p.slug);
+    if (!noindex && !listed) fail('sitemap.xml missing ' + p.slug);
   }
 }
 
@@ -420,6 +425,29 @@ for (const p of pages) {
   if (missing.length) fail(p.slug + ' footer omits: ' + missing.join(', '));
 }
 if (!failures) pass('all regions filled; footer links all ' + cityLinks.length + ' city/hub pages');
+
+/* ------------------------------------------- 14. form failure modes */
+
+/* Each of these was a real defect found before launch, and each fails silently
+   — the page looks fine and the lead just never arrives. Assert the guards. */
+
+head('14. Form failure modes');
+
+const formPages = pages.filter((p) => p.html.indexOf('id="quoteForm"') !== -1);
+for (const p of formPages) {
+  const f = p.html;
+  /* A bare fetch has no timeout: a webhook that never answers left the button
+     reading "Sending…" forever with no error and no lead. */
+  if (f.indexOf('AbortController') === -1) fail(p.slug + ' form fetch has no abort timeout');
+  /* aria-disabled and pointer-events do not stop a keyboard submit. */
+  if (!/if\s*\(\s*submitting\s*\)\s*return/.test(f)) fail(p.slug + ' form has no re-entrancy guard');
+  /* Fields carry name=, so a default submit would put PII in the query string
+     and gtag would forward it to Google Ads as page_location. */
+  if (!/id="quoteForm"[^>]*method="post"/.test(f)) fail(p.slug + ' form is missing method="post"');
+  if (!/id="quoteForm"[^>]*onsubmit="return false"/.test(f)) fail(p.slug + ' form is missing the inline onsubmit guard');
+  if (f.indexOf('<noscript>') === -1) fail(p.slug + ' has no noscript fallback for the form');
+}
+if (!failures) pass('timeout, re-entrancy, POST method, inline guard and noscript on all ' + formPages.length + ' form pages');
 
 /* -------------------------------------------------------------------- done */
 

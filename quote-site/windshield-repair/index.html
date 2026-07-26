@@ -254,7 +254,17 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 .util .wrap{ display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:34px; padding-block:6px; }
 .util a{ color:var(--gold-on-dark); font-weight:700; text-decoration:none; }
 .util a:hover{ text-decoration:underline; color:var(--gold-on-dark); }
-.util-note{ display:flex; align-items:center; gap:8px; }
+/* The bar is one line at every width. Only the note is allowed to flex, and it
+   truncates rather than wraps; the call block is rigid. That ordering is what
+   keeps the phone number intact — GoHighLevel DNI rewrites the number at
+   runtime, so its width is not knowable here, and anything that let the number
+   reflow would break it mid-digit-group ("(949) 400-" / "0096"). */
+.util-note{
+  flex:1 1 auto; min-width:0;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.util-call{ flex:0 0 auto; display:flex; align-items:center; gap:6px; white-space:nowrap; }
+.util-call a{ white-space:nowrap; }
 
 .hdr{
   position:sticky; top:0; z-index:60; background:rgba(255,255,255,.94);
@@ -333,6 +343,12 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 }
 .qc-h{ font-size:1.25rem; font-weight:800; letter-spacing:-.02em; margin:0 0 4px; }
 .qc-sub{ font-size:.875rem; color:var(--text-muted); margin:0 0 18px; }
+.qc-noscript{
+  margin:0 0 18px; padding:12px 14px; border-radius:10px;
+  background:var(--tint-warm); border:1px solid var(--line);
+  font-size:.9375rem; color:var(--text);
+}
+.qc-noscript a{ font-weight:800; }
 .qc-row{ display:grid; grid-template-columns:minmax(0,1fr); gap:14px; }
 .field{ display:grid; gap:6px; min-width:0; }
 .label{ font-size:.875rem; font-weight:600; color:var(--text); }
@@ -625,6 +641,11 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .rb-sub{ display:none; }
   .qc{ padding:18px; }
 }
+@media (max-width:599px){
+  /* Phone-width util bar: short note, one line, number never reflows. */
+  .util-more{ display:none; }
+  .util .wrap{ gap:10px; }
+}
 @media (min-width:600px){
   .qc-row-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
   .tb{ grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -661,6 +682,32 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 }
 @media (max-width:899px){
   body.has-sticky{ padding-bottom:74px; }
+
+  /* Touch targets. These rules sit here rather than beside their components
+     because the 24px baseline at .ftr li a / .areas a / .ftr-brand a is set
+     further up and has equal specificity — only source order separates them. */
+
+  /* Util call: the bar's only tap target, and a primary conversion path. 40px
+     is the most the bar can give without costing above-the-fold height. */
+  .util .wrap{ min-height:40px; padding-block:0; }
+  .util a{ padding:9px 0; min-height:40px; }
+
+  /* Area lists: the row gap is absorbed into the links themselves, so each
+     target goes 34px -> 44px with no change to the block's overall height.
+     display:block widens the short names ("Irvine" was 37px) to the grid cell
+     without moving the text, which stays left-aligned. */
+  .areas{ row-gap:0; }
+  .areas a{ display:block; padding:10px 0; min-height:44px; }
+
+  /* Legal row at the very bottom — 30px -> 40px. */
+  .ftr-legal a{ padding:10px 0; min-height:40px; }
+
+  /* Footer nav: same trade, the 2px li margin moves into the link box. */
+  .ftr li{ margin:0; }
+  .ftr li a{ padding:10px 0; min-height:44px; }
+
+  /* Footer phone/email — conversion links, not prose. */
+  .ftr-brand a{ padding:10px 0; min-height:44px; }
 }
 </style>
 </head>
@@ -669,8 +716,11 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 
 <div class="util">
   <div class="wrap">
-    <span class="util-note">Mobile service across Orange County &amp; LA County — we come to you</span>
-    <span>Call <a href="tel:+19494000096">(949) 400-0096</a></span>
+    <!-- .util-more is dropped under 600px: the full sentence needs two lines on a
+         phone, and the second line is what used to push the phone number into a
+         mid-number break. The short form still says mobile + we come to you. -->
+    <span class="util-note">Mobile service<span class="util-more"> across Orange County &amp; LA County</span> — we come to you</span>
+    <span class="util-call"><span class="util-call-lbl">Call</span> <a href="tel:+19494000096">(949) 400-0096</a></span>
   </div>
 </div>
 
@@ -728,9 +778,30 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 
       <!-- ============ QUOTE FORM ============ -->
       <div class="qc hero-form" id="quote">
-        <form id="quoteForm" novalidate>
+        <!-- method="post" and onsubmit="return false" are both deliberate, and they
+             cover two different failures. The fields carry name= attributes, so a
+             default browser submit would otherwise be a GET that reloads this page
+             with name, phone and email in the query string — losing the lead AND
+             putting PII in the URL, in history, in the Referer of the next click,
+             and into Google Ads via gtag's page_location. That is a policy problem,
+             not just an ugly URL.
+               - onsubmit="return false" is parsed with the markup, so it holds if
+                 the script below throws before the submit handler binds.
+               - It cannot help when JS is switched off entirely, because it is
+                 itself JS. method="post" covers that case: a POST never puts
+                 fields in the URL. The <noscript> below sends those visitors to
+                 the phone, which is where they need to go anyway. -->
+        <form id="quoteForm" novalidate method="post" onsubmit="return false">
           <h2 class="qc-h">Get your free quote</h2>
           <p class="qc-sub">Takes about 30 seconds. We'll confirm your glass and your coverage before anyone is dispatched.</p>
+
+          <!-- Without JS the form cannot deliver, so say so rather than letting
+               someone fill in six fields and lose them. -->
+          <noscript>
+            <p class="qc-noscript">This form needs JavaScript to send. Call
+              <a href="tel:+19494000096">(949) 400-0096</a> and we'll take the details
+              over the phone.</p>
+          </noscript>
 
           <div class="qc-row qc-row-2">
             <div class="field">
@@ -1438,16 +1509,32 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       try{ ok.scrollIntoView({block:'center', behavior:'smooth'}); }catch(e){}
     }
     function showError(){
-      if(submitBtn){ submitBtn.removeAttribute('aria-disabled'); submitBtn.style.pointerEvents = ''; }
+      submitting = false;
+      if(submitBtn){
+        submitBtn.removeAttribute('aria-disabled');
+        submitBtn.disabled = false;
+        submitBtn.style.pointerEvents = '';
+      }
       if(btnLabel) btnLabel.textContent = origLabel;
       form.removeAttribute('aria-busy');
+      /* Clear the polite live region, or a screen reader is left with
+         "Sending your request…" contradicting the alert box. */
+      if(statusEl) statusEl.textContent = '';
       errBox.innerHTML = 'Sorry — that didn’t go through. Please call ' +
         '<a href="tel:+19494000096" style="color:var(--error);font-weight:800">(949) 400-0096</a> and we’ll take the details over the phone.';
       errBox.classList.add('on');
     }
 
+    /* A real re-entrancy guard. aria-disabled is advisory and pointer-events:none
+       only blocks mouse and touch, so pressing Enter three times in any field
+       used to post three times — three GHL contacts, three workflow triggers,
+       three outbound calls to one impatient person. The Ads conversion was
+       always deduped by transaction_id; this protects the CRM. */
+    var submitting = false;
+
     form.addEventListener('submit', function(e){
       e.preventDefault();
+      if(submitting) return;
       errBox.classList.remove('on');
 
       var bad = [];
@@ -1500,23 +1587,40 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         payload[k] = attribution[k] || '';
       });
 
-      if(submitBtn){ submitBtn.setAttribute('aria-disabled','true'); submitBtn.style.pointerEvents = 'none'; }
+      submitting = true;
+      if(submitBtn){
+        submitBtn.setAttribute('aria-disabled','true');
+        submitBtn.disabled = true;
+        submitBtn.style.pointerEvents = 'none';
+      }
       if(btnLabel) btnLabel.textContent = 'Sending…';
       form.setAttribute('aria-busy','true');
       if(statusEl) statusEl.textContent = 'Sending your request…';
 
+      /* Bound the wait. A bare fetch has no timeout, so a webhook that accepts
+         the connection and never answers — slow GHL, flaky mobile radio, captive
+         portal, corporate proxy — left the button reading "Sending…" forever,
+         with no error, no conversion and no delivered lead. That is the most
+         common real failure for a browser-side POST and every occurrence is a
+         paid click that produced nothing. On abort we fall through to
+         showError(), which tells them to call instead. */
+      var ctrl = ('AbortController' in window) ? new AbortController() : null;
+      var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 10000);
+
       fetch(LEAD_WEBHOOK, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: ctrl ? ctrl.signal : undefined
       })
       .then(function(res){
+        clearTimeout(timer);
         if(!res.ok) throw new Error('HTTP ' + res.status);
         fireAdsConversion(leadInfo);   // only count a conversion once the lead landed
         if(statusEl) statusEl.textContent = 'Request sent.';
         showSuccess(first);
       })
-      .catch(showError);
+      .catch(function(){ clearTimeout(timer); showError(); });
     });
   }
 
