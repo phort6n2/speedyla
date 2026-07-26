@@ -18,12 +18,12 @@ const results = []; const fail = m => results.push('FAIL  ' + m); const pass = m
 const cfgPath = path.join(__dirname,'..','landing','pages.config.cjs');
 const orig = fs.readFileSync(cfgPath, 'utf8');
 const patched = orig
-  .replace("conversionId: ''", "conversionId: 'AW-TEST12345'")
-  .replace("conversionLabel: ''", "conversionLabel: 'TestLabel_abc'")
-  .replace("leadValue: 0", "leadValue: 125")
-  .replace("webhook: ''", "webhook: 'https://services.leadconnectorhq.com/hooks/TESTLOC/webhook-trigger/test-id'")
-  .replace("locationId: ''", "locationId: 'TESTLOC'")
-  .replace("poolId: ''", "poolId: 'TESTPOOL'");
+  .replace(/conversionId:\s*'[^']*'/, "conversionId: 'AW-TEST12345'")
+  .replace(/conversionLabel:\s*'[^']*'/, "conversionLabel: 'TestLabel_abc'")
+  .replace(/leadValue:\s*\d+/, "leadValue: 125")
+  .replace(/webhook:\s*'[^']*'/, "webhook: 'https://services.leadconnectorhq.com/hooks/TESTLOC/webhook-trigger/test-id'")
+  .replace(/locationId:\s*'[^']*'/, "locationId: 'TESTLOC'")
+  .replace(/poolId:\s*'[^']*'/, "poolId: 'TESTPOOL'");
 fs.writeFileSync(cfgPath, patched);
 try { execSync(`OUTDIR=${OUT} node ${path.join(__dirname,'..','landing','build-pages.cjs')}`, {stdio:'pipe'}); }
 finally { fs.writeFileSync(cfgPath, orig); }

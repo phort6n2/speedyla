@@ -87,9 +87,16 @@ module.exports = {
     /* Google Ads — paste from Ads → Tools → Conversions → action → Tag setup.
      * Empty is safe: the whole tracking block no-ops until these are filled. */
     ads: {
-      conversionId: '',
-      conversionLabel: '',
+      /* "Submit lead form" conversion action. From Ads → Tools → Conversions →
+       * the action → Tag setup → Use Google tag, which shows:
+       *   send_to: 'AW-10977214637/tZMWCPuP6dYcEK2BrPIo'
+       * The page builds that send_to itself and adds a transaction_id, value and
+       * dedupe, so Google's bare event snippet is not pasted in anywhere. */
+      conversionId:    'AW-10977214637',
+      conversionLabel: 'tZMWCPuP6dYcEK2BrPIo',
       ga4Id: '',
+      /* Set this once average booked-job value is known — it lets Smart Bidding
+       * optimise toward revenue rather than raw lead count. */
       leadValue: 0
     },
 
