@@ -2,3 +2,5 @@ node_modules/
 .qa-shots/
 .DS_Store
 *.log
+tmp-*.cjs
+tmp-*.txt
