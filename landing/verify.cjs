@@ -391,6 +391,36 @@ for (const p of contentPages) {
 }
 pass(hasReviews ? 'live review data present' : 'no review data — no rating claims found');
 
+/* ------------------------------------------ 13. no region left unfilled */
+
+/* The footer's Orange County and Los Angeles County columns once shipped as
+   bare headings with nothing under them: FOOTER_OC and FOOTER_LA each appear
+   twice in the template, and the generator filled only the first occurrence.
+   Nothing caught it — the orphan check passed because the city links also
+   appear in the "areas we serve" list in the body. So assert directly that no
+   region marker pair is empty in the output, which catches the whole class. */
+
+head('13. Every region marker is filled');
+
+for (const p of pages) {
+  const re = /<!--PAGE:([A-Z_0-9]+)-->([\s\S]*?)<!--\/PAGE:\1-->/g;
+  let m;
+  while ((m = re.exec(p.html))) {
+    if (!m[2].trim()) fail(p.slug + ' has an empty region: ' + m[1]);
+  }
+}
+
+/* And specifically: the footer columns carry every city, not just the body list. */
+const cityLinks = pages
+  .filter((p) => /auto-glass-repair-/.test(p.slug))
+  .map((p) => p.slug);
+for (const p of pages) {
+  const footer = p.html.slice(p.html.indexOf('<footer'));
+  const missing = cityLinks.filter((s) => !footer.includes('href="/' + s + '"'));
+  if (missing.length) fail(p.slug + ' footer omits: ' + missing.join(', '));
+}
+if (!failures) pass('all regions filled; footer links all ' + cityLinks.length + ' city/hub pages');
+
 /* -------------------------------------------------------------------- done */
 
 console.log(

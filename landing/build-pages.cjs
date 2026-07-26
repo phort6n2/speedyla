@@ -64,15 +64,28 @@ const plain = (s) =>
 function region(html, name, replacement) {
   const open = '<!--PAGE:' + name + '-->';
   const close = '<!--/PAGE:' + name + '-->';
-  const i = html.indexOf(open);
-  if (i === -1) {
+  /* Every occurrence, not just the first. FOOTER_OC and FOOTER_LA each appear
+     twice in the template — once in the "areas we serve" list and once in the
+     footer column — and filling only the first left the footer columns empty
+     under their headings. */
+  let out = '';
+  let rest = html;
+  let filled = 0;
+  for (;;) {
+    const i = rest.indexOf(open);
+    if (i === -1) break;
+    const j = rest.indexOf(close, i);
+    if (j === -1) {
+      throw new Error('Template is missing closing marker ' + close);
+    }
+    out += rest.slice(0, i + open.length) + replacement;
+    rest = rest.slice(j);
+    filled++;
+  }
+  if (!filled) {
     throw new Error('Template is missing region marker ' + open);
   }
-  const j = html.indexOf(close, i);
-  if (j === -1) {
-    throw new Error('Template is missing closing marker ' + close);
-  }
-  return html.slice(0, i + open.length) + replacement + html.slice(j);
+  return out + rest;
 }
 
 function url(slug) {
