@@ -62,22 +62,29 @@ this wins.
 
 ### The thing to understand before spending on it
 
-**Two of those three cannot be targeted the same way.**
+There are **two different ADAS audiences**, and only one of them is reachable with
+keywords. Keeping them apart is the whole point of this section.
 
-| Priority | Searchable? | How you actually get it |
-|---|---|---|
-| Windshield replacement | **Yes** — big, obvious head terms | Keywords |
-| …using insurance | **Yes** — people search this explicitly | Keywords |
-| …that also needs ADAS calibration | **No** | Bidding + geo + qualification |
+| Audience | Size | Searchable? | How you reach it |
+|---|---|---|---|
+| **A.** People who already know they need calibration | Small | **Yes** — "adas calibration near me" | Keywords → ad group 4 |
+| **B.** People booking a windshield replacement that will *turn out* to need calibration | **Large — this is the money** | **No** | Value-based bidding, geo weighting, qualification |
 
-The third one is the trap. **A driver whose car needs camera recalibration does not
-know that.** They do not search "windshield replacement with ADAS calibration" — they
+**Audience A** is real, and ad group 4 targets it. It is mostly two groups: drivers a
+shop has already told they need calibration after replacing their glass and cannot do
+it themselves, and body shops or reconditioning operations looking for a mobile
+subcontractor. Both are high-ticket and low-competition. It is just a *thin* pool —
+which is why it gets ~5% of budget, not more.
+
+**Audience B is the one you actually asked about, and it cannot be keyword-targeted at
+all.** A driver whose car has a camera behind the windshield does not know that. They
 search "windshield replacement near me" exactly like everyone else, and they find out
-about the camera when you tell them. Consumer awareness of ADAS is documented as low.
-Standalone calibration search volume is thin and comes mostly from people already told
-they need it, plus body shops looking to subcontract.
+about the camera when you tell them. There is no query that separates them from the
+person driving a fifteen-year-old Corolla — the searcher does not possess the
+information the keyword would need to encode.
 
-So you cannot buy ADAS jobs with keywords. You get them four other ways:
+So: **ad group 4 buys audience A. Nothing in the keyword plan buys audience B.** You
+reach audience B four other ways:
 
 1. **Value-based bidding via offline conversion import — this is the real answer.**
    Push booked-job revenue back to Google from GHL against the stored `gclid`. Once
@@ -142,7 +149,9 @@ high-value intent separately from the generic head term.
 > "expensive job".
 
 **Ad group 4 — ADAS Calibration** → `/adas-calibration`
-Small budget, and **do not judge it on lead count.** Its value is (a) the handful of
+This is the **audience A** ad group — people who already know they need calibration. It
+does not and cannot reach audience B. Small budget, and **do not judge it on lead
+count.** Its value is (a) the handful of
 high-ticket consumer jobs, and (b) body shops and used-car reconditioning operations
 looking for a mobile calibration subcontractor, which is a B2B revenue line worth more
 than the retail clicks.
