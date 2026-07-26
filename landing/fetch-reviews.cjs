@@ -153,7 +153,13 @@ function get(url, fieldMask, apiKey) {
       stars: Number(r.rating) || 0,
       when: r.relativePublishTimeDescription || ''
     }))
-    .filter((r) => r.stars === 5 && r.text.length >= 60 && r.text.length <= 400)
+    /* Places API (New) returns at most 5 reviews, so the filter has to be
+     * generous or we end up showing one card. Still 5-star only — we are not
+     * padding the wall with 4-star reviews — but the length window is wide
+     * enough to keep anything readable. Longest first: a substantial review is
+     * more persuasive than a two-line one. */
+    .filter((r) => r.stars === 5 && r.text.length >= 40 && r.text.length <= 650)
+    .sort((a, b) => b.text.length - a.text.length)
     .slice(0, 3);
 
   if (DRY_RUN) {

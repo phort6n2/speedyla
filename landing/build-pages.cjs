@@ -27,6 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = path.join(__dirname, '..');
 const BASE = process.env.BASE !== undefined ? process.env.BASE : '';
@@ -146,9 +147,15 @@ const footerLA = linkList(
 
 /* ------------------------------------------------------------- review block */
 
+/** 1110 → "1,110". Used everywhere a review count is shown to a human. */
+const fmtCount = (n) => Number(n).toLocaleString('en-US');
+
 function starRow(n) {
-  const full = Math.floor(n);
-  const half = n - full >= 0.4;
+  /* Round to the nearest half star first. Without this, 4.9 renders as 4 full
+     plus a half — visually 4.5 — which understates the real rating. */
+  const r = Math.round(Number(n) * 2) / 2;
+  const full = Math.floor(r);
+  const half = r - full >= 0.5;
   let out = '';
   for (let i = 0; i < full; i++) out += '<span class="star" aria-hidden="true">★</span>';
   if (half) out += '<span class="star star-half" aria-hidden="true">★</span>';
@@ -171,7 +178,7 @@ function ratingBarHtml() {
     esc(mapsUrl) +
     '" target="_blank" rel="noopener" ' +
     'aria-label="' +
-    esc(reviews.rating + ' out of 5 stars from ' + reviews.count + ' Google reviews') +
+    esc(reviews.rating + ' out of 5 stars from ' + fmtCount(reviews.count) + ' Google reviews') +
     '">' +
     '<span class="stars">' +
     starRow(reviews.rating) +
@@ -179,7 +186,7 @@ function ratingBarHtml() {
     '<strong>' +
     esc(reviews.rating) +
     '</strong> <span class="rb-sub">from ' +
-    esc(reviews.count) +
+    esc(fmtCount(reviews.count)) +
     ' Google reviews</span>' +
     '</a>'
   );
@@ -223,8 +230,64 @@ function reviewsSectionHtml() {
     '<a href="' +
     esc(mapsUrl) +
     '" target="_blank" rel="noopener">read all ' +
-    esc(reviews.count) +
+    esc(fmtCount(reviews.count)) +
     ' on Google</a></p>'
+  );
+}
+
+/* ------------------------------------------------------ Google listing + map
+ * An embedded map of a SAN DIEGO address on an Orange County / LA page could
+ * mislead, so the copy states plainly that the shop is in San Diego and that
+ * OC/LA are served by mobile dispatch with no branch to visit. The value here is
+ * the verified Google listing behind the rating, not a "come see us" pin.
+ * Uses the keyless maps embed — no browser-exposed API key. */
+function mapBlockHtml() {
+  const q = encodeURIComponent(
+    site.address.street + ', ' + site.address.city + ', ' +
+    site.address.region + ' ' + site.address.zip
+  );
+  const embed = 'https://maps.google.com/maps?q=' + q + '&z=15&output=embed';
+
+  const heading = reviews
+    ? esc(reviews.rating) + ' stars from ' + esc(fmtCount(reviews.count)) +
+      ' Google reviews'
+    : 'Our Google listing';
+
+  const ratingRow = reviews
+    ? '<div><div class="big">' + esc(reviews.rating) + '</div>' +
+      '<div class="stars" aria-label="' +
+      esc(reviews.rating + ' out of 5 stars') + '">' + starRow(reviews.rating) + '</div>' +
+      '<p class="mapnote" style="margin:6px 0 0">from ' +
+      esc(fmtCount(reviews.count)) + ' reviews on Google</p></div>'
+    : '';
+
+  return (
+    '<div class="sec-head center">' +
+      '<span class="eyebrow">Verified on Google</span>' +
+      '<h2>' + heading + '</h2>' +
+      '<p class="lead">Our shop and our Google listing are in San Diego. Orange County and ' +
+      'Los Angeles County are served by mobile dispatch — there is no branch to visit in ' +
+      'either county, and the rating below is the same team that comes to you.</p>' +
+    '</div>' +
+    '<div class="mapgrid">' +
+      '<div class="mapframe">' +
+        '<iframe src="' + esc(embed) + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
+        'title="Map showing Speedy Windshield Repair in San Diego, California"></iframe>' +
+      '</div>' +
+      '<div class="mapinfo">' +
+        ratingRow +
+        '<dl>' +
+          '<div><dt>Registered shop</dt><dd>' + esc(site.address.street) + '<br>' +
+            esc(site.address.city) + ', ' + esc(site.address.region) + ' ' + esc(site.address.zip) + '</dd></div>' +
+          '<div><dt>Service area</dt><dd>Orange County &amp; Los Angeles County — mobile only</dd></div>' +
+          '<div><dt>Hours</dt><dd>Mon–Fri 8:00am–6:30pm · Sat 8:00am–4:00pm · Sun closed</dd></div>' +
+        '</dl>' +
+        (mapsUrl
+          ? '<a class="btn btn-ghost" href="' + esc(mapsUrl) + '" target="_blank" rel="noopener">' +
+            'View our Google listing</a>'
+          : '') +
+      '</div>' +
+    '</div>'
   );
 }
 
@@ -418,6 +481,7 @@ function renderPage(page) {
   s = region(s, 'FOOTER_LA', footerLA);
   s = region(s, 'RATINGBAR', ratingBarHtml());
   s = region(s, 'REVIEWS', reviewsSectionHtml());
+  s = region(s, 'MAPBLOCK', mapBlockHtml());
 
   /* ---- pre-select the matching service in the quote form ----
    * An ad for back glass should land on a form that already says back glass.
@@ -438,7 +502,7 @@ function renderPage(page) {
   } else {
     s = s
       .replace(/\{\{RATING\}\}/g, esc(reviews.rating))
-      .replace(/\{\{REVIEW_COUNT\}\}/g, esc(reviews.count));
+      .replace(/\{\{REVIEW_COUNT\}\}/g, esc(fmtCount(reviews.count)));
   }
 
   s = applyBarBlock(s);
@@ -489,6 +553,53 @@ function renderPage(page) {
     .replace(new RegExp("url\\(" + ASSET_PREFIX + "/", 'g'), 'url(' + (BASE ? BASE + '/' : '/'));
 
   return s;
+}
+
+/* ------------------------------------------------- content-hashed image URLs
+ * quote-site/img/* is served with `immutable, max-age=31536000`. That is the
+ * right header for performance and completely wrong if the filename never
+ * changes: re-crop a photo, keep the name, and every browser that already saw
+ * it keeps the stale copy for a year. Hashing the filename means changed bytes
+ * get a new URL, so the cache is busted automatically and unchanged files stay
+ * cached. Learned the hard way. */
+function hashImages(outdir) {
+  const imgDir = path.join(outdir, 'img');
+  if (!fs.existsSync(imgDir)) return {};
+  const map = {};
+  for (const name of fs.readdirSync(imgDir)) {
+    const full = path.join(imgDir, name);
+    if (!fs.statSync(full).isFile()) continue;
+    const ext = path.extname(name);
+    const base = name.slice(0, -ext.length);
+    if (/\.[0-9a-f]{8}$/.test(base)) continue;               // already hashed
+    const h = crypto.createHash('md5').update(fs.readFileSync(full)).digest('hex').slice(0, 8);
+    const hashed = base + '.' + h + ext;
+    fs.renameSync(full, path.join(imgDir, hashed));
+    map[name] = hashed;
+  }
+  return map;
+}
+
+/** Rewrite every img/<name> reference in the generated text files. */
+function applyImageHashes(outdir, map) {
+  const names = Object.keys(map).sort((a, b) => b.length - a.length);  // longest first
+  if (!names.length) return;
+  const targets = [];
+  (function walk(dir) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) { if (e.name !== 'img') walk(full); }
+      else if (/\.(html|webmanifest|xml|json|txt)$/.test(e.name)) targets.push(full);
+    }
+  })(outdir);
+  for (const f of targets) {
+    let s = fs.readFileSync(f, 'utf8'), changed = false;
+    for (const n of names) {
+      const re = new RegExp('img/' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      if (re.test(s)) { s = s.replace(re, 'img/' + map[n]); changed = true; }
+    }
+    if (changed) fs.writeFileSync(f, s);
+  }
 }
 
 /* ------------------------------------------------------------------- output */
@@ -590,8 +701,15 @@ function build() {
   /* images + static assets */
   copyDir(path.join(__dirname, 'img'), path.join(OUTDIR, 'img'));
 
+  /* favicon.ico is served from the root (browsers probe /favicon.ico directly) and
+   * must NOT be content-hashed, so it is copied out and the img/ copy removed —
+   * otherwise the same 60KB ships twice. */
   const icoSrc = path.join(__dirname, 'img', 'favicon.ico');
-  if (fs.existsSync(icoSrc)) fs.copyFileSync(icoSrc, path.join(OUTDIR, 'favicon.ico'));
+  if (fs.existsSync(icoSrc)) {
+    fs.copyFileSync(icoSrc, path.join(OUTDIR, 'favicon.ico'));
+    const dupe = path.join(OUTDIR, 'img', 'favicon.ico');
+    if (fs.existsSync(dupe)) fs.unlinkSync(dupe);
+  }
 
   /* manifest */
   writeFile(
@@ -653,7 +771,11 @@ function build() {
     fs.copyFileSync(vjson, path.join(OUTDIR, 'vercel.json'));
   }
 
+  const imgMap = hashImages(OUTDIR);
+  applyImageHashes(OUTDIR, imgMap);
+
   console.log('[build] wrote ' + contentPages.length + ' content pages + 2 legal → ' + OUTDIR);
+  console.log('[build] content-hashed ' + Object.keys(imgMap).length + ' images (cache-busting)');
   console.log(
     '[build] reviews: ' +
       (reviews

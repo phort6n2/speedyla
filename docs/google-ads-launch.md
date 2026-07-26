@@ -50,7 +50,143 @@ show materially different CPLs, split into two campaigns. That is the day-30 dec
 
 ---
 
-## The 10 ad groups
+---
+
+## REVISION — prioritising windshield replacement, insurance and ADAS
+
+Client steer: *the target is windshield replacements; better still is a replacement
+where the customer is using insurance; best of all is one that also needs ADAS
+calibration.* That is a value ranking, not a volume ranking, and it changes the ad
+group set below. Read this section first — where it conflicts with the original ten,
+this wins.
+
+### The thing to understand before spending on it
+
+**Two of those three cannot be targeted the same way.**
+
+| Priority | Searchable? | How you actually get it |
+|---|---|---|
+| Windshield replacement | **Yes** — big, obvious head terms | Keywords |
+| …using insurance | **Yes** — people search this explicitly | Keywords |
+| …that also needs ADAS calibration | **No** | Bidding + geo + qualification |
+
+The third one is the trap. **A driver whose car needs camera recalibration does not
+know that.** They do not search "windshield replacement with ADAS calibration" — they
+search "windshield replacement near me" exactly like everyone else, and they find out
+about the camera when you tell them. Consumer awareness of ADAS is documented as low.
+Standalone calibration search volume is thin and comes mostly from people already told
+they need it, plus body shops looking to subcontract.
+
+So you cannot buy ADAS jobs with keywords. You get them four other ways:
+
+1. **Value-based bidding via offline conversion import — this is the real answer.**
+   Push booked-job revenue back to Google from GHL against the stored `gclid`. Once
+   Google can see that some clicks turn into $1,200 camera-equipped replacements and
+   others into $150 chip repairs, Smart Bidding will find the expensive ones by itself
+   — using signals you cannot see or target manually. The site already captures and
+   stores `gclid`, `gbraid` and `wbraid`, so this is GHL configuration, not development.
+   **Do this by day 30. It matters more than any keyword decision in this document.**
+2. **Weight geography toward the newest vehicle fleets.** ADAS attach rate tracks
+   vehicle age, which tracks income. Irvine (median household income ~$129k), Newport
+   Beach, Santa Monica, Torrance (~$116k) and Pasadena run far newer fleets than
+   Santa Ana, Anaheim, Fullerton or Downey. Same query, very different job value.
+   Bid up the former, bid down the latter.
+3. **Vehicle-brand and OEM-glass keywords as a proxy.** Someone searching "OEM
+   windshield replacement" or "Tesla windshield replacement" is self-selecting into a
+   newer, camera-equipped, less price-sensitive vehicle.
+4. **Qualify on the form, not in the ad.** The quote form already asks for the VIN,
+   which resolves the exact glass and whether there is a camera behind it. That is how
+   you know what the job is worth before dispatching — and it is what feeds step 1.
+
+### Revised ad groups
+
+Three windshield-replacement ad groups instead of one, so you can bid the
+high-value intent separately from the generic head term.
+
+| # | Ad group | Page | Budget share |
+|---|---|---|---|
+| 1 | `SVC \| WS Replacement — Core` | `/windshield-replacement` | ~25% |
+| 2 | `SVC \| WS Replacement — Insurance` | `/insurance-claims` | ~15% |
+| 3 | `SVC \| WS Replacement — OEM & Vehicle` | `/windshield-replacement` | ~10% |
+| 4 | `SVC \| ADAS Calibration` | `/adas-calibration` | ~5% |
+| 5 | `SVC \| Chip & Crack Repair` | `/windshield-repair` | ~10% |
+| 6 | `SVC \| Auto Glass (Category)` | `/auto-glass-replacement` | ~10% |
+| 7 | `SVC \| Mobile Auto Glass` | `/mobile-auto-glass` | ~5% |
+| 8 | `GEO \| Irvine` | `/auto-glass-repair-irvine` | ~7% |
+| 9 | `GEO \| Orange County` | `/auto-glass-repair-orange-county` | ~7% |
+| 10 | `GEO \| Los Angeles` | `/auto-glass-repair-los-angeles-county` | ~6% |
+
+**Ad group 2 — WS Replacement, insurance intent** → `/insurance-claims`
+`[windshield replacement insurance]` · `[does insurance cover windshield replacement]` ·
+`"windshield replacement with insurance"` · `"is windshield replacement covered by insurance"` ·
+`"insurance approved auto glass shop"` · `"auto glass insurance claim"` ·
+`"file windshield insurance claim"` · `"comprehensive deductible windshield"` ·
+`"geico windshield replacement"` · `"state farm windshield replacement"` ·
+`"usaa windshield replacement"` · `"aaa windshield replacement"`
+> Carrier names are fine as **keywords**. They are a trademark and affiliation problem
+> in **ad copy** — see §5.4. And read the § 551(b) constraints before writing a single
+> line for this ad group; it is the most legally sensitive in the account.
+> **Do not bid `"windshield replacement no deductible"`** until counsel has cleared the
+> programme — that query invites exactly the claim you cannot make.
+
+**Ad group 3 — WS Replacement, OEM & vehicle intent** → `/windshield-replacement`
+`"oem windshield replacement"` · `"oem glass windshield"` · `"tesla windshield replacement"` ·
+`"bmw windshield replacement"` · `"mercedes windshield replacement"` ·
+`"lexus windshield replacement"` · `"audi windshield replacement"` ·
+`"honda windshield replacement"` · `"acura windshield replacement"` ·
+`"windshield replacement with camera"` · `"windshield replacement lane assist"` ·
+`"heads up display windshield replacement"` · `"acoustic windshield replacement"`
+> This is your ADAS proxy. Honda and Acura are in there deliberately because Torrance is
+> American Honda's US headquarters city with an unusual per-capita concentration of
+> those vehicles. Bid these up — they are the closest thing to a keyword that means
+> "expensive job".
+
+**Ad group 4 — ADAS Calibration** → `/adas-calibration`
+Small budget, and **do not judge it on lead count.** Its value is (a) the handful of
+high-ticket consumer jobs, and (b) body shops and used-car reconditioning operations
+looking for a mobile calibration subcontractor, which is a B2B revenue line worth more
+than the retail clicks.
+`[adas calibration]` · `[adas calibration near me]` · `[windshield camera calibration]` ·
+`"adas calibration after windshield replacement"` · `"windshield calibration cost"` ·
+`"adas recalibration"` · `"forward collision camera recalibration"` ·
+`"mobile adas calibration for shops"` · `"adas calibration subcontractor"` ·
+`"adas calibration service for body shops"`
+
+### Bid adjustments to set on day one
+
+Location bid adjustments inside the single campaign, reflecting fleet age rather than
+population:
+
+| Bid up | Bid down |
+|---|---|
+| Irvine, Newport Beach **+20%** | Santa Ana **−15%** |
+| Santa Monica, Manhattan/Hermosa Beach **+20%** | Downey, Norwalk, Bellflower **−15%** |
+| Torrance, Redondo Beach **+15%** | Fullerton, Anaheim (flatland) **−10%** |
+| Pasadena, San Marino, Arcadia **+15%** | — |
+
+Revisit after 60 days against booked-job value, not CPL. These are informed starting
+positions, not measurements.
+
+### What this defers, and what it costs
+
+Moving to three windshield ad groups pushes four things to day 30:
+
+- **`Car Window / Door Glass`** — deliberately dropped from launch. It is the *lowest*
+  value work on the site: mostly cash-pay because a single door glass usually costs
+  less than a comprehensive deductible, no camera, no insurance billing. It converts
+  well and it is urgent, so it will be worth adding — just not while budget is meant to
+  be finding replacement jobs.
+- **`Back Glass / Rear Window`** — same logic, plus genuinely low volume.
+- **`GEO | Anaheim`** and **`GEO | Long Beach`** — the two highest-*volume* cities, but
+  both run older fleets than Irvine. Volume is not what you asked for.
+
+Be clear-eyed that this is a trade: you will get **fewer total leads** than the original
+ten would have produced, at a **higher average job value**. If the phone goes quiet in
+week two, the fastest fix is re-adding car window and back glass, not raising bids.
+
+---
+
+## The original 10 ad groups (superseded by the revision above — kept for the keyword lists)
 
 Match types are **phrase and exact only for the first 60 days.** No broad — "windshield
 wiper replacement" is the single highest-volume waste term in this vertical and a

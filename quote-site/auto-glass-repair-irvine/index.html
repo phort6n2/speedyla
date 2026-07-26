@@ -13,16 +13,16 @@
 <meta property="og:title" content="Auto Glass Repair Irvine | OEM Glass &amp; ADAS Calibration | Speedy">
 <meta property="og:description" content="Auto glass repair in Irvine with OEM and OEE options and in-house ADAS camera recalibration on the same visit. Business park service during the workday.">
 <meta property="og:url" content="https://la.speedywindshield.com/auto-glass-repair-irvine">
-<meta property="og:image" content="https://la.speedywindshield.com/img/og-image.png">
+<meta property="og:image" content="https://la.speedywindshield.com/img/og-image.adb3d87a.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Auto Glass Repair Irvine | OEM Glass &amp; ADAS Calibration | Speedy">
 <meta name="twitter:description" content="Auto glass repair in Irvine with OEM and OEE options and in-house ADAS camera recalibration on the same visit. Business park service during the workday.">
-<meta name="twitter:image" content="https://la.speedywindshield.com/img/og-image.png">
+<meta name="twitter:image" content="https://la.speedywindshield.com/img/og-image.adb3d87a.png">
 
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.bc0fdf11.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0A2650">
 
@@ -479,6 +479,27 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 
 /* ------------------------------------------------------------ reviews */
 .revs{ display:grid; grid-template-columns:minmax(0,1fr); gap:16px; }
+/* auto-fit rather than a fixed 3 columns: Google's API returns at most 5 reviews
+   and the 5-star filter can leave us with 2, which would otherwise sit next to an
+   empty third cell looking like a bug. */
+@media (min-width:900px){ .revs{ grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); } }
+
+/* ---- Google listing + map ---- */
+.mapgrid{ display:grid; grid-template-columns:minmax(0,1fr); gap:20px; align-items:stretch; }
+.mapframe{
+  position:relative; min-height:300px; overflow:hidden;
+  border:1px solid var(--line-card); border-radius:var(--r-lg); background:var(--surface-2);
+}
+.mapframe iframe{ display:block; width:100%; height:100%; min-height:300px; border:0; }
+.mapinfo{
+  background:var(--paper); border:1px solid var(--line-card); border-radius:var(--r-lg);
+  padding:24px; display:flex; flex-direction:column; gap:14px; min-width:0;
+}
+.mapinfo .big{ font-size:2.5rem; font-weight:800; line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+.mapinfo dl{ margin:0; display:grid; gap:10px; }
+.mapinfo dt{ font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+.mapinfo dd{ margin:0; font-size:.9375rem; color:var(--text-2); }
+.mapnote{ font-size:.875rem; color:var(--text-muted); }
 .rev{
   margin:0; background:var(--paper); border:1px solid var(--line-card);
   border-radius:var(--r-lg); padding:22px; box-shadow:var(--sh-sm); min-width:0;
@@ -627,7 +648,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .tb{ grid-template-columns:repeat(4,minmax(0,1fr)); }
   .grid-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
   .grid-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
-  .revs{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .mapgrid{ grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:26px; }
   .steps{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:30px; }
   .step{ grid-template-columns:minmax(0,1fr); }
   .ftr-grid{ grid-template-columns:1.9fr 1fr 1fr 1.2fr; gap:36px; }
@@ -656,7 +677,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     <!-- logo links to "/" not "#top": on a sub-page an anchor just scrolls up,
          leaving an ad visitor with no route to the home page -->
     <a class="brand" href="/" aria-label="Speedy Windshield Repair — home">
-      <img src="/img/logo-wordmark.webp" width="234" height="96" alt="Speedy Windshield Repair" fetchpriority="high" decoding="async">
+      <img src="/img/logo-wordmark.fceba0c8.webp" width="234" height="96" alt="Speedy Windshield Repair" fetchpriority="high" decoding="async">
     </a>
     <nav class="nav" aria-label="Services and areas"><!--PAGE:NAV--><a href="/windshield-replacement">Windshields</a>
             <a href="/windshield-repair">Chip repair</a>
@@ -683,7 +704,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         <h1><!--PAGE:H1-->Auto glass repair in Irvine with same-visit ADAS calibration<!--/PAGE:H1--></h1>
         <div class="hero-sub"><!--PAGE:SUB--><p>Irvine has the newest vehicle fleet in Orange County, which means nearly every windshield here has a camera bonded behind it. We fit the glass and recalibrate the camera on the same visit — not at a second appointment somewhere else.</p><!--/PAGE:SUB--></div>
 
-        <div class="rb"><!--PAGE:RATINGBAR--><a class="rb-item rb-link" href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener" aria-label="4.9 out of 5 stars from 1110 Google reviews"><span class="stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star star-half" aria-hidden="true">★</span></span><strong>4.9</strong> <span class="rb-sub">from 1110 Google reviews</span></a><!--/PAGE:RATINGBAR--></div>
+        <div class="rb"><!--PAGE:RATINGBAR--><a class="rb-item rb-link" href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener" aria-label="4.9 out of 5 stars from 1,110 Google reviews"><span class="stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></span><strong>4.9</strong> <span class="rb-sub">from 1,110 Google reviews</span></a><!--/PAGE:RATINGBAR--></div>
 
       </div>
 
@@ -972,15 +993,15 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     </div>
     <div class="gal">
       <figure>
-        <img src="/img/work-sedan-mobile-driveway.webp" width="1230" height="590" alt="Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway" loading="lazy" decoding="async">
+        <img src="/img/work-sedan-mobile-driveway.3312ea8a.webp" width="1230" height="590" alt="Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway" loading="lazy" decoding="async">
         <figcaption>Mobile windshield work on a residential driveway — the customer never left home.</figcaption>
       </figure>
       <figure>
-        <img src="/img/work-bmw-mobile-visit.webp" width="440" height="900" alt="Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service" loading="lazy" decoding="async">
+        <img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service" loading="lazy" decoding="async">
         <figcaption>A Southern California driveway call — we work wherever the vehicle is parked.</figcaption>
       </figure>
       <figure>
-        <img src="/img/work-suv-windshield.webp" width="765" height="455" alt="Mercedes G-Class SUV positioned for windshield replacement" loading="lazy" decoding="async">
+        <img src="/img/work-suv-windshield.c207430f.webp" width="765" height="455" alt="Mercedes G-Class SUV positioned for windshield replacement" loading="lazy" decoding="async">
         <figcaption>Larger SUVs and trucks are the same visit — the glass and the camera are just bigger.</figcaption>
       </figure>
     </div>
@@ -996,7 +1017,14 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     </div>
     <div class="revs"><!--PAGE:REVIEWS--><figure class="rev"><div class="stars" aria-label="5 out of 5 stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></div><blockquote>Joseph was great to work with. He was comitted to providing great service since our initial phone call. Next day windshield was replaced in a timely and professional manner. Would definitely do business with them again and recommend to anyone that needs to replace their windshield.</blockquote><figcaption>Alexandro Orendain <span class="rev-when">· 5 months ago</span></figcaption></figure>
           <figure class="rev"><div class="stars" aria-label="5 out of 5 stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></div><blockquote>Amazing customer service! Excellent work and yes they are speedy! Got my windshield replaced and was so pleasantly surprised when Michael presented me with a &quot;thank you&quot; gift bag. So rare to see engaged service - this place has it..highly recommend.</blockquote><figcaption>sylvia tamayo <span class="rev-when">· 4 weeks ago</span></figcaption></figure>
-          <p class="rev-foot">Verified Google reviews for Speedy Windshield Repair · <a href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener">read all 1110 on Google</a></p><!--/PAGE:REVIEWS--></div>
+          <p class="rev-foot">Verified Google reviews for Speedy Windshield Repair · <a href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener">read all 1,110 on Google</a></p><!--/PAGE:REVIEWS--></div>
+  </div>
+</section>
+
+<!-- ============ GOOGLE LISTING + MAP ============ -->
+<section class="sec">
+  <div class="wrap">
+    <!--PAGE:MAPBLOCK--><div class="sec-head center"><span class="eyebrow">Verified on Google</span><h2>4.9 stars from 1,110 Google reviews</h2><p class="lead">Our shop and our Google listing are in San Diego. Orange County and Los Angeles County are served by mobile dispatch — there is no branch to visit in either county, and the rating below is the same team that comes to you.</p></div><div class="mapgrid"><div class="mapframe"><iframe src="https://maps.google.com/maps?q=2710%20Garnet%20Ave%20Suite%20201%2C%20San%20Diego%2C%20CA%2092109&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map showing Speedy Windshield Repair in San Diego, California"></iframe></div><div class="mapinfo"><div><div class="big">4.9</div><div class="stars" aria-label="4.9 out of 5 stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></div><p class="mapnote" style="margin:6px 0 0">from 1,110 reviews on Google</p></div><dl><div><dt>Registered shop</dt><dd>2710 Garnet Ave Suite 201<br>San Diego, CA 92109</dd></div><div><dt>Service area</dt><dd>Orange County &amp; Los Angeles County — mobile only</dd></div><div><dt>Hours</dt><dd>Mon–Fri 8:00am–6:30pm · Sat 8:00am–4:00pm · Sun closed</dd></div></dl><a class="btn btn-ghost" href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener">View our Google listing</a></div></div><!--/PAGE:MAPBLOCK-->
   </div>
 </section>
 
@@ -1099,7 +1127,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <div class="ftr-grid">
       <div class="ftr-brand">
-        <img src="/img/logo-wordmark.webp" width="234" height="96" alt="Speedy Windshield Repair" loading="lazy" decoding="async">
+        <img src="/img/logo-wordmark.fceba0c8.webp" width="234" height="96" alt="Speedy Windshield Repair" loading="lazy" decoding="async">
         <p>Mobile auto glass for Orange County and Los Angeles County, dispatched from our San Diego shop. Windshield replacement, chip repair, back and side glass, and ADAS recalibration.</p>
         <p style="margin-top:12px">
           <a class="ftr-tel" href="tel:+16197614887">(619) 761-4887</a><br>
@@ -1530,7 +1558,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      ============================================================ -->
 
 
-<!--PAGE:JSONLD--><script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoGlassShop","@id":"https://la.speedywindshield.com/#business","name":"Speedy Windshield Repair","telephone":"+16197614887","url":"https://la.speedywindshield.com/auto-glass-repair-irvine","image":"https://la.speedywindshield.com/img/og-image.png","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"2710 Garnet Ave Suite 201","addressLocality":"San Diego","addressRegion":"CA","postalCode":"92109","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":32.7989,"longitude":-117.2402},"areaServed":[{"@type":"City","name":"Anaheim"},{"@type":"City","name":"Santa Ana"},{"@type":"City","name":"Irvine"},{"@type":"City","name":"Huntington Beach"},{"@type":"City","name":"Costa Mesa"},{"@type":"City","name":"Fullerton"},{"@type":"City","name":"Long Beach"},{"@type":"City","name":"Torrance"},{"@type":"City","name":"Pasadena"},{"@type":"City","name":"Glendale"},{"@type":"City","name":"Santa Monica"},{"@type":"City","name":"Downey"},{"@type":"City","name":"Orange County"},{"@type":"City","name":"Los Angeles County"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"18:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"08:00","closes":"16:00"}],"email":"quotes@speedywindshield.com","hasMap":"https://maps.google.com/?cid=13554726476588803788&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA","sameAs":["https://speedywindshieldrepairsd.com/"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"1110","bestRating":"5","worstRating":"1"}}</script>
+<!--PAGE:JSONLD--><script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoGlassShop","@id":"https://la.speedywindshield.com/#business","name":"Speedy Windshield Repair","telephone":"+16197614887","url":"https://la.speedywindshield.com/auto-glass-repair-irvine","image":"https://la.speedywindshield.com/img/og-image.adb3d87a.png","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"2710 Garnet Ave Suite 201","addressLocality":"San Diego","addressRegion":"CA","postalCode":"92109","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":32.7989,"longitude":-117.2402},"areaServed":[{"@type":"City","name":"Anaheim"},{"@type":"City","name":"Santa Ana"},{"@type":"City","name":"Irvine"},{"@type":"City","name":"Huntington Beach"},{"@type":"City","name":"Costa Mesa"},{"@type":"City","name":"Fullerton"},{"@type":"City","name":"Long Beach"},{"@type":"City","name":"Torrance"},{"@type":"City","name":"Pasadena"},{"@type":"City","name":"Glendale"},{"@type":"City","name":"Santa Monica"},{"@type":"City","name":"Downey"},{"@type":"City","name":"Orange County"},{"@type":"City","name":"Los Angeles County"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"18:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"08:00","closes":"16:00"}],"email":"quotes@speedywindshield.com","hasMap":"https://maps.google.com/?cid=13554726476588803788&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA","sameAs":["https://speedywindshieldrepairsd.com/"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"1110","bestRating":"5","worstRating":"1"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do you calibrate the camera yourselves or send me elsewhere?","acceptedAnswer":{"@type":"Answer","text":"Ourselves, on the same visit as the glass, and we hand you the pre- and post-scan report so you can see it completed with no codes left stored. This is the main reason to use us over a shop that subcontracts calibration to a third party a week later."}},{"@type":"Question","name":"Can I get OEM glass, and will insurance pay for it?","acceptedAnswer":{"@type":"Answer","text":"You can. Whether your policy authorises OEM over quality aftermarket depends on your carrier and coverage, and we will establish that before you commit rather than after. On camera, heads-up-display or acoustic windshields we will also give you our honest view on whether OEM is worth it for your specific vehicle."}},{"@type":"Question","name":"Can you come to my office in an Irvine business park?","acceptedAnswer":{"@type":"Answer","text":"Yes — that is where most of our Irvine work happens. A standard surface bay is all we need, and for static camera calibration we also want level ground with clear space in front of the vehicle, which office lots normally have and subterranean structures usually do not."}},{"@type":"Question","name":"My car is an EV. Any difference?","acceptedAnswer":{"@type":"Answer","text":"Worth mentioning when you call. EVs often run large single-piece windshields, heavier curb weights and heated, acoustic or heads-up-display glass, and camera arrangements vary more between manufacturers than on combustion cars. None of it is a problem — it just wants planning rather than being treated as a routine sedan windshield."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://la.speedywindshield.com/"},{"@type":"ListItem","position":2,"name":"Irvine","item":"https://la.speedywindshield.com/auto-glass-repair-irvine"}]}</script><!--/PAGE:JSONLD-->
 </body>
