@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mobile Windshield Replacement in Orange County &amp; LA | Speedy Windshield Repair</title>
+<meta name="description" content="Mobile windshield replacement and chip repair across Orange County and LA County. We come to your home or office at no extra charge, and we bill your insurance directly.">
+<link rel="canonical" href="https://la.speedywindshield.com/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Speedy Windshield Repair">
+<meta property="og:title" content="Mobile Windshield Replacement in Orange County &amp; LA | Speedy Windshield Repair">
+<meta property="og:description" content="Mobile windshield replacement and chip repair across Orange County and LA County. We come to you at no extra charge.">
+<meta property="og:url" content="https://la.speedywindshield.com/">
+<meta property="og:image" content="https://la.speedywindshield.com/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mobile Windshield Replacement in Orange County &amp; LA">
+<meta name="twitter:description" content="Mobile windshield replacement and chip repair across Orange County and LA County.">
+<meta name="twitter:image" content="https://la.speedywindshield.com/img/og-image.png">
+
+<link rel="icon" href="/SPEEDY/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/SPEEDY/img/apple-touch-icon.png">
+<link rel="manifest" href="/SPEEDY/site.webmanifest">
+<meta name="theme-color" content="#0A2650">
+
+<!-- ============================================================
+     TRACKING CONFIG — the only place Google IDs are pasted.
+     Google Ads → Tools → Conversions → your action → Tag setup →
+     "Use Google tag" shows: send_to: 'AW-XXXXXXXXX/AbC-D_efGh12'
+     Guarded on empty values so the page is safe to deploy before
+     the IDs exist — with nothing set, all of this is a no-op.
+     ============================================================ -->
+<script>
+  window.SPEEDY_CONFIG = {
+    GOOGLE_ADS_ID:    "{{ADS_ID}}",
+    GOOGLE_ADS_LABEL: "{{ADS_LABEL}}",
+    GA4_ID:           "{{GA4_ID}}",
+    LEAD_VALUE:       {{LEAD_VALUE}},
+    CURRENCY:         "USD"
+  };
+  (function(){
+    var c = window.SPEEDY_CONFIG;
+    var primary = c.GOOGLE_ADS_ID || c.GA4_ID;
+    if(!primary) return;                       // nothing configured → no-op
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    gtag('js', new Date());
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(primary);
+    document.head.appendChild(s);
+    if(c.GOOGLE_ADS_ID){
+      gtag('config', c.GOOGLE_ADS_ID, { allow_enhanced_conversions: true });
+    }
+    if(c.GA4_ID){ gtag('config', c.GA4_ID); }
+  })();
+</script>
+
+<style>
+/* ==========================================================================
+   Speedy Windshield Repair — light theme.
+   Palette sampled from the real logo (navy #004B81 / cyan #00ACE4 /
+   orange #FE6221). Every text-on-surface pair below was contrast-checked;
+   the measured ratio is noted where it matters.
+
+   CSS ORDER MATTERS: base tokens → reset → layout → components → utilities
+   → MEDIA QUERIES LAST. Never append an "audit fixes" block after the media
+   queries; equal specificity means it would override them at every width.
+   ========================================================================== */
+:root{
+  /* ---- surfaces (cyan-tinted neutrals, so the page reads as this brand) ---- */
+  --paper:#FFFFFF;
+  --surface-1:#F5FCFE;      /* 4% cyan  */
+  --surface-2:#EDF9FD;      /* 7% cyan  */
+  --tint-cyan:#E3F6FC;      /* 11% cyan */
+  --tint-warm:#FFF5EC;      /* 9% orange — the "money"/insurance band */
+  --band-dark:#0A2650;      /* white text 14.9:1 */
+  --band-dark-2:#062038;    /* footer, white text 16.5:1 */
+  --band-dark-3:#123763;    /* raised surface inside dark bands */
+
+  /* ---- text ---- */
+  --text:#0B1B2B;           /* 17.4:1 on white */
+  --text-2:#2C3B49;         /* 11.5:1 */
+  --text-muted:#4C5C6B;     /* 6.9:1  */
+  --text-placeholder:#5E6D7C; /* 5.3:1 on white — inputs are always white */
+  --text-on-dark:#FFFFFF;
+  --text-on-dark-2:#C4D3E4;
+  --text-disabled:#5E6D7C;
+
+  /* ---- brand ---- */
+  --navy:#004B81;           /* 9.0:1 on white — safe for text and links */
+  --navy-deep:#113371;
+  --cyan:#00ACE4;           /* 2.6:1 — FILLS AND LARGE GRAPHICS ONLY, never text */
+  --cyan-ink:#0080A9;       /* 4.5:1 — cyan when it must carry small text */
+  --cyan-graphic:#00A0D5;   /* 3.0:1 — cyan when it must be a border/icon */
+  --cyan-light:#45D3EF;
+  --cyan-pale:#C3EEF9;
+
+  /* ---- primary action: brand orange, darkened until white text passes AA ---- */
+  --cta:#CB4E1A;            /* white text 4.52:1 */
+  --cta-grad-a:#CB4E1A;
+  --cta-grad-b:#BA4413;     /* white text 5.35:1 */
+  --cta-hover:#B84412;
+  --cta-active:#A23B0F;
+  --cta-text:#FFFFFF;
+  --orange-accent:#FE912A;  /* decorative only, or text on dark (5.4:1) */
+
+  /* ---- lines ---- */
+  --line:#DCE7ED;           /* decorative dividers only */
+  --line-card:#CFDDE6;
+  --line-strong:#AFC3D0;
+  --border-field:#7C8FA3;   /* 3.3:1 — real affordance for inputs */
+  --line-on-dark:#1E416B;
+
+  /* ---- semantic ---- */
+  --success:#0F7A3D;        /* 5.4:1 */
+  --success-tint:#ECFDF3;
+  --success-line:#8CCBA6;
+  --error:#B3261E;          /* 6.5:1 */
+  --error-tint:#FEF2F2;
+  --error-line:#E3A9A5;
+  --gold:#F5A524;           /* star FILL — always paired with the stroke below */
+  --gold-stroke:#A15C06;    /* 5.2:1, so stars are not colour-only */
+  --gold-on-dark:#FFC53D;
+
+  --ring:#004B81;
+  --ring-w:3px;
+  --ring-offset-w:2px;
+
+  /* ---- geometry ---- */
+  --maxw:1180px;
+  --gutter:20px;
+  --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px; --r-pill:999px;
+
+  /* ---- shadows: cool blue-black, never pure black (goes brown on a cyan
+         tinted white). Alpha capped low; depth comes from layering. ---- */
+  --sh-xs:0 1px 2px rgba(11,27,43,.05);
+  --sh-sm:0 1px 2px rgba(11,27,43,.06), 0 1px 3px rgba(11,27,43,.04);
+  --sh-md:0 2px 4px -1px rgba(11,27,43,.06), 0 6px 14px -3px rgba(11,27,43,.09);
+  --sh-lg:0 4px 8px -3px rgba(11,27,43,.06), 0 14px 30px -8px rgba(11,27,43,.11);
+  --sh-xl:0 2px 4px rgba(11,27,43,.04), 0 10px 20px -6px rgba(11,27,43,.08), 0 28px 56px -18px rgba(11,27,43,.15);
+  --sh-cta:0 1px 1px rgba(90,32,8,.18), 0 6px 14px -4px rgba(184,68,18,.34);
+  --sh-cta-hover:0 1px 1px rgba(90,32,8,.22), 0 10px 22px -6px rgba(184,68,18,.42);
+
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+  --ease:cubic-bezier(.2,.7,.3,1);
+  --t-fast:120ms; --t:180ms;
+}
+@media (prefers-reduced-motion:reduce){ :root{ --t-fast:1ms; --t:1ms; } }
+
+/* ---------------------------------------------------------------- reset */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; scroll-behavior:smooth; scroll-padding-top:92px; }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+html,body{ max-width:100%; overflow-x:clip; }   /* clip not hidden — hidden breaks sticky */
+body{
+  margin:0; background:var(--paper); color:var(--text);
+  font:400 16px/1.62 var(--font);
+  -webkit-font-smoothing:antialiased;
+}
+img,svg,video{ max-width:100%; height:auto; }
+h1,h2,h3,h4{ margin:0; color:var(--text); letter-spacing:-.02em; text-wrap:balance; }
+h1{ font-size:clamp(1.875rem,1.35rem + 2.6vw,3.4rem); line-height:1.08; font-weight:800; }
+h2{ font-size:clamp(1.5rem,1.18rem + 1.7vw,2.35rem); line-height:1.16; font-weight:800; }
+h3{ font-size:clamp(1.1875rem,1.1rem + .4vw,1.375rem); line-height:1.3; font-weight:700; letter-spacing:-.01em; }
+h4{ font-size:1.0625rem; line-height:1.35; font-weight:700; letter-spacing:0; }
+p{ margin:0 0 1em; }
+p:last-child{ margin-bottom:0; }
+a{ color:var(--navy); text-decoration-thickness:1.5px; text-underline-offset:3px; }
+a:hover{ color:var(--navy-deep); }
+ul,ol{ margin:0 0 1em; padding-left:1.15em; }
+li{ margin:0 0 .4em; }
+button{ font:inherit; }
+input,select,textarea,button{ font:inherit; max-width:100%; }
+:focus{ outline:none; }
+:focus-visible{ outline:var(--ring-w) solid var(--ring); outline-offset:var(--ring-offset-w); border-radius:var(--r-xs); }
+.sr-only{
+  position:absolute!important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+@media (forced-colors:active){
+  .btn-primary{ border:1px solid ButtonText; }
+  :focus-visible{ outline:3px solid Highlight; }
+}
+
+/* ------------------------------------------------------------- layout */
+.wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter); }
+.sec{ padding:56px 0; border-top:1px solid var(--line); }
+.sec-1{ background:var(--surface-1); }
+.sec-2{ background:var(--surface-2); }
+.sec-cyan{ background:var(--tint-cyan); border-block:1px solid #C9E9F5; }
+.sec-warm{ background:var(--tint-warm); border-block:1px solid #F5E3D2; }
+.sec-dark{ background:var(--band-dark); border-top:0; color:var(--text-on-dark); }
+.sec-dark h2,.sec-dark h3{ color:var(--text-on-dark); }
+.sec-dark p{ color:var(--text-on-dark-2); }
+.sec-dark a{ color:var(--cyan-light); }
+.sec-head{ max-width:60ch; margin:0 0 32px; }
+.sec-head.center{ margin-inline:auto; text-align:center; }
+.eyebrow{
+  display:block; font-size:.8125rem; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--navy); margin:0 0 10px;
+}
+.sec-dark .eyebrow{ color:var(--cyan-light); }
+.eyebrow::before{
+  content:""; display:block; width:26px; height:3px; border-radius:2px;
+  background:var(--cta); margin:0 0 12px;
+}
+.sec-head.center .eyebrow::before{ margin-inline:auto; }
+.lead{ font-size:1.0625rem; line-height:1.55; color:var(--text-2); }
+.grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:16px; }
+.grid>*{ min-width:0; }
+
+/* -------------------------------------------------------------- buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  min-height:52px; padding:0 24px; border-radius:var(--r-md);
+  font-weight:700; font-size:1.0625rem; line-height:1; text-decoration:none;
+  border:0; cursor:pointer; position:relative;
+  transition:transform var(--t-fast) var(--ease), box-shadow var(--t) var(--ease), background-color var(--t) var(--ease);
+}
+.btn-primary{
+  color:var(--cta-text);
+  background:linear-gradient(180deg,var(--cta-grad-a),var(--cta-grad-b));
+  box-shadow:var(--sh-cta), inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-primary:hover{ background:var(--cta-hover); box-shadow:var(--sh-cta-hover); transform:translateY(-1px); color:#fff; }
+.btn-primary:active{ background:var(--cta-active); box-shadow:var(--sh-xs); transform:translateY(0); }
+/* the navy ring is only 2:1 on the orange fill, so a white offset ring goes under it */
+.btn-primary:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 var(--ring-offset-w) #fff, 0 0 0 calc(var(--ring-offset-w) + var(--ring-w)) var(--ring), var(--sh-cta);
+}
+.btn-ghost{
+  color:var(--text); background:var(--paper);
+  border:1.5px solid var(--line-strong); box-shadow:var(--sh-xs);
+}
+.btn-ghost:hover{ background:var(--surface-1); border-color:var(--border-field); color:var(--text); }
+.sec-dark .btn-ghost{ background:transparent; color:#fff; border-color:#3A5E8C; }
+.sec-dark .btn-ghost:hover{ background:rgba(255,255,255,.08); color:#fff; }
+.btn-block{ width:100%; }
+
+/* ------------------------------------------------------------- top bars */
+.util{ background:var(--band-dark); color:var(--text-on-dark-2); font-size:.8125rem; }
+.util .wrap{ display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:34px; padding-block:6px; }
+.util a{ color:var(--gold-on-dark); font-weight:700; text-decoration:none; }
+.util a:hover{ text-decoration:underline; color:var(--gold-on-dark); }
+.util-note{ display:flex; align-items:center; gap:8px; }
+
+.hdr{
+  position:sticky; top:0; z-index:60; background:rgba(255,255,255,.94);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+}
+@supports not (backdrop-filter:blur(4px)){ .hdr{ background:var(--paper); } }
+.hdr.scrolled{ background:var(--paper); box-shadow:var(--sh-md); }
+.hdr .wrap{ display:flex; align-items:center; gap:16px; min-height:64px; }
+.brand{ display:flex; align-items:center; flex:0 0 auto; text-decoration:none; }
+.brand img{ display:block; height:44px; width:auto; }
+.nav{ display:none; margin-left:auto; gap:22px; }
+.nav a{
+  font-size:.9375rem; font-weight:600; color:var(--text-2); text-decoration:none;
+  padding:6px 0; white-space:nowrap;
+}
+.nav a:hover{ color:var(--text); box-shadow:inset 0 -2px 0 var(--cta); }
+.hdr-cta{ margin-left:auto; display:flex; align-items:center; gap:10px; }
+.nav + .hdr-cta{ margin-left:0; }
+.callbtn{
+  display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px;
+  border-radius:var(--r-md); border:1.5px solid var(--line-strong);
+  background:var(--paper); color:var(--text); font-weight:700; font-size:.9375rem;
+  text-decoration:none; white-space:nowrap;
+}
+.callbtn:hover{ background:var(--surface-1); border-color:var(--border-field); color:var(--text); }
+.callbtn svg{ flex:0 0 auto; color:var(--cta); }
+.callbtn .cb-num{ display:none; }
+
+/* ---------------------------------------------------------------- hero */
+.hero{
+  background:linear-gradient(168deg,var(--tint-cyan) 0%,var(--surface-1) 52%,var(--paper) 100%);
+  padding:20px 0 36px;
+}
+.hero-grid{
+  display:grid; grid-template-columns:minmax(0,1fr); gap:24px; align-items:start;
+  /* Mobile order is the conversion spec: headline, then the FORM, then the
+     supporting bullets. Bullets above the form push the CTA past the fold. */
+  grid-template-areas:"copy" "form" "more";
+}
+.hero-copy{ grid-area:copy; }
+.hero-form{ grid-area:form; }
+.hero-more{ grid-area:more; }
+.hero-copy>.eyebrow{ margin-bottom:12px; }
+.hero h1{ margin:0 0 12px; }
+.hero-sub{ font-size:1.0625rem; line-height:1.55; color:var(--text-2); margin:0 0 16px; max-width:48ch; }
+/* Trims the hero sub to its first clause on small screens — every line removed
+   here lifts the form card toward the fold. */
+@media (max-width:599px){ .sub-more{ display:none; } }
+.hero-bul{ list-style:none; margin:0 0 18px; padding:0; display:grid; gap:10px; }
+.hero-bul li{ margin:0; display:flex; gap:10px; align-items:flex-start; font-size:1rem; color:var(--text-2); }
+.hero-bul svg{ flex:0 0 auto; margin-top:3px; color:var(--success); }
+.hero-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* rating chip */
+.rb{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:0 0 18px; }
+.rb-item{
+  display:inline-flex; align-items:center; gap:8px; min-height:34px; padding:4px 14px;
+  background:var(--paper); border:1px solid var(--line-card); border-radius:var(--r-pill);
+  font-size:.875rem; color:var(--text); text-decoration:none; box-shadow:var(--sh-xs);
+}
+.rb-item strong{ font-weight:800; }
+.rb-sub{ color:var(--text-muted); }
+.rb-link:hover{ border-color:var(--line-strong); color:var(--text); }
+.stars{ display:inline-flex; gap:1px; line-height:1; }
+.star{
+  font-size:1rem; color:var(--gold);
+  -webkit-text-stroke:.9px var(--gold-stroke);   /* fill alone is 2:1 and fails */
+  paint-order:stroke fill;
+}
+.star-half{ opacity:.55; }
+
+/* --------------------------------------------------------- quote form */
+.qc{
+  background:var(--paper); border:1px solid var(--line-card); border-top:4px solid var(--cta);
+  border-radius:var(--r-lg); box-shadow:var(--sh-xl); padding:22px;
+}
+.qc-h{ font-size:1.25rem; font-weight:800; letter-spacing:-.02em; margin:0 0 4px; }
+.qc-sub{ font-size:.875rem; color:var(--text-muted); margin:0 0 18px; }
+.qc-row{ display:grid; grid-template-columns:minmax(0,1fr); gap:14px; }
+.field{ display:grid; gap:6px; min-width:0; }
+.label{ font-size:.875rem; font-weight:600; color:var(--text); }
+.label .req{ color:var(--cta); margin-left:2px; }
+.opt{ color:var(--text-muted); font-weight:400; }
+.input{
+  width:100%; min-height:50px; padding:13px 14px;
+  font-size:1.03125rem;            /* 16.5px — under 16px iOS Safari zooms on focus */
+  line-height:1.3; color:var(--text); background:var(--paper);
+  border:1.5px solid var(--border-field); border-radius:var(--r-md); appearance:none;
+  transition:border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+.input::placeholder{ color:var(--text-placeholder); opacity:1; }  /* Firefox resets opacity */
+.input:hover{ border-color:#66788B; }
+.input:focus{ border-color:var(--navy); box-shadow:0 0 0 3px rgba(0,75,129,.16); outline:none; }
+.input:focus-visible{ outline:none; }
+.input[aria-invalid="true"]{
+  border-color:var(--error); background:var(--error-tint);
+  box-shadow:0 0 0 3px rgba(179,38,30,.14);
+}
+select.input{
+  padding-right:42px; background-repeat:no-repeat; background-position:right 14px center;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%234C5C6B' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+#vin{ font-family:var(--font-mono); letter-spacing:.04em; }
+.hint{ font-size:.8125rem; color:var(--text-muted); }
+.err{ display:none; font-size:.84375rem; font-weight:600; color:var(--error); }
+.err.on{ display:flex; gap:6px; align-items:flex-start; }
+
+.qc-more-btn{
+  display:flex; align-items:center; gap:12px; width:100%; min-height:52px;
+  padding:10px 14px; text-align:left; background:var(--surface-1);
+  border:1px solid var(--line); border-radius:var(--r-sm); cursor:pointer;
+}
+.qc-more-btn:hover{ background:var(--tint-cyan); }
+.qc-more-btn[aria-expanded="true"]{ background:var(--tint-cyan); border-bottom-left-radius:0; border-bottom-right-radius:0; }
+.qc-more-t{ font-size:.9375rem; font-weight:600; color:var(--text); }
+.qc-more-s{ font-size:.8125rem; color:var(--text-muted); }
+.qc-more-btn .chev{ margin-left:auto; flex:0 0 auto; color:var(--text-muted); transition:transform var(--t) var(--ease); }
+.qc-more-btn[aria-expanded="true"] .chev{ transform:rotate(180deg); }
+#qcMore[hidden]{ display:none; }
+#qcMore{
+  display:grid; gap:14px; padding:18px 14px;
+  background:var(--surface-1); border:1px solid var(--line); border-top:0;
+  border-radius:0 0 var(--r-sm) var(--r-sm);
+}
+.radios{ display:flex; flex-wrap:wrap; gap:8px; border:0; padding:0; margin:0; }
+.radios legend{ font-size:.875rem; font-weight:600; padding:0; margin:0 0 8px; }
+.radio{
+  display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px;
+  background:var(--paper); border:1.5px solid var(--border-field);
+  border-radius:var(--r-md); cursor:pointer; font-size:.9375rem;
+}
+.radio input{ width:18px; height:18px; accent-color:var(--cta); margin:0; }
+.radio:has(input:checked){ border-color:var(--navy); background:var(--tint-cyan); font-weight:600; }
+#carrierField[hidden]{ display:none; }
+
+.qc-submit{ width:100%; margin-top:18px; min-height:56px; font-size:1.09375rem; }
+.qc-micro{ margin:12px 0 0; font-size:.8125rem; line-height:1.5; color:var(--text-muted); text-align:center; }
+.qc-consent{ margin:12px 0 0; font-size:.75rem; line-height:1.5; color:var(--text-muted); }
+.qc-status{ margin-top:12px; }
+.form-error{
+  display:none; margin-top:12px; padding:12px 14px; font-size:.875rem;
+  background:var(--error-tint); border:1px solid var(--error-line);
+  border-radius:var(--r-sm); color:var(--error);
+}
+.form-error.on{ display:block; }
+.qc-ok{ display:none; }
+.qc-ok.on{ display:block; text-align:center; }
+.qc-ok-i{
+  width:56px; height:56px; margin:0 auto 14px; border-radius:50%;
+  background:var(--success-tint); color:var(--success);
+  display:flex; align-items:center; justify-content:center;
+}
+.qc-ok h3{ margin:0 0 8px; }
+.qc-ok p{ font-size:1rem; color:var(--text-2); }
+
+/* ----------------------------------------------------------- trust bar */
+.tb{
+  display:grid; grid-template-columns:minmax(0,1fr); gap:1px;
+  background:var(--line-card); border:1px solid var(--line-card);
+  border-radius:var(--r-md); overflow:hidden; margin-top:26px;
+}
+.tb>div{ background:var(--paper); padding:14px 16px; display:flex; gap:10px; align-items:flex-start; min-width:0; }
+.tb svg{ flex:0 0 auto; margin-top:2px; color:var(--cyan-ink); }
+.tb b{ display:block; font-size:.875rem; }
+.tb span{ font-size:.8125rem; color:var(--text-muted); }
+
+/* --------------------------------------------------------------- cards */
+.card{
+  background:var(--paper); border:1px solid var(--line-card);
+  border-radius:var(--r-lg); padding:22px; min-width:0;
+}
+.card-i{
+  width:44px; height:44px; border-radius:var(--r-sm); background:var(--tint-cyan);
+  color:var(--cyan-ink); display:flex; align-items:center; justify-content:center; margin:0 0 14px;
+}
+.card h3{ margin:0 0 8px; }
+.card p{ font-size:.9375rem; color:var(--text-2); margin:0 0 12px; }
+.card-link{ font-size:.9375rem; font-weight:700; color:var(--navy); text-decoration:none; }
+.card-link:hover{ text-decoration:underline; }
+a.card{ display:block; text-decoration:none; transition:border-color var(--t) var(--ease), box-shadow var(--t) var(--ease), transform var(--t) var(--ease); }
+a.card:hover{ border-color:var(--line-strong); box-shadow:var(--sh-md); transform:translateY(-2px); }
+a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px var(--ring),var(--sh-md); }
+
+/* ---------------------------------------------------------- prose body */
+.prose{ max-width:72ch; }
+.prose h2{ margin:34px 0 12px; }
+.prose h2:first-child{ margin-top:0; }
+.prose h3{ margin:26px 0 10px; }
+.prose p,.prose li{ color:var(--text-2); }
+.prose ul{ padding-left:1.1em; }
+.prose li{ margin-bottom:.5em; }
+.prose strong{ color:var(--text); }
+.callout{
+  margin:22px 0; padding:18px 20px; background:var(--surface-2);
+  border:1px solid #C9E9F5; border-left:4px solid var(--cyan); border-radius:var(--r-sm);
+}
+.callout p:last-child{ margin-bottom:0; }
+.callout h3{ margin:0 0 8px; font-size:1.0625rem; }
+
+/* -------------------------------------------------------------- steps */
+.steps{ counter-reset:s; display:grid; gap:24px; }
+.step{ display:grid; grid-template-columns:48px minmax(0,1fr); gap:16px; align-items:start; }
+.step-n{
+  width:48px; height:48px; border-radius:50%; background:var(--band-dark); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.125rem;
+  font-variant-numeric:tabular-nums;
+}
+.step:last-child .step-n{ background:var(--cta); }
+.step h3{ margin:0 0 6px; }
+.step p{ font-size:.9375rem; color:var(--text-2); margin:0; }
+
+/* ------------------------------------------------------------ gallery */
+.gal{ display:grid; grid-template-columns:minmax(0,1fr); gap:16px; }
+.gal figure{ margin:0; background:var(--paper); border:1px solid var(--line-card); border-radius:var(--r-lg); overflow:hidden; }
+.gal img{ display:block; width:100%; aspect-ratio:4/3; object-fit:cover; background:var(--surface-2); }
+.gal figcaption{ padding:12px 16px; font-size:.875rem; color:var(--text-muted); }
+
+/* ------------------------------------------------------------ reviews */
+.revs{ display:grid; grid-template-columns:minmax(0,1fr); gap:16px; }
+.rev{
+  margin:0; background:var(--paper); border:1px solid var(--line-card);
+  border-radius:var(--r-lg); padding:22px; box-shadow:var(--sh-sm); min-width:0;
+}
+.rev .stars{ margin-bottom:12px; }
+.rev blockquote{ margin:0 0 14px; font-size:1rem; line-height:1.6; color:var(--text-2); }
+.rev figcaption{ font-size:.875rem; font-weight:700; color:var(--text); }
+.rev-when{ font-weight:400; color:var(--text-muted); }
+.rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
+.rev-empty{ grid-column:1/-1; }
+.rev-empty p{ color:var(--text-2); margin-bottom:16px; }
+
+/* ------------------------------------------------------------ area map */
+.areas{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 18px; list-style:none; padding:0; margin:0; }
+.areas a{ color:var(--cyan-light); font-size:.9375rem; text-decoration:none; }
+.areas a:hover{ color:#fff; text-decoration:underline; }
+
+/* ---------------------------------------------------------------- FAQ */
+.faqs{ max-width:80ch; }
+.faq{ border-top:1px solid var(--line); }
+.faq:last-child{ border-bottom:1px solid var(--line); }
+.faq h3{ margin:0; font-size:1.0625rem; }
+.faq button{
+  display:flex; align-items:flex-start; gap:16px; width:100%; min-height:62px;
+  padding:18px 0; background:none; border:0; text-align:left; cursor:pointer;
+  font-size:1.0625rem; font-weight:700; line-height:1.4; color:var(--text);
+}
+.faq button:hover{ color:var(--navy); }
+.faq button:focus-visible{ outline:var(--ring-w) solid var(--ring); outline-offset:2px; border-radius:var(--r-xs); }
+.faq .chev{
+  flex:0 0 auto; margin-left:auto; width:20px; height:20px; position:relative; top:3px;
+  transition:transform var(--t) var(--ease); color:var(--text-muted);
+  background-repeat:no-repeat;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%234C5C6B' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+.faq.open .chev{ transform:rotate(180deg); }
+.faq .ans{ overflow:hidden; max-height:0; transition:max-height var(--t) var(--ease); }
+.faq .ans-in{ padding:0 0 20px; max-width:68ch; }
+.faq .ans-in p{ font-size:1rem; color:var(--text-2); }
+.faq .ans-in p:last-child{ margin-bottom:0; }
+
+/* -------------------------------------------------------------- final */
+.final{ background:radial-gradient(120% 90% at 50% 0%,#123763,#0A2650); color:#fff; padding:56px 0; }
+.final h2{ color:#fff; }
+.final p{ color:var(--text-on-dark-2); }
+.final-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
+
+/* ------------------------------------------------------------- footer */
+.ftr{ background:var(--band-dark-2); color:var(--text-on-dark-2); padding:44px 0 24px; font-size:.9375rem; }
+.ftr-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:30px; }
+.ftr h2{ color:#fff; font-size:.8125rem; letter-spacing:.09em; text-transform:uppercase; margin:0 0 14px; }
+.ftr ul{ list-style:none; margin:0; padding:0; }
+.ftr li{ margin:0 0 2px; }
+.ftr a{ color:var(--text-on-dark-2); text-decoration:none; }
+.ftr a:hover{ color:#fff; text-decoration:underline; }
+/* Footer and utility links are navigation, not inline prose, so they have to
+   clear the 24px minimum target size — padding, not font-size, gets them there. */
+.ftr li a,.ftr-legal a,.util a{ display:inline-block; padding:5px 0; min-height:24px; }
+.ftr-brand a,.bar a{ display:inline-block; padding:4px 0; min-height:24px; }
+.areas a{ display:inline-block; padding:5px 0; min-height:24px; }
+.ftr-brand img{ height:40px; width:auto; margin-bottom:14px; }
+.ftr-brand p{ font-size:.875rem; line-height:1.6; }
+.ftr-tel{ color:var(--gold-on-dark)!important; font-weight:700; font-size:1.0625rem; }
+.ftr-legal{
+  margin-top:32px; padding-top:20px; border-top:1px solid var(--line-on-dark);
+  font-size:.78125rem; line-height:1.6; display:grid; gap:12px;
+}
+.ftr-legal a{ text-decoration:underline; }
+.ftr-links{ display:flex; flex-wrap:wrap; gap:16px; }
+/* BAR compliance block — 16 CCR 3371.2. The phone number here is the number on
+   file with the Bureau and is deliberately excluded from dynamic number
+   insertion; see the .ghl-no-swap markers and the DNI note at end of body. */
+.bar{
+  margin-top:26px; padding:16px 18px; background:var(--band-dark-3);
+  border:1px solid var(--line-on-dark); border-radius:var(--r-sm);
+  font-size:.8125rem; line-height:1.6;
+}
+.bar b{ color:#fff; }
+.bar a{ color:var(--gold-on-dark); font-weight:700; }
+.disclaimer{ font-size:.78125rem; line-height:1.6; color:var(--text-on-dark-2); }
+
+/* --------------------------------------------------------- sticky bar */
+.sticky{
+  position:fixed; inset:auto 0 0 0; z-index:70;
+  display:grid; grid-template-columns:1.15fr 1fr; gap:10px;
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.97); backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);
+  box-shadow:0 -1px 0 rgba(11,27,43,.08),0 -8px 24px -12px rgba(11,27,43,.2);
+  transform:translateY(115%); transition:transform var(--t) var(--ease);
+  visibility:hidden;
+}
+.sticky[data-show]{ transform:translateY(0); visibility:visible; }
+.sticky .btn{ min-height:50px; font-size:1rem; padding:0 12px; }
+
+/* skip link */
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:100;
+  background:var(--paper); color:var(--text); padding:12px 18px; font-weight:700;
+  border-radius:0 0 var(--r-sm) 0; box-shadow:var(--sh-lg);
+}
+.skip:focus{ left:0; }
+
+/* ============================ MEDIA QUERIES — ALWAYS LAST ============================ */
+@media (max-width:359px){
+  :root{ --gutter:16px; }
+  .util{ display:none; }
+  .rb-sub{ display:none; }
+  .qc{ padding:18px; }
+}
+@media (min-width:600px){
+  .qc-row-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .tb{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .grid-2,.grid-3,.grid-4{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .revs{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .gal{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .callbtn .cb-num{ display:inline; }
+  .areas{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media (min-width:900px){
+  :root{ --gutter:24px; }
+  .sec{ padding:88px 0; }
+  .hero{ padding:52px 0 68px; }
+  .hero-grid{
+    grid-template-columns:minmax(0,1fr) 452px;
+    grid-template-areas:"copy form" "more form";
+    grid-template-rows:auto 1fr;
+    gap:18px 52px;
+  }
+  .qc{ padding:28px; }
+  .nav{ display:flex; }
+  .hdr .wrap{ min-height:72px; }
+  .tb{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .grid-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .grid-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .revs{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .steps{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:30px; }
+  .step{ grid-template-columns:minmax(0,1fr); }
+  .ftr-grid{ grid-template-columns:1.9fr 1fr 1fr 1.2fr; gap:36px; }
+  .ftr-legal{ grid-template-columns:minmax(0,1fr) auto; align-items:center; }
+  .areas{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .sticky{ display:none; }
+  body.has-sticky{ padding-bottom:0; }
+}
+@media (max-width:899px){
+  body.has-sticky{ padding-bottom:74px; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#quote">Skip to quote form</a>
+
+<div class="util">
+  <div class="wrap">
+    <span class="util-note">Mobile service across Orange County &amp; LA County — we come to you</span>
+    <span>Call <a href="tel:{{PHONE_E164}}">{{PHONE}}</a></span>
+  </div>
+</div>
+
+<header class="hdr" id="top">
+  <div class="wrap">
+    <!-- logo links to "/" not "#top": on a sub-page an anchor just scrolls up,
+         leaving an ad visitor with no route to the home page -->
+    <a class="brand" href="/SPEEDY/" aria-label="Speedy Windshield Repair — home">
+      <img src="/SPEEDY/img/logo-wordmark.webp" width="234" height="96" alt="Speedy Windshield Repair" fetchpriority="high" decoding="async">
+    </a>
+    <nav class="nav" aria-label="Services and areas"><!--PAGE:NAV--><!--/PAGE:NAV--></nav>
+    <div class="hdr-cta">
+      <a class="callbtn" href="tel:{{PHONE_E164}}" aria-label="Call Speedy Windshield Repair at {{PHONE}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2Z"/></svg>
+        <span class="cb-num">{{PHONE}}</span><span class="sr-only">Call us</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow"><!--PAGE:EYEBROW-->Orange County &amp; LA County · Mobile service<!--/PAGE:EYEBROW--></span>
+        <h1><!--PAGE:H1-->Mobile windshield replacement across Orange County &amp; LA County<!--/PAGE:H1--></h1>
+        <div class="hero-sub"><!--PAGE:SUB--><p>Cracked windshield? We drive to your home, office or job site at no extra charge, fit the glass, recalibrate the camera behind it, and bill your insurance direct.</p><!--/PAGE:SUB--></div>
+
+        <div class="rb"><!--PAGE:RATINGBAR--><!--/PAGE:RATINGBAR--></div>
+
+      </div>
+
+      <div class="hero-more">
+        <ul class="hero-bul">
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Mobile at no extra charge</strong> — your driveway, your office lot, your job site</span></li>
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>ADAS camera recalibration</strong> on the same visit, not a second appointment</span></li>
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>We bill your carrier direct</strong> — GEICO, State Farm, USAA, AAA, Farmers, Progressive</span></li>
+          <li><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Workmanship warranted</strong> for as long as you own the vehicle</span></li>
+        </ul>
+
+        <div class="hero-actions">
+          <a class="btn btn-ghost" href="tel:{{PHONE_E164}}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2Z"/></svg>
+            Call {{PHONE}}
+          </a>
+        </div>
+      </div>
+
+      <!-- ============ QUOTE FORM ============ -->
+      <div class="qc hero-form" id="quote">
+        <form id="quoteForm" novalidate>
+          <h2 class="qc-h">Get your free quote</h2>
+          <p class="qc-sub">Takes about 30 seconds. We'll confirm your glass and your coverage before anyone is dispatched.</p>
+
+          <div class="qc-row qc-row-2">
+            <div class="field">
+              <label class="label" for="nm">Full name<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="nm" name="name" type="text" autocomplete="name" required placeholder="Alex Ramirez">
+              <p class="err" id="nm-err"></p>
+            </div>
+            <div class="field">
+              <label class="label" for="ph">Mobile phone<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="ph" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(714) 555-0142">
+              <p class="err" id="ph-err"></p>
+            </div>
+          </div>
+
+          <div class="qc-row qc-row-2" style="margin-top:14px">
+            <div class="field">
+              <label class="label" for="em">Email<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="em" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com">
+              <p class="err" id="em-err"></p>
+            </div>
+            <div class="field">
+              <label class="label" for="zip">Service ZIP<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" required placeholder="92614">
+              <p class="err" id="zip-err"></p>
+            </div>
+          </div>
+
+          <div style="margin-top:16px">
+            <button type="button" class="qc-more-btn" id="qcExpand" aria-expanded="false" aria-controls="qcMore">
+              <span>
+                <span class="qc-more-t">Speed up my quote <span class="opt">(optional)</span></span><br>
+                <span class="qc-more-s">Add your vehicle and insurance for an exact price</span>
+              </span>
+              <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+
+            <div id="qcMore" hidden>
+              <div class="field">
+                <label class="label" for="svc">What do you need?</label>
+                <select class="input" id="svc" name="service">
+                  <option value="windshield-replacement">Windshield replacement</option>
+                  <option value="chip-crack-repair">Windshield chip or crack repair</option>
+                  <option value="back-glass">Back glass / rear window</option>
+                  <option value="door-side-glass">Door or side window glass</option>
+                  <option value="adas-calibration">ADAS camera recalibration</option>
+                  <option value="not-sure">Not sure — help me work it out</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="label" for="veh">Vehicle <span class="opt">— year, make, model</span></label>
+                <input class="input" id="veh" name="vehicle" type="text" placeholder="2021 Toyota RAV4">
+              </div>
+              <div class="field">
+                <label class="label" for="vin">VIN <span class="opt">— optional, gets us the exact glass</span></label>
+                <input class="input" id="vin" name="vin" type="text" maxlength="17" autocapitalize="characters" spellcheck="false" placeholder="JTMRFREV7HD000000">
+                <p class="hint" id="vinHint" style="display:none"></p>
+              </div>
+              <fieldset class="radios">
+                <legend>Filing through insurance?</legend>
+                <label class="radio"><input type="radio" name="insurance" id="ins-y" value="yes"> Yes</label>
+                <label class="radio"><input type="radio" name="insurance" id="ins-n" value="no"> Paying myself</label>
+                <label class="radio"><input type="radio" name="insurance" id="ins-u" value="not-sure" checked> Not sure yet</label>
+              </fieldset>
+              <div class="field" id="carrierField" hidden>
+                <label class="label" for="carrier">Your carrier</label>
+                <select class="input" id="carrier" name="carrier">
+                  <option value="">Select your carrier</option>
+                  <option>State Farm</option><option>GEICO</option><option>Progressive</option>
+                  <option>AAA</option><option>USAA</option><option>Farmers</option>
+                  <option>Allstate</option><option>Mercury</option><option>Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-error" id="quoteError" role="alert"></div>
+          <button type="submit" class="btn btn-primary qc-submit">
+            <span class="btn-label">Get my free quote</span>
+          </button>
+          <p class="qc-micro">No obligation · We confirm your coverage before dispatch</p>
+          <p class="qc-consent">By submitting this form you agree we may contact you by phone, text or email about your quote. Message rates may apply. See our <a href="/SPEEDY/privacy">Privacy Policy</a>.</p>
+          <p class="sr-only" role="status" aria-live="polite" id="qcStatus"></p>
+        </form>
+
+        <div class="qc-ok" id="quoteSuccess" role="status" aria-live="polite">
+          <div class="qc-ok-i">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h3 tabindex="-1" id="okHead">You're all set, <span id="echoName">there</span>.</h3>
+          <p>We've got your request. A Speedy tech will call you shortly to confirm the glass, your coverage and a time that works.</p>
+          <p style="margin-top:16px"><a class="btn btn-primary btn-block" href="tel:{{PHONE_E164}}">Call us now — {{PHONE}}</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tb">
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><b>Mobile at no extra charge</b><span>We come to your home, office or job site</span></div></div>
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4Z"/></svg><div><b>Workmanship warranty</b><span>For as long as you own the vehicle</span></div></div>
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6"/><path d="M9 15h6"/></svg><div><b>We bill your carrier direct</b><span>You pay your deductible, if your policy has one</span></div></div>
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M2 12h4m12 0h4M12 2v4m0 12v4"/></svg><div><b>ADAS recalibration</b><span>Done on the same visit as the glass</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PER-PAGE BODY ============ -->
+<section class="sec sec-1">
+  <div class="wrap">
+    <div class="prose"><!--PAGE:BODY--><p>This region is replaced per page by the generator.</p><!--/PAGE:BODY--></div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">What we do</span>
+      <h2>Every piece of glass on the vehicle</h2>
+      <p class="lead">One mobile team, one visit. If the camera behind your windshield needs recalibrating afterwards, we do that too rather than sending you somewhere else.</p>
+    </div>
+    <div class="grid grid-3">
+      <a class="card" href="/SPEEDY/windshield-replacement">
+        <div class="card-i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17 5 8a2 2 0 0 1 2-1.6h10A2 2 0 0 1 19 8l2 9"/><path d="M2 17h20"/></svg></div>
+        <h3>Windshield replacement</h3>
+        <p>Crack past repairing? We fit new glass to the adhesive maker's spec and tell you the real safe drive-away time.</p>
+        <span class="card-link">See windshield replacement →</span>
+      </a>
+      <a class="card" href="/SPEEDY/windshield-repair">
+        <div class="card-i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5L12 15.6 7.1 18.2l.9-5.5-4-3.9L9.5 8Z"/></svg></div>
+        <h3>Chip &amp; crack repair</h3>
+        <p>Caught it early? A resin repair takes about half an hour and most carriers waive the deductible on repair.</p>
+        <span class="card-link">See chip &amp; crack repair →</span>
+      </a>
+      <a class="card" href="/SPEEDY/adas-calibration">
+        <div class="card-i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3"/></svg></div>
+        <h3>ADAS recalibration</h3>
+        <p>Move the glass and you move the camera that aims lane-keeping and automatic braking. We recalibrate and hand you the scan report.</p>
+        <span class="card-link">See ADAS calibration →</span>
+      </a>
+      <a class="card" href="/SPEEDY/back-glass-replacement">
+        <div class="card-i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 19V10"/></svg></div>
+        <h3>Back glass &amp; rear windows</h3>
+        <p>Rear glass shatters into pebbles rather than cracking. We vacuum it out of the seats and cabin, and match the defroster grid.</p>
+        <span class="card-link">See back glass replacement →</span>
+      </a>
+      <a class="card" href="/SPEEDY/car-window-replacement">
+        <div class="card-i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg></div>
+        <h3>Door &amp; side windows</h3>
+        <p>Broken into overnight? Usually cheaper than a comprehensive deductible, so most people just pay cash and never file.</p>
+        <span class="card-link">See car window replacement →</span>
+      </a>
+      <a class="card" href="/SPEEDY/mobile-auto-glass">
+        <div class="card-i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.7 7-11a7 7 0 0 0-14 0c0 5.3 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg></div>
+        <h3>Mobile service</h3>
+        <p>There is no shop to drive to. Tell us where the vehicle is parked and we'll tell you straight whether we can work there.</p>
+        <span class="card-link">See how mobile service works →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="sec sec-2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps, no shop visit</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div>
+          <h3>Tell us what broke</h3>
+          <p>Send the form or call. Your VIN or plate gets us the exact glass for your vehicle, including whether it carries a camera, rain sensor or heating element.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div>
+          <h3>We check your coverage first</h3>
+          <p>Before anyone is dispatched we confirm what your policy covers and what your deductible actually is, so the price you hear is the price you pay. No claim is filed until you say go.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div>
+          <h3>We come to you</h3>
+          <p>Your driveway, your office lot, your job site — at no extra charge. We fit the glass, recalibrate the camera if there is one, and tell you when it's safe to drive.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSURANCE / COVERAGE ============ -->
+<section class="sec sec-warm">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Insurance</span>
+      <h2>What California drivers actually pay</h2>
+      <p class="lead">Straight answers, because there is a lot of misleading advertising in this industry.</p>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>California has no free-glass law</h3>
+        <p>You may have seen ads implying windshields are free by law in California. They aren't. Florida, Kentucky and South Carolina require zero-deductible glass coverage — <strong>California does not.</strong> If your glass is fully covered here, it's because you bought a full-glass endorsement, not because of a statute.</p>
+      </div>
+      <div class="card">
+        <h3>So what will it cost?</h3>
+        <p>It depends on your policy, and we'll check it before we dispatch rather than after. Two things are usually true: comprehensive coverage pays for glass minus your deductible, and <strong>most carriers waive the deductible on chip repair</strong> because a repair costs them far less than a replacement.</p>
+      </div>
+      <div class="card">
+        <h3>Your insurer can't pick your shop</h3>
+        <p>Under California Insurance Code § 758.5 your insurer cannot require you to use a specific shop. It cannot recommend one unless you asked for a referral or were told in writing that you may choose. Once you've chosen, it cannot steer you elsewhere, and it cannot cut your reasonable repair cost down to what its own shop would have charged.</p>
+      </div>
+      <div class="card">
+        <h3>No insurance? That's common</h3>
+        <p>Plenty of our work is cash-pay, especially door glass, which often costs less than a comprehensive deductible anyway. Tell us the vehicle and we'll quote you a real number with mobile service included, not a "starting from" figure that changes when we arrive.</p>
+      </div>
+    </div>
+    <p class="disclaimer" style="color:var(--text-muted);margin-top:22px">Speedy Windshield Repair is not affiliated with, endorsed by or sponsored by any insurance company. Carrier names appear on this site only to indicate that we bill those insurers directly.</p>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">On the job</span>
+      <h2>Real vehicles, real driveways</h2>
+    </div>
+    <div class="gal">
+      <figure>
+        <img src="/SPEEDY/img/work-sedan-mobile-driveway.webp" width="1230" height="590" alt="Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway" loading="lazy" decoding="async">
+        <figcaption>Mobile windshield work on a residential driveway — the customer never left home.</figcaption>
+      </figure>
+      <figure>
+        <img src="/SPEEDY/img/work-bmw-mobile-visit.webp" width="440" height="900" alt="Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service" loading="lazy" decoding="async">
+        <figcaption>A Southern California driveway call — we work wherever the vehicle is parked.</figcaption>
+      </figure>
+      <figure>
+        <img src="/SPEEDY/img/work-suv-windshield.webp" width="765" height="455" alt="Mercedes G-Class SUV positioned for windshield replacement" loading="lazy" decoding="async">
+        <figcaption>Larger SUVs and trucks are the same visit — the glass and the camera are just bigger.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="sec sec-2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Reviews</span>
+      <h2>What customers say</h2>
+    </div>
+    <div class="revs"><!--PAGE:REVIEWS--><!--/PAGE:REVIEWS--></div>
+  </div>
+</section>
+
+<!-- ============ SERVICE AREA ============ -->
+<section class="sec sec-dark">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Where we go</span>
+      <h2>Orange County &amp; LA County coverage</h2>
+      <p class="lead" style="color:var(--text-on-dark-2)">We're a mobile operation — there's no shop for you to drive to in either county. If your city isn't listed, send your ZIP and we'll tell you straight whether we cover it.</p>
+    </div>
+    <div class="grid grid-2">
+      <div>
+        <h3 style="font-size:1rem;margin-bottom:14px">Orange County</h3>
+        <ul class="areas"><!--PAGE:FOOTER_OC--><!--/PAGE:FOOTER_OC--></ul>
+      </div>
+      <div>
+        <h3 style="font-size:1rem;margin-bottom:14px">Los Angeles County</h3>
+        <ul class="areas"><!--PAGE:FOOTER_LA--><!--/PAGE:FOOTER_LA--></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WARRANTY ============ -->
+<section class="sec sec-cyan">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Our promise</span>
+      <h2>What the warranty actually covers</h2>
+      <p class="lead">"Lifetime warranty" is meaningless unless somebody writes down what it includes. Here's ours.</p>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Covered, for as long as you own the vehicle</h3>
+        <ul style="margin:0;padding-left:1.1em;color:var(--text-2)">
+          <li>Water leaks caused by our installation</li>
+          <li>Wind noise caused by our installation</li>
+          <li>Moulding and trim failures from our fitting</li>
+          <li>Workmanship defects of any kind on our install</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Not covered — and we'd rather say so up front</h3>
+        <ul style="margin:0;padding-left:1.1em;color:var(--text-2)">
+          <li>New impact damage — a fresh rock is a fresh job</li>
+          <li>Stress cracks spreading from damage that predates our work</li>
+          <li>Defects in the glass itself, which carry the manufacturer's warranty</li>
+          <li>Damage from a later collision or a break-in</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Questions</span>
+      <h2>Frequently asked</h2>
+    </div>
+    <div class="faqs"><!--PAGE:FAQ--><!--/PAGE:FAQ--></div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:0">
+      <span class="eyebrow">Ready when you are</span>
+      <h2>Get your glass sorted this week</h2>
+      <p class="lead" style="color:var(--text-on-dark-2)">Send the form and we'll confirm your glass, your coverage and a time — or just call and talk to somebody now.</p>
+      <div class="final-actions">
+        <a class="btn btn-primary" href="#quote">Get my free quote</a>
+        <a class="btn btn-ghost" href="tel:{{PHONE_E164}}">Call {{PHONE}}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div class="ftr-brand">
+        <img src="/SPEEDY/img/logo-wordmark.webp" width="234" height="96" alt="Speedy Windshield Repair" loading="lazy" decoding="async">
+        <p>Mobile auto glass for Orange County and Los Angeles County, dispatched from our San Diego shop. Windshield replacement, chip repair, back and side glass, and ADAS recalibration.</p>
+        <p style="margin-top:12px">
+          <a class="ftr-tel" href="tel:{{PHONE_E164}}">{{PHONE}}</a><br>
+          <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+        </p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul><!--PAGE:FOOTER_SERVICES--><!--/PAGE:FOOTER_SERVICES--></ul>
+      </div>
+      <div>
+        <h2>Orange County</h2>
+        <ul><!--PAGE:FOOTER_OC--><!--/PAGE:FOOTER_OC--></ul>
+      </div>
+      <div>
+        <h2>Los Angeles County</h2>
+        <ul><!--PAGE:FOOTER_LA--><!--/PAGE:FOOTER_LA--></ul>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         BAR compliance block — 16 CCR § 3371.2, effective 2025-10-01.
+         California requires internet advertising by a registered
+         Automotive Repair Dealer to display the firm name exactly as
+         registered, the ARD registration number, and the telephone
+         number on file with the Bureau.
+
+         The number below is the BAR-registered number and is
+         DELIBERATELY EXCLUDED from dynamic number insertion — it
+         carries .ghl-no-swap / data-no-swap. BAR guidance indicates a
+         tracking number that differs from the registered number may be
+         treated as misleading, so DNI is confined to the header and CTA
+         numbers and must never rewrite this one.
+         ============================================================ -->
+    <div class="bar">
+      <b>{{LEGAL_NAME}}</b> · Bureau of Automotive Repair ARD Registration <b>{{BAR_ARD}}</b><br>
+      Registered telephone: <a class="ghl-no-swap" data-no-swap="true" href="tel:{{BAR_PHONE_E164}}">{{BAR_PHONE}}</a><br>
+      {{ADDRESS_STREET}}, {{ADDRESS_CITY}}, {{ADDRESS_REGION}} {{ADDRESS_ZIP}}
+    </div>
+
+    <div class="ftr-legal">
+      <div>© {{YEAR}} {{LEGAL_NAME}}. All rights reserved. Serving Orange County and Los Angeles County by mobile dispatch; our registered place of business is in San Diego, California.</div>
+      <div class="ftr-links">
+        <a href="/SPEEDY/privacy">Privacy Policy</a>
+        <a href="/SPEEDY/terms">Terms</a>
+        <a href="/SPEEDY/">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- sticky mobile action bar -->
+<div class="sticky" id="stickybar" aria-hidden="true">
+  <a class="btn btn-primary" href="tel:{{PHONE_E164}}">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2Z"/></svg>
+    Call now
+  </a>
+  <a class="btn btn-ghost" href="#quote">Get quote</a>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------------- FAQ accordion ---------------- */
+  document.querySelectorAll('.faq button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var faq = btn.closest('.faq'), ans = faq.querySelector('.ans');
+      var open = faq.classList.contains('open');
+      if(open){
+        faq.classList.remove('open'); ans.style.maxHeight = null;
+        btn.setAttribute('aria-expanded','false');
+      } else {
+        faq.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+  });
+  /* A stale pixel max-height clips the answer after a rotate, so re-measure. */
+  var faqT;
+  window.addEventListener('resize', function(){
+    clearTimeout(faqT);
+    faqT = setTimeout(function(){
+      document.querySelectorAll('.faq.open .ans').forEach(function(a){
+        a.style.maxHeight = a.scrollHeight + 'px';
+      });
+    }, 120);
+  });
+
+  /* ---------------- header scroll state ---------------- */
+  var hdr = document.querySelector('.hdr');
+  var onScroll = function(){
+    if(hdr) hdr.classList.toggle('scrolled', window.scrollY > 8);
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------------- progressive disclosure ---------------- */
+  var qcExpand = document.getElementById('qcExpand'), qcMore = document.getElementById('qcMore');
+  if(qcExpand && qcMore){
+    qcExpand.addEventListener('click', function(){
+      var open = qcMore.hasAttribute('hidden');
+      if(open){ qcMore.removeAttribute('hidden'); } else { qcMore.setAttribute('hidden',''); }
+      qcExpand.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if(open){ var f = qcMore.querySelector('select,input'); if(f) f.focus(); }
+    });
+  }
+
+  /* Carrier only matters when they're actually filing a claim. */
+  var carrierField = document.getElementById('carrierField');
+  function syncCarrier(){
+    var yes = document.getElementById('ins-y');
+    if(!carrierField) return;
+    if(yes && yes.checked) carrierField.removeAttribute('hidden');
+    else carrierField.setAttribute('hidden','');
+  }
+  ['ins-y','ins-n','ins-u'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.addEventListener('change', syncCarrier);
+  });
+  syncCarrier();
+
+  /* ================= attribution capture =================
+     Google sends gbraid/wbraid INSTEAD of gclid on iOS and consent-mode
+     traffic, so capturing only gclid silently loses that whole segment.
+     Kept in sessionStorage rather than a page variable so it survives
+     navigation across the mini-site and still attaches if the visitor
+     submits from a different page than they landed on. */
+  var ATTR_KEYS = ['gclid','gbraid','wbraid','gclsrc','msclkid','fbclid','ttclid','li_fat_id',
+                   'utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+  var attribution = (function(){
+    var store = {};
+    try{ store = JSON.parse(sessionStorage.getItem('speedy_attr') || '{}'); }catch(e){ store = {}; }
+    var qs = new URLSearchParams(location.search), touched = false;
+    ATTR_KEYS.forEach(function(k){
+      var v = qs.get(k);
+      if(v){ store[k] = v; touched = true; }      // newest click wins
+    });
+    if(!store.landing_page){ store.landing_page = location.href.split('#')[0]; touched = true; }
+    if(!store.referrer){ store.referrer = document.referrer || ''; touched = true; }
+    if(touched){ try{ sessionStorage.setItem('speedy_attr', JSON.stringify(store)); }catch(e){} }
+    return store;
+  })();
+
+  function track(name, params){
+    try{
+      if(window.gtag){ window.gtag('event', name, params || {}); }
+      else if(window.dataLayer){ window.dataLayer.push(Object.assign({event:name}, params || {})); }
+    }catch(e){}
+  }
+  document.querySelectorAll('a[href^="tel:"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      track('click_to_call', { location: a.closest('.sticky') ? 'sticky' : (a.closest('.hdr') ? 'header' : 'body') });
+    });
+  });
+
+  /* ================= Google Ads conversion =================
+     Reported from the page so it does not depend on a CRM automation.
+     GHL's Ads integration is offline-import only and fires from an
+     allowlisted set of triggers that does NOT include Inbound Webhook —
+     which is exactly why forms are reported here and calls are reported
+     by GHL's Number Pool Calling trigger. Do not let both report forms. */
+  function fireAdsConversion(lead){
+    var c = window.SPEEDY_CONFIG || {};
+    if(!c.GOOGLE_ADS_ID || !c.GOOGLE_ADS_LABEL || !window.gtag) return;
+
+    var txnId = 'speedy-' + (attribution.gclid || attribution.gbraid || attribution.wbraid || 'direct') +
+                '-' + String(lead.phone || '').replace(/\D/g,'').slice(-10);
+    try{
+      var seen = 'speedy_conv_' + txnId;
+      var store = window.localStorage || window.sessionStorage;   // localStorage survives new tabs
+      if(store.getItem(seen)) return;                             // already reported
+      store.setItem(seen, '1');
+    }catch(e){}
+
+    /* Enhanced conversions: gtag.js hashes these in the browser before
+       sending — they never leave in the clear — and they raise match rates. */
+    try{
+      gtag('set', 'user_data', {
+        email: lead.email || undefined,
+        phone_number: lead.phone || undefined      // E.164
+      });
+    }catch(e){}
+
+    gtag('event', 'conversion', {
+      send_to: c.GOOGLE_ADS_ID + '/' + c.GOOGLE_ADS_LABEL,
+      value: Number(c.LEAD_VALUE) || 0,
+      currency: c.CURRENCY || 'USD',
+      transaction_id: txnId
+    });
+  }
+
+  /* ================= lead delivery =================
+     HighLevel Inbound Webhook. This URL is visible in page source —
+     unavoidable for any browser-side post. It is write-only, but anyone
+     can call it, so keep spam filtering on in GHL. */
+  var LEAD_WEBHOOK = "{{LEAD_WEBHOOK}}";
+
+  /* phone: format as they type, normalise to E.164 for GHL and Google
+     (both match E.164 far more reliably than "(714) 555-0142") */
+  function phDigits(v){
+    var d = String(v || '').replace(/\D/g,'');
+    if(d.length === 11 && d.charAt(0) === '1') d = d.slice(1);
+    return d.slice(0,10);
+  }
+  function phFormat(d){
+    if(!d) return '';
+    if(d.length < 4) return '(' + d;
+    if(d.length < 7) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+    return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6);
+  }
+  function phE164(v){ var d = phDigits(v); return d.length === 10 ? '+1' + d : ''; }
+
+  var phEl = document.getElementById('ph');
+  if(phEl){
+    phEl.setAttribute('maxlength','14');
+    phEl.addEventListener('input', function(){ this.value = phFormat(phDigits(this.value)); });
+  }
+  var zipEl = document.getElementById('zip');
+  if(zipEl){
+    zipEl.addEventListener('input', function(){ this.value = this.value.replace(/\D/g,'').slice(0,5); });
+  }
+
+  /* VIN: real VINs are uppercase and never contain I, O or Q (they'd be
+     mistaken for 1 and 0), so filter those as they type. */
+  var vinEl = document.getElementById('vin'), vinHint = document.getElementById('vinHint');
+  if(vinEl){
+    vinEl.addEventListener('input', function(){
+      var v = this.value.toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g,'').slice(0,17);
+      this.value = v;
+      if(!vinHint) return;
+      if(!v){ vinHint.style.display = 'none'; this.style.borderColor = ''; return; }
+      vinHint.style.display = 'block';
+      if(v.length === 17){
+        this.style.borderColor = 'var(--success)';
+        vinHint.textContent = '✓ Looks like a valid VIN'; vinHint.style.color = 'var(--success)';
+      } else {
+        this.style.borderColor = '';
+        vinHint.textContent = v.length + ' of 17 characters'; vinHint.style.color = 'var(--text-muted)';
+      }
+    });
+  }
+
+  /* ---------------- validation + submit ---------------- */
+  var form = document.getElementById('quoteForm');
+  if(form){
+    var submitBtn = form.querySelector('.qc-submit');
+    var btnLabel = submitBtn ? submitBtn.querySelector('.btn-label') : null;
+    var origLabel = btnLabel ? btnLabel.textContent : 'Get my free quote';
+    var statusEl = document.getElementById('qcStatus');
+    var errBox = document.getElementById('quoteError');
+
+    var RULES = [
+      { el:'nm',  err:'nm-err',  msg:'Enter your name so we know who to ask for.',
+        ok:function(v){ return v.trim().length >= 2; } },
+      { el:'ph',  err:'ph-err',  msg:'Enter a 10-digit mobile number so we can call you back.',
+        ok:function(v){ return phDigits(v).length === 10; } },
+      { el:'em',  err:'em-err',  msg:'Enter a valid email address.',
+        ok:function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); } },
+      { el:'zip', err:'zip-err', msg:'Enter the 5-digit ZIP where the vehicle is.',
+        ok:function(v){ return /^\d{5}$/.test(v.trim()); } }
+    ];
+
+    function setErr(rule, show){
+      var el = document.getElementById(rule.el), box = document.getElementById(rule.err);
+      if(!el || !box) return;
+      if(show){
+        el.setAttribute('aria-invalid','true');
+        el.setAttribute('aria-describedby', rule.err);
+        box.textContent = rule.msg; box.classList.add('on');
+      } else {
+        el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby');
+        box.textContent = ''; box.classList.remove('on');
+      }
+    }
+
+    /* Validate on blur, never on keydown — premature errors read as hostile.
+       Once a field is already in error, re-validate on input so it clears
+       as soon as they fix it. */
+    RULES.forEach(function(rule){
+      var el = document.getElementById(rule.el);
+      if(!el) return;
+      el.addEventListener('blur', function(){ if(el.value.trim()) setErr(rule, !rule.ok(el.value)); });
+      el.addEventListener('input', function(){
+        if(el.getAttribute('aria-invalid') === 'true' && rule.ok(el.value)) setErr(rule, false);
+      });
+    });
+
+    function showSuccess(first){
+      var echo = document.getElementById('echoName');
+      if(echo) echo.textContent = first;
+      form.style.display = 'none';
+      var ok = document.getElementById('quoteSuccess');
+      ok.classList.add('on');
+      var head = document.getElementById('okHead');
+      if(head){ head.focus(); }
+      try{ ok.scrollIntoView({block:'center', behavior:'smooth'}); }catch(e){}
+    }
+    function showError(){
+      if(submitBtn){ submitBtn.removeAttribute('aria-disabled'); submitBtn.style.pointerEvents = ''; }
+      if(btnLabel) btnLabel.textContent = origLabel;
+      form.removeAttribute('aria-busy');
+      errBox.innerHTML = 'Sorry — that didn’t go through. Please call ' +
+        '<a href="tel:{{PHONE_E164}}" style="color:var(--error);font-weight:800">{{PHONE}}</a> and we’ll take the details over the phone.';
+      errBox.classList.add('on');
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      errBox.classList.remove('on');
+
+      var bad = [];
+      RULES.forEach(function(rule){
+        var el = document.getElementById(rule.el);
+        var invalid = !el || !rule.ok(el.value);
+        setErr(rule, invalid);
+        if(invalid) bad.push(rule);
+      });
+      if(bad.length){
+        if(statusEl) statusEl.textContent = bad.length + (bad.length === 1 ? ' field needs' : ' fields need') + ' attention.';
+        var firstBad = document.getElementById(bad[0].el);
+        if(firstBad) firstBad.focus();
+        return;
+      }
+
+      var nm = document.getElementById('nm'), em = document.getElementById('em'),
+          ph = document.getElementById('ph'), zip = document.getElementById('zip');
+      var fullName = nm.value.trim();
+      var parts = fullName.split(/\s+/);
+      var first = parts[0] || 'there';
+      var leadInfo = { email: em.value.trim(), phone: phE164(ph.value) || ph.value.trim() };
+
+      track('generate_lead', { form:'quote' });
+
+      /* No webhook configured yet → still report the conversion and show success,
+         so the page is safe to deploy before GHL is wired up. */
+      if(!LEAD_WEBHOOK){ fireAdsConversion(leadInfo); showSuccess(first); return; }
+
+      var insEl = document.querySelector('input[name="insurance"]:checked');
+      var payload = {
+        full_name: fullName,
+        first_name: parts[0] || fullName,
+        last_name: parts.length > 1 ? parts.slice(1).join(' ') : '',
+        email: em.value.trim(),
+        phone: phE164(ph.value) || ph.value.trim(),
+        phone_formatted: ph.value.trim(),
+        postal_code: zip.value.trim(),
+        vehicle: (document.getElementById('veh').value || '').trim(),
+        vin: (document.getElementById('vin').value || '').trim(),
+        service: document.getElementById('svc').value,
+        insurance: insEl ? insEl.value : '',
+        carrier: document.getElementById('carrier').value || '',
+        source: '{{SOURCE_TAG}}',
+        page_path: '{{PAGE_PATH}}',
+        page: location.href,
+        submitted_at: new Date().toISOString()
+      };
+      ATTR_KEYS.concat(['landing_page','referrer']).forEach(function(k){
+        payload[k] = attribution[k] || '';
+      });
+
+      if(submitBtn){ submitBtn.setAttribute('aria-disabled','true'); submitBtn.style.pointerEvents = 'none'; }
+      if(btnLabel) btnLabel.textContent = 'Sending…';
+      form.setAttribute('aria-busy','true');
+      if(statusEl) statusEl.textContent = 'Sending your request…';
+
+      fetch(LEAD_WEBHOOK, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      })
+      .then(function(res){
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        fireAdsConversion(leadInfo);   // only count a conversion once the lead landed
+        if(statusEl) statusEl.textContent = 'Request sent.';
+        showSuccess(first);
+      })
+      .catch(showError);
+    });
+  }
+
+  /* ---------------- sticky mobile bar ----------------
+     Hidden while the form is on screen so it never competes with the
+     higher-value form lead, and hidden while a field has focus so it
+     never sits over the keyboard's action row. */
+  var bar = document.getElementById('stickybar');
+  var quote = document.getElementById('quote');
+  if(bar && quote && 'IntersectionObserver' in window){
+    document.body.classList.add('has-sticky');
+    var fieldFocused = false, formVisible = true;
+    function sync(){
+      var show = !formVisible && !fieldFocused;
+      if(show){ bar.setAttribute('data-show',''); bar.setAttribute('aria-hidden','false'); }
+      else { bar.removeAttribute('data-show'); bar.setAttribute('aria-hidden','true'); }
+    }
+    new IntersectionObserver(function(entries){
+      formVisible = entries[0].isIntersecting;
+      sync();
+    }, { threshold:0.25 }).observe(quote);
+    if(form){
+      form.addEventListener('focusin', function(){ fieldFocused = true; sync(); });
+      form.addEventListener('focusout', function(){ fieldFocused = false; sync(); });
+    }
+    sync();
+  }
+})();
+</script>
+
+<!-- ============================================================
+     DNI — HighLevel dynamic number insertion.
+     Swaps the header / CTA numbers for a rotating pool number so GHL can
+     tie a call back to the visitor's session and report call conversions
+     to Google Ads via its Number Pool Calling trigger.
+
+     Loaded last so every number is in the DOM before the swap runs.
+
+     The BAR-registered number in the footer compliance block carries
+     .ghl-no-swap / data-no-swap and must NEVER be rewritten — see the
+     note on that block. Verify after every deploy that it still reads
+     the registered number.
+     ============================================================ -->
+<!--DNI-->
+<script src="https://backend.leadconnectorhq.com/appengine/loc/{{GHL_LOCATION_ID}}/pool/{{GHL_POOL_ID}}/number_pool.js"></script>
+<script src="https://backend.leadconnectorhq.com/appengine/js/user_session.js"></script>
+<!--/DNI-->
+
+<!--PAGE:JSONLD--><!--/PAGE:JSONLD-->
+</body>
+</html>

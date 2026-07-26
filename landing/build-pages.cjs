@@ -1,0 +1,652 @@
+#!/usr/bin/env node
+/**
+ * Static site generator for the Speedy Windshield Repair OC/LA landing site.
+ *
+ * Reads:   landing/speedy.html      master template (also renders standalone as the home page)
+ *          landing/pages.config.cjs all page content
+ *          landing/reviews.json      optional; real Google review data
+ *
+ * Writes:  quote-site/              index.html + <slug>/index.html per page,
+ *                                   sitemap.xml, robots.txt, manifest, favicons,
+ *                                   img/, vercel.json
+ *
+ * Design notes:
+ *  - Nav and footer link lists are GENERATED from the config, so every page is
+ *    linked from every other page by construction. Orphan pages (which read as
+ *    doorway pages to Google) can't happen by forgetting a link.
+ *  - The home page gets the exact same head treatment as every other page —
+ *    canonical, OG, JSON-LD. It's the easiest page in the account to leave bare.
+ *  - When reviews.json is absent, every numeric rating claim is stripped and the
+ *    review cards degrade to a link to the real Google listing. aggregateRating
+ *    is only ever emitted from live data.
+ *
+ * Env:
+ *   BASE    URL prefix for asset/link rewriting (default '' = served at root)
+ *   OUTDIR  output directory (default <repo>/quote-site)
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..');
+const BASE = process.env.BASE !== undefined ? process.env.BASE : '';
+const OUTDIR = process.env.OUTDIR
+  ? path.resolve(process.env.OUTDIR)
+  : path.join(ROOT, 'quote-site');
+
+/* The literal prefix used on every asset path inside the template. Rewritten at
+ * build time so the template can be opened directly from disk during design
+ * work while the built site uses real root-relative (or BASE-prefixed) paths. */
+const ASSET_PREFIX = '/SPEEDY';
+
+const cfg = require('./pages.config.cjs');
+const site = cfg.site;
+
+/* ------------------------------------------------------------------ helpers */
+
+const esc = (s) =>
+  String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+/** Text for JSON-LD / meta: strip tags, collapse whitespace. */
+const plain = (s) =>
+  String(s == null ? '' : s)
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+function region(html, name, replacement) {
+  const open = '<!--PAGE:' + name + '-->';
+  const close = '<!--/PAGE:' + name + '-->';
+  const i = html.indexOf(open);
+  if (i === -1) {
+    throw new Error('Template is missing region marker ' + open);
+  }
+  const j = html.indexOf(close, i);
+  if (j === -1) {
+    throw new Error('Template is missing closing marker ' + close);
+  }
+  return html.slice(0, i + open.length) + replacement + html.slice(j);
+}
+
+function url(slug) {
+  const b = BASE || '';
+  if (!slug || slug === '/') return b + '/';
+  return b + '/' + slug;
+}
+
+function absUrl(slug) {
+  const origin = 'https://' + site.domain;
+  if (!slug || slug === '/') return origin + '/';
+  return origin + '/' + slug;
+}
+
+/* ------------------------------------------------------- page list assembly */
+
+const homePage = Object.assign({}, cfg.home, { slug: '/', kind: 'home' });
+const servicePages = cfg.services.map((p) => Object.assign({}, p, { kind: 'service' }));
+const hubPages = cfg.hubs.map((p) => Object.assign({}, p, { kind: 'hub' }));
+const cityPages = cfg.cities.map((p) => Object.assign({}, p, { kind: 'city' }));
+
+const contentPages = [homePage].concat(servicePages, hubPages, cityPages);
+
+/* ------------------------------------------------------------- review state */
+
+let reviews = null;
+const reviewsPath = path.join(__dirname, 'reviews.json');
+if (fs.existsSync(reviewsPath)) {
+  try {
+    const r = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
+    /* Only trust it if it actually carries usable numbers. */
+    if (Number(r.rating) >= 1 && Number(r.rating) <= 5 && Number(r.count) >= 1) {
+      reviews = r;
+    } else {
+      console.warn('[build] reviews.json present but values are out of range — ignoring it.');
+    }
+  } catch (e) {
+    console.warn('[build] reviews.json is unparseable — ignoring it. (' + e.message + ')');
+  }
+}
+
+const mapsUrl = (reviews && reviews.maps_uri) || site.mapsUrl || '';
+
+/* ------------------------------------------------------------- nav + footer */
+
+/* Header nav: a small curated set (the highest-intent services plus both county
+ * hubs). The footer carries the complete link set. */
+const navHtml = cfg.nav
+  .map((slug) => {
+    const p = contentPages.find((x) => x.slug === slug);
+    if (!p) throw new Error('nav references unknown slug: ' + slug);
+    return '<a href="' + url(p.slug) + '">' + esc(p.navLabel || p.shortLabel) + '</a>';
+  })
+  .join('\n            ');
+
+function linkList(pages) {
+  return pages
+    .map(
+      (p) =>
+        '<li><a href="' + url(p.slug) + '">' + esc(p.shortLabel || p.navLabel) + '</a></li>'
+    )
+    .join('\n              ');
+}
+
+const footerServices = linkList(servicePages);
+const footerOC = linkList(
+  hubPages.filter((p) => p.county === 'OC').concat(cityPages.filter((p) => p.county === 'OC'))
+);
+const footerLA = linkList(
+  hubPages.filter((p) => p.county === 'LA').concat(cityPages.filter((p) => p.county === 'LA'))
+);
+
+/* ------------------------------------------------------------- review block */
+
+function starRow(n) {
+  const full = Math.floor(n);
+  const half = n - full >= 0.4;
+  let out = '';
+  for (let i = 0; i < full; i++) out += '<span class="star" aria-hidden="true">★</span>';
+  if (half) out += '<span class="star star-half" aria-hidden="true">★</span>';
+  return out;
+}
+
+function ratingBarHtml() {
+  if (!reviews) {
+    /* No live data → no numbers. Point at the real listing instead. */
+    return (
+      '<a class="rb-item rb-link" href="' +
+      esc(mapsUrl) +
+      '" target="_blank" rel="noopener">' +
+      '<strong>Read our Google reviews</strong>' +
+      '</a>'
+    );
+  }
+  return (
+    '<a class="rb-item rb-link" href="' +
+    esc(mapsUrl) +
+    '" target="_blank" rel="noopener" ' +
+    'aria-label="' +
+    esc(reviews.rating + ' out of 5 stars from ' + reviews.count + ' Google reviews') +
+    '">' +
+    '<span class="stars">' +
+    starRow(reviews.rating) +
+    '</span>' +
+    '<strong>' +
+    esc(reviews.rating) +
+    '</strong> <span class="rb-sub">from ' +
+    esc(reviews.count) +
+    ' Google reviews</span>' +
+    '</a>'
+  );
+}
+
+function reviewsSectionHtml() {
+  if (!reviews || !reviews.quotes.length) {
+    return (
+      '<div class="rev-empty">' +
+      '<p>Speedy Windshield Repair has been serving Southern California drivers since ' +
+      esc(site.established) +
+      '. Every review on our Google listing is from a real customer — read them yourself:</p>' +
+      '<a class="btn btn-ghost" href="' +
+      esc(mapsUrl) +
+      '" target="_blank" rel="noopener">See our reviews on Google</a>' +
+      '</div>'
+    );
+  }
+  const cards = reviews.quotes
+    .map(
+      (q) =>
+        '<figure class="rev">' +
+        '<div class="stars" aria-label="5 out of 5 stars">' +
+        starRow(5) +
+        '</div>' +
+        '<blockquote>' +
+        esc(q.text) +
+        '</blockquote>' +
+        '<figcaption>' +
+        esc(q.author) +
+        (q.when ? ' <span class="rev-when">· ' + esc(q.when) + '</span>' : '') +
+        '</figcaption>' +
+        '</figure>'
+    )
+    .join('\n          ');
+
+  return (
+    cards +
+    '\n          <p class="rev-foot">' +
+    'Verified Google reviews for Speedy Windshield Repair · ' +
+    '<a href="' +
+    esc(mapsUrl) +
+    '" target="_blank" rel="noopener">read all ' +
+    esc(reviews.count) +
+    ' on Google</a></p>'
+  );
+}
+
+/* ---------------------------------------------------------------- FAQ block */
+
+function faqHtml(faq) {
+  return faq
+    .map(
+      (f, i) =>
+        '<div class="faq">' +
+        '<button type="button" aria-expanded="false" aria-controls="faq-a-' +
+        i +
+        '" id="faq-q-' +
+        i +
+        '">' +
+        '<span>' +
+        esc(f.q) +
+        '</span><span class="chev" aria-hidden="true"></span>' +
+        '</button>' +
+        '<div class="ans" id="faq-a-' +
+        i +
+        '" role="region" aria-labelledby="faq-q-' +
+        i +
+        '"><div class="ans-in">' +
+        f.a +
+        '</div></div>' +
+        '</div>'
+    )
+    .join('\n          ');
+}
+
+/* ------------------------------------------------------------- JSON-LD */
+
+function openingHours() {
+  return site.hours
+    .filter((h) => !h.closed)
+    .map((h) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: h.days,
+      opens: h.opens,
+      closes: h.closes
+    }));
+}
+
+function localBusinessLd(page) {
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'AutoGlassShop',
+    '@id': 'https://' + site.domain + '/#business',
+    name: site.name,
+    telephone: site.phoneE164,
+    url: absUrl(page.slug),
+    image: 'https://' + site.domain + '/img/' + site.ogImage,
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.address.street,
+      addressLocality: site.address.city,
+      addressRegion: site.address.region,
+      postalCode: site.address.zip,
+      addressCountry: 'US'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: site.geo.lat,
+      longitude: site.geo.lng
+    },
+    areaServed: cfg.areaServed.map((c) => ({ '@type': 'City', name: c })),
+    openingHoursSpecification: openingHours()
+  };
+  if (site.email) ld.email = site.email;
+  if (mapsUrl) ld.hasMap = mapsUrl;
+  if (site.sameAs && site.sameAs.length) ld.sameAs = site.sameAs;
+
+  /* Only ever attach a rating when we actually have live review data. */
+  if (reviews) {
+    ld.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: String(reviews.rating),
+      reviewCount: String(reviews.count),
+      bestRating: '5',
+      worstRating: '1'
+    };
+  }
+  return ld;
+}
+
+function faqLd(page) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: page.faq.map((f) => ({
+      '@type': 'Question',
+      name: plain(f.q),
+      acceptedAnswer: { '@type': 'Answer', text: plain(f.a) }
+    }))
+  };
+}
+
+function breadcrumbLd(page) {
+  if (page.slug === '/') return null;
+  const items = [{ '@type': 'ListItem', position: 1, name: 'Home', item: absUrl('/') }];
+  items.push({
+    '@type': 'ListItem',
+    position: 2,
+    name: plain(page.shortLabel || page.navLabel),
+    item: absUrl(page.slug)
+  });
+  return { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items };
+}
+
+function jsonLdHtml(page) {
+  const blocks = [localBusinessLd(page), faqLd(page), breadcrumbLd(page)].filter(Boolean);
+  return blocks
+    .map(
+      (b) =>
+        '<script type="application/ld+json">' +
+        JSON.stringify(b).replace(/</g, '\\u003c') +
+        '</script>'
+    )
+    .join('\n');
+}
+
+/* ------------------------------------------------------------ page renderer */
+
+const template = fs.readFileSync(path.join(__dirname, 'speedy.html'), 'utf8');
+
+function renderPage(page) {
+  let s = template;
+
+  const title = page.title;
+  const desc = page.desc;
+
+  /* ---- head ---- */
+  s = s.replace(/<title>[\s\S]*?<\/title>/, '<title>' + esc(title) + '</title>');
+  s = s.replace(
+    /<meta name="description" content="[\s\S]*?">/,
+    '<meta name="description" content="' + esc(desc) + '">'
+  );
+  s = s.replace(
+    /<link rel="canonical" href="[\s\S]*?">/,
+    '<link rel="canonical" href="' + esc(absUrl(page.slug)) + '">'
+  );
+  s = s.replace(
+    /<meta property="og:title" content="[\s\S]*?">/,
+    '<meta property="og:title" content="' + esc(page.ogTitle || title) + '">'
+  );
+  s = s.replace(
+    /<meta property="og:description" content="[\s\S]*?">/,
+    '<meta property="og:description" content="' + esc(desc) + '">'
+  );
+  s = s.replace(
+    /<meta property="og:url" content="[\s\S]*?">/,
+    '<meta property="og:url" content="' + esc(absUrl(page.slug)) + '">'
+  );
+  s = s.replace(
+    /<meta name="twitter:title" content="[\s\S]*?">/,
+    '<meta name="twitter:title" content="' + esc(page.ogTitle || title) + '">'
+  );
+  s = s.replace(
+    /<meta name="twitter:description" content="[\s\S]*?">/,
+    '<meta name="twitter:description" content="' + esc(desc) + '">'
+  );
+
+  /* ---- content regions ---- */
+  s = region(s, 'EYEBROW', page.eyebrow);   // authored HTML — already entity-encoded
+  s = region(s, 'H1', page.h1);
+  s = region(s, 'SUB', page.sub);
+  s = region(s, 'BODY', page.body);
+  s = region(s, 'FAQ', faqHtml(page.faq));
+  s = region(s, 'JSONLD', jsonLdHtml(page));
+  s = region(s, 'NAV', navHtml);
+  s = region(s, 'FOOTER_SERVICES', footerServices);
+  s = region(s, 'FOOTER_OC', footerOC);
+  s = region(s, 'FOOTER_LA', footerLA);
+  s = region(s, 'RATINGBAR', ratingBarHtml());
+  s = region(s, 'REVIEWS', reviewsSectionHtml());
+
+  /* ---- pre-select the matching service in the quote form ----
+   * An ad for back glass should land on a form that already says back glass.
+   * Remove any hardcoded selected first so exactly one option carries it. */
+  s = s.replace(/(<select[^>]*id="svc"[\s\S]*?<\/select>)/, function (block) {
+    let b = block.replace(/\s+selected(?=[\s>])/g, '');
+    if (page.svcValue) {
+      const re = new RegExp('(<option value="' + page.svcValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '")');
+      b = b.replace(re, '$1 selected');
+    }
+    return b;
+  });
+
+  /* ---- rating claims outside the managed regions ----
+   * With no live data, any prose that asserts a star rating must go. */
+  if (!reviews) {
+    s = s.replace(/<!--RATING-CLAIM-->[\s\S]*?<!--\/RATING-CLAIM-->/g, '');
+  } else {
+    s = s
+      .replace(/\{\{RATING\}\}/g, esc(reviews.rating))
+      .replace(/\{\{REVIEW_COUNT\}\}/g, esc(reviews.count));
+  }
+
+  /* ---- site-wide tokens ---- */
+  s = s
+    .replace(/\{\{PHONE_E164\}\}/g, esc(site.phoneE164))
+    .replace(/\{\{PHONE\}\}/g, esc(site.phoneFormatted))
+    .replace(/\{\{PHONE_DIGITS\}\}/g, esc(site.phoneE164.replace(/\D/g, '')))
+    .replace(/\{\{CALL_ASSET_E164\}\}/g, esc(site.callAsset.e164))
+    .replace(/\{\{CALL_ASSET\}\}/g, esc(site.callAsset.formatted))
+    .replace(/\{\{BAR_PHONE_E164\}\}/g, esc(site.barPhoneE164))
+    .replace(/\{\{BAR_PHONE\}\}/g, esc(site.barPhoneFormatted))
+    .replace(/\{\{BAR_ARD\}\}/g, esc(site.barArd))
+    .replace(/\{\{LEGAL_NAME\}\}/g, esc(site.legalName))
+    .replace(/\{\{EMAIL\}\}/g, esc(site.email))
+    .replace(/\{\{DOMAIN\}\}/g, esc(site.domain))
+    .replace(/\{\{MAPS_URL\}\}/g, esc(mapsUrl))
+    .replace(/\{\{YEAR\}\}/g, String(new Date().getFullYear()))
+    .replace(/\{\{ESTABLISHED\}\}/g, esc(site.established))
+    .replace(/\{\{ADDRESS_STREET\}\}/g, esc(site.address.street))
+    .replace(/\{\{ADDRESS_CITY\}\}/g, esc(site.address.city))
+    .replace(/\{\{ADDRESS_REGION\}\}/g, esc(site.address.region))
+    .replace(/\{\{ADDRESS_ZIP\}\}/g, esc(site.address.zip))
+    .replace(/\{\{GHL_LOCATION_ID\}\}/g, esc(site.ghl.locationId))
+    .replace(/\{\{GHL_POOL_ID\}\}/g, esc(site.ghl.poolId))
+    .replace(/\{\{LEAD_WEBHOOK\}\}/g, site.ghl.webhook)
+    .replace(/\{\{ADS_ID\}\}/g, esc(site.ads.conversionId))
+    .replace(/\{\{ADS_LABEL\}\}/g, esc(site.ads.conversionLabel))
+    .replace(/\{\{GA4_ID\}\}/g, esc(site.ads.ga4Id))
+    .replace(/\{\{LEAD_VALUE\}\}/g, String(Number(site.ads.leadValue) || 0))
+    .replace(/\{\{PAGE_PATH\}\}/g, esc(page.slug === '/' ? '/' : '/' + page.slug))
+    .replace(/\{\{SOURCE_TAG\}\}/g, esc('landing:speedy-oc-la'));
+
+  /* ---- GHL number pool: only emit the DNI scripts once configured ---- */
+  if (!site.ghl.locationId || !site.ghl.poolId) {
+    s = s.replace(/<!--DNI-->[\s\S]*?<!--\/DNI-->/g, '');
+  }
+
+  /* ---- asset/link prefix rewrite ----
+   * Rewrite EVERY attribute, not just href — a missed src= means every image
+   * 404s from a root-served build. The bare form (no trailing slash) has to be
+   * handled too or "/SPEEDY" is left dangling in the output. */
+  s = s
+    .replace(new RegExp('="' + ASSET_PREFIX + '/', 'g'), '="' + (BASE ? BASE + '/' : '/'))
+    .replace(new RegExp('="' + ASSET_PREFIX + '(?=["#?])', 'g'), '="' + (BASE || '/'))
+    .replace(new RegExp('\\("' + ASSET_PREFIX + '/', 'g'), '("' + (BASE ? BASE + '/' : '/'))
+    .replace(new RegExp("url\\(" + ASSET_PREFIX + "/", 'g'), 'url(' + (BASE ? BASE + '/' : '/'));
+
+  return s;
+}
+
+/* ------------------------------------------------------------------- output */
+
+function rmrf(p) {
+  if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true });
+}
+
+function writeFile(rel, content) {
+  const full = path.join(OUTDIR, rel);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, content);
+}
+
+function copyDir(from, to) {
+  if (!fs.existsSync(from)) return;
+  fs.mkdirSync(to, { recursive: true });
+  for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
+    const src = path.join(from, entry.name);
+    const dst = path.join(to, entry.name);
+    if (entry.isDirectory()) copyDir(src, dst);
+    else fs.copyFileSync(src, dst);
+  }
+}
+
+/* ---- build assertions: fail loudly rather than shipping duplicates ---- */
+function assertUnique(field, label) {
+  const seen = new Map();
+  for (const p of contentPages) {
+    const v = plain(p[field]).toLowerCase();
+    if (!v) throw new Error('Page "' + p.slug + '" has an empty ' + label + '.');
+    if (seen.has(v)) {
+      throw new Error(
+        'Duplicate ' + label + ' between "' + seen.get(v) + '" and "' + p.slug + '": ' + v
+      );
+    }
+    seen.set(v, p.slug);
+  }
+}
+
+function build() {
+  assertUnique('title', 'title');
+  assertUnique('desc', 'meta description');
+  assertUnique('h1', 'H1');
+
+  /* Slug collisions would silently overwrite a page. */
+  const slugs = new Set();
+  for (const p of contentPages) {
+    if (slugs.has(p.slug)) throw new Error('Duplicate slug: ' + p.slug);
+    slugs.add(p.slug);
+  }
+
+  rmrf(OUTDIR);
+  fs.mkdirSync(OUTDIR, { recursive: true });
+
+  /* pages */
+  for (const p of contentPages) {
+    const html = renderPage(p);
+    writeFile(p.slug === '/' ? 'index.html' : p.slug + '/index.html', html);
+  }
+
+  /* standalone legal pages — same token + prefix treatment */
+  for (const legal of [
+    { file: 'legal-privacy.html', slug: 'privacy' },
+    { file: 'legal-terms.html', slug: 'terms' }
+  ]) {
+    const src = path.join(__dirname, legal.file);
+    if (!fs.existsSync(src)) {
+      console.warn('[build] missing ' + legal.file + ' — skipping /' + legal.slug);
+      continue;
+    }
+    let s = fs.readFileSync(src, 'utf8');
+    /* Same generated link lists as every other page, so the legal pages can't
+     * silently fall out of the internal link graph when a slug is added. */
+    s = region(s, 'FOOTER_SERVICES', footerServices);
+    s = region(s, 'FOOTER_OC', footerOC);
+    s = region(s, 'FOOTER_LA', footerLA);
+    s = s
+      .replace(/\{\{PHONE_E164\}\}/g, esc(site.phoneE164))
+      .replace(/\{\{PHONE\}\}/g, esc(site.phoneFormatted))
+      .replace(/\{\{BAR_PHONE_E164\}\}/g, esc(site.barPhoneE164))
+      .replace(/\{\{BAR_PHONE\}\}/g, esc(site.barPhoneFormatted))
+      .replace(/\{\{BAR_ARD\}\}/g, esc(site.barArd))
+      .replace(/\{\{LEGAL_NAME\}\}/g, esc(site.legalName))
+      .replace(/\{\{EMAIL\}\}/g, esc(site.email))
+      .replace(/\{\{DOMAIN\}\}/g, esc(site.domain))
+      .replace(/\{\{YEAR\}\}/g, String(new Date().getFullYear()))
+      .replace(/\{\{ADDRESS_STREET\}\}/g, esc(site.address.street))
+      .replace(/\{\{ADDRESS_CITY\}\}/g, esc(site.address.city))
+      .replace(/\{\{ADDRESS_REGION\}\}/g, esc(site.address.region))
+      .replace(/\{\{ADDRESS_ZIP\}\}/g, esc(site.address.zip))
+      .replace(/\{\{CANONICAL\}\}/g, esc(absUrl(legal.slug)))
+      .replace(new RegExp('="' + ASSET_PREFIX + '/', 'g'), '="' + (BASE ? BASE + '/' : '/'))
+      .replace(new RegExp('="' + ASSET_PREFIX + '(?=["#?])', 'g'), '="' + (BASE || '/'));
+    writeFile(legal.slug + '/index.html', s);
+  }
+
+  /* images + static assets */
+  copyDir(path.join(__dirname, 'img'), path.join(OUTDIR, 'img'));
+
+  const icoSrc = path.join(__dirname, 'img', 'favicon.ico');
+  if (fs.existsSync(icoSrc)) fs.copyFileSync(icoSrc, path.join(OUTDIR, 'favicon.ico'));
+
+  /* manifest */
+  writeFile(
+    'site.webmanifest',
+    JSON.stringify(
+      {
+        name: site.name,
+        short_name: 'Speedy Glass',
+        icons: [
+          { src: url('img/icon-192.png'), sizes: '192x192', type: 'image/png' },
+          { src: url('img/icon-512.png'), sizes: '512x512', type: 'image/png' }
+        ],
+        theme_color: site.themeColor,
+        background_color: '#FFFFFF',
+        display: 'browser',
+        start_url: url('/')
+      },
+      null,
+      2
+    )
+  );
+
+  /* sitemap — content pages plus legal */
+  const today = new Date().toISOString().slice(0, 10);
+  const sitemapUrls = contentPages
+    .map((p) => ({ loc: absUrl(p.slug), pri: p.slug === '/' ? '1.0' : p.kind === 'city' ? '0.7' : '0.8' }))
+    .concat([
+      { loc: absUrl('privacy'), pri: '0.2' },
+      { loc: absUrl('terms'), pri: '0.2' }
+    ]);
+
+  writeFile(
+    'sitemap.xml',
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      sitemapUrls
+        .map(
+          (u) =>
+            '  <url><loc>' +
+            u.loc +
+            '</loc><lastmod>' +
+            today +
+            '</lastmod><priority>' +
+            u.pri +
+            '</priority></url>'
+        )
+        .join('\n') +
+      '\n</urlset>\n'
+  );
+
+  writeFile(
+    'robots.txt',
+    'User-agent: *\nAllow: /\n\nSitemap: https://' + site.domain + '/sitemap.xml\n'
+  );
+
+  /* vercel.json — read by Vercel because Root Directory points at this folder */
+  const vjson = path.join(__dirname, 'vercel-static.json');
+  if (fs.existsSync(vjson)) {
+    fs.copyFileSync(vjson, path.join(OUTDIR, 'vercel.json'));
+  }
+
+  console.log('[build] wrote ' + contentPages.length + ' content pages + 2 legal → ' + OUTDIR);
+  console.log(
+    '[build] reviews: ' +
+      (reviews
+        ? reviews.rating + '★ from ' + reviews.count + ' (' + reviews.quotes.length + ' quotes)'
+        : 'NO DATA — rating claims stripped, aggregateRating omitted')
+  );
+  if (!site.ads.conversionId) {
+    console.log('[build] NOTE: Google Ads conversion ID not set — tracking is a safe no-op.');
+  }
+  if (!site.ghl.webhook) {
+    console.log('[build] NOTE: GHL webhook not set — form reports conversion and shows success.');
+  }
+}
+
+build();
