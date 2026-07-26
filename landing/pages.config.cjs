@@ -113,10 +113,17 @@ module.exports = {
        * call it, so keep spam filtering on in GHL. */
       webhook: 'https://services.leadconnectorhq.com/hooks/bEPjxnxSU2AfYQ1PIhK1/webhook-trigger/D6EuRh5CTS1KweBrURkM',
       locationId: 'bEPjxnxSU2AfYQ1PIhK1',
-      /* Number pool for DNI. Empty = the pool scripts are not emitted at all.
-       * Do not fill this in until BAR has confirmed the § 3371.2 position on
-       * tracking numbers — see the README. */
-      poolId: ''
+      /* Number pool for DNI. Swaps the primary (949) 400-0096 number in the
+       * header, CTAs and sticky bar so GHL can attribute calls and report call
+       * conversions to Google Ads via its Number Pool Calling trigger.
+       *
+       * The footer call-asset number (949) 736-5211 carries ghl-no-swap and is
+       * asserted by verify.cjs on every page — Google verifies that number
+       * appears on the site, so DNI must never rewrite it.
+       *
+       * NOTE: BAR has not yet confirmed the § 3371.2 position on tracking
+       * numbers differing from the registered number. See the README. */
+      poolId: '8OhDwbZ3BY05Z9OihVz9'
     }
   },
 

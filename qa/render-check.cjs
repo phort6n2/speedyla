@@ -28,7 +28,17 @@ const server = http.createServer((req,res)=>{
     const [slug, w, h, tag] = spec.split('@');
     const ctx = await browser.newContext({ viewport:{width:+w, height:+h}, deviceScaleFactor: 1 });
     const page = await ctx.newPage();
+    /* The sandbox has no outbound network, so the Google Maps iframe and the GHL
+       DNI scripts fail to load and surface as console errors that are noise, not
+       defects. Stub them so real errors stand out. */
+    await page.route('**maps.google.com/**', r => r.fulfill({ status: 200,
+      contentType: 'text/html', body: '<body style="margin:0;background:#e8eef2"></body>' }));
+    await page.route('**leadconnectorhq.com/**', r => r.fulfill({ status: 200,
+      contentType: 'application/javascript', body: '/* stub */' }));
+    await page.route('**googletagmanager.com/**', r => r.fulfill({ status: 200,
+      contentType: 'application/javascript', body: 'window.__gtagStubbed=true;' }));
     page.on('console', m => { if (m.type()==='error') errors.push(`${slug} ${w}px CONSOLE: ${m.text()}`); });
+    page.on('requestfailed', r => errors.push(`${slug} ${w}px REQFAIL: ${r.url()} :: ${(r.failure()||{}).errorText}`));
     page.on('pageerror', e => errors.push(`${slug} ${w}px PAGEERROR: ${e.message}`));
     await page.goto(`http://localhost:8099/${slug}?gclid=TEST123&utm_source=google&utm_campaign=oc-core`, {waitUntil:'load'});
     await page.waitForTimeout(350);
