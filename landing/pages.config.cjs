@@ -40,6 +40,9 @@ module.exports = {
      * exactly — VERIFY against the certificate before launch (16 CCR § 3371.2). */
     name: 'Speedy Windshield Repair',
     legalName: 'Speedy Windshield Repair',
+    /* Short conversational form of the name, used in body copy where the full
+       registered name would read stiffly ("A Speedy tech will call you"). */
+    brandShort: 'Speedy',
 
     /* Header / CTA / form-error number — THIS is the one the GHL number pool
      * swaps. A 949 area code, so it reads local to Orange County rather than
