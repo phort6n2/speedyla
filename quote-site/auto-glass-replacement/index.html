@@ -613,9 +613,17 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    it is aria-hidden and the step still reads identically without it. */
 .step{ position:relative; overflow:hidden; }
 .step-ico{
-  position:absolute; top:-6px; right:-6px;
-  width:76px; height:76px; color:var(--brand); opacity:.07;
-  pointer-events:none;
+  position:absolute; pointer-events:none;
+  color:var(--brand); opacity:.07;
+  /* Single column below 900px: the step spans the full width, so a top-right
+     icon lands squarely on the paragraph and muddies the text. Park it in the
+     gutter under the number disc instead — that column is 48px wide and empty
+     for the whole height of the copy. */
+  top:60px; left:0; right:auto; width:48px; height:48px; opacity:.10;
+}
+@media (min-width:900px){
+  /* Three narrow columns: the top-right corner is genuinely empty here. */
+  .step-ico{ top:-6px; right:-6px; left:auto; width:76px; height:76px; opacity:.07; }
 }
 
 /* ---- photo watermark -------------------------------------------------
