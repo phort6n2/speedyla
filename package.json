@@ -7,11 +7,12 @@
     "build:landing": "node landing/build-pages.cjs",
     "fetch:reviews": "node landing/fetch-reviews.cjs",
     "check:placeid": "node landing/fetch-reviews.cjs --dry-run",
-    "verify": "node landing/verify.cjs",
+    "verify": "node landing/preflight.cjs && node landing/verify.cjs",
     "qa:render": "node qa/render-check.cjs \"@1440@1100@desk-home\" \"@390@844@mob-home\" \"@320@700@w320-home\" \"windshield-replacement@768@1000@tab-svc\" \"auto-glass-repair-torrance@1440@1100@desk-city\"",
     "qa:tracking": "node qa/tracking-check.cjs",
     "qa": "npm run build:landing && npm run verify && npm run qa:render && npm run qa:tracking",
-    "build:adsheet": "node landing/ads-sheet.cjs"
+    "build:adsheet": "node landing/ads-sheet.cjs",
+    "preflight": "node landing/preflight.cjs"
   },
   "license": "UNLICENSED",
   "devDependencies": {
