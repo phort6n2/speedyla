@@ -594,11 +594,19 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    section defines in full directly beside it. It is not styled to imitate a
    third-party certification and must not be — an invented credential costs
    more trust than the decoration buys. */
-.promise-row{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
-.promise-row h2{ margin:0; flex:1 1 320px; min-width:0; }
-@media (max-width:599px){ .promise-row{ gap:14px; } }
-.seal{ flex:0 0 auto; margin-left:auto; width:160px; height:auto; display:block; }
-@media (max-width:599px){ .seal{ width:118px; } }
+/* Heading and badge stay on one row at every width. They used to wrap, which
+   dropped the badge onto its own line where margin-left:auto stranded it against
+   the right edge with dead space above and below. The heading takes whatever is
+   left and wraps instead — a three-line heading beside the badge reads as a
+   composition; a floating badge reads as a mistake. */
+.promise-row{ display:flex; align-items:center; gap:20px; flex-wrap:nowrap; }
+.promise-row h2{ margin:0; flex:1 1 auto; min-width:0; }
+.seal{ flex:0 0 auto; width:150px; height:auto; display:block; }
+@media (max-width:719px){
+  .promise-row{ gap:14px; }
+  .seal{ width:96px; }
+}
+@media (max-width:359px){ .seal{ width:78px; } }
 
 /* ---- step cards ------------------------------------------------------
    A large, very low-contrast icon behind each step. Texture, not information:
