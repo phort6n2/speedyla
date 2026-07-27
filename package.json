@@ -12,7 +12,8 @@
     "qa:tracking": "node qa/tracking-check.cjs",
     "qa": "npm run build:landing && npm run verify && npm run qa:render && npm run qa:tracking",
     "build:adsheet": "node landing/ads-sheet.cjs",
-    "preflight": "node landing/preflight.cjs"
+    "preflight": "node landing/preflight.cjs",
+    "check:urls": "node landing/check-urls.cjs"
   },
   "license": "UNLICENSED",
   "devDependencies": {

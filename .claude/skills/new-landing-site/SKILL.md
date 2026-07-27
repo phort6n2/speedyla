@@ -35,20 +35,63 @@ and expect a change to appear.
 `region()` fills **every** occurrence of a marker, not the first. Two markers
 appear twice in the template.
 
+## If the client already has a landing page — do this FIRST
+
+Before writing a single page, inventory the URLs their ads already point at.
+A Google Ads final URL that 404s gets the ad disapproved for "Destination not
+working", usually within hours of Google's next crawl. The ad group stops
+serving, and the landing page history goes with it. This is the failure that
+turns a migration into an outage.
+
+**The authoritative list is the Ads account, not the old site.** A final URL can
+be referenced by an ad without being linked anywhere crawlable, so a crawl alone
+will miss URLs. Export final URLs at **keyword, ad and sitelink level**, then
+also pull the old sitemap as a second source.
+
+1. Export final URLs from Google Ads into a text file, one per line. The
+   checker tolerates a pasted export — it takes the first URL-looking column.
+2. Decide, per URL: **keep the slug**, or **redirect it**.
+   Keeping it is always safer. Rename only when the old slug is actively bad,
+   and never rename a slug that carries meaningful conversion history.
+3. Record the decision in `migration` in `pages.config.cjs`:
+   - `preserve: ['/windshield-replacement']` — must exist unchanged
+   - `redirects: [{ from: '/lp/old-quote', to: '/windshield-replacement' }]`
+4. Check it, before the DNS cutover:
+   ```
+   npm run build:landing
+   npm run check:urls -- --file old-urls.txt
+   npm run check:urls -- --sitemap https://oldsite.com/sitemap.xml
+   ```
+   It reports SERVED / REDIRECTED / WOULD 404 and exits non-zero on any break.
+5. `npm run verify` then enforces it on every future build: a preserved slug
+   that stops building, a redirect pointing at a page that does not exist, a
+   redirect whose source is also a real page (so it would never fire), a
+   duplicate source, or a loop, all fail the build.
+
+Redirects are emitted as **301** into the root `vercel.json` — permanent, so
+link equity passes and Google treats the move as final. A 302 leaves the old URL
+canonical, which is the opposite of what a migration wants.
+
+**After cutover:** update the final URLs in Ads to the new paths anyway. Serving
+through a redirect works, but Google evaluates landing page experience on the
+final destination, and a redirect hop is a small penalty you do not need to pay
+forever.
+
 ## Build order for a new client
 
 1. **Copy the repo.** New GitHub repo, new Vercel project.
-2. **Fill `site` in `pages.config.cjs`.** Every field in the checklist below.
-3. **Palette.** Replace the `:root` variables. Compute contrast — do not
+2. **Inventory existing URLs** if this is a migration — the section above.
+3. **Fill `site` in `pages.config.cjs`.** Every field in the checklist below.
+4. **Palette.** Replace the `:root` variables. Compute contrast — do not
    estimate it. Body text needs 4.5:1, large text 3:1, and any colour carrying a
    border or an icon needs 3:1. The reference build's cyan failed at 2.62:1 and
    could not be used for text; the orange had to darken to `#CB4E1A` to reach
    4.52:1.
-4. **Content.** Home, service pages, county/region hubs, city pages.
-5. **Reviews.** Put the client's Google Place ID in `fetch-reviews.cjs`, set the
+5. **Content.** Home, service pages, county/region hubs, city pages.
+6. **Reviews.** Put the client's Google Place ID in `fetch-reviews.cjs`, set the
    `GOOGLE_PLACES_API_KEY` secret, run `npm run check:placeid` to confirm it
    resolves to the right business before trusting it.
-6. **Verify, then deploy.** See the gates below.
+7. **Verify, then deploy.** See the gates below.
 
 ## Per-client checklist
 
@@ -116,11 +159,17 @@ All four must pass before deploy. They exist because each caught a real defect.
 
 ```
 npm run build:landing
-npm run verify        # 14 sections, must be 0 failures 0 warnings
+npm run verify        # preflight + 15 sections, must be 0 failures 0 warnings
 npm run qa:tracking   # 18 assertions in a real browser
 npm run qa:render     # overflow, console errors, tap targets
 npm run build:adsheet # refuses to write if any asset breaks Google's limits
+npm run check:urls -- --file old-urls.txt   # migrations only, before cutover
 ```
+
+`npm run verify` runs `preflight.cjs` first, which refuses to build while any
+client value is still a placeholder or still belongs to the previous client —
+a copied repo that keeps the old GHL webhook sends the new client's leads to
+someone else's CRM, and nothing about the page looks wrong when it happens.
 
 When changing the template on an existing site, snapshot `quote-site/` first and
 diff after rebuilding. An empty diff proves a refactor changed nothing.

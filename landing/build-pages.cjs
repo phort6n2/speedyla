@@ -235,6 +235,51 @@ function avatarColor(name) {
   return AVATAR_COLORS[h % AVATAR_COLORS.length];
 }
 
+/* ------------------------------------------------------ migration redirects */
+
+const migration = cfg.migration || { preserve: [], redirects: [] };
+
+/** Normalise to a leading-slash, no-trailing-slash path. Accepts a full URL. */
+function normPath(u) {
+  let s = String(u || '').trim();
+  if (!s) return '';
+  s = s.replace(/^https?:\/\/[^/]+/i, '');   // strip origin if a full URL was pasted
+  s = s.split('#')[0].split('?')[0];         // and any query or fragment
+  if (!s.startsWith('/')) s = '/' + s;
+  if (s.length > 1) s = s.replace(/\/+$/, '');
+  return s;
+}
+
+/**
+ * Rewrite the `redirects` key of the root vercel.json in place.
+ *
+ * 301 rather than 302: a permanent redirect passes link equity and tells Google
+ * the move is final. A 302 leaves the old URL as the canonical one, which is
+ * the opposite of what a migration wants.
+ */
+function writeRootRedirects() {
+  const file = path.join(ROOT, 'vercel.json');
+  if (!fs.existsSync(file)) return;
+  const raw = fs.readFileSync(file, 'utf8');
+  const conf = JSON.parse(raw);
+  const list = (migration.redirects || []).map((r) => ({
+    source: normPath(r.from),
+    destination: normPath(r.to),
+    permanent: true
+  }));
+
+  /* Only rewrite when the redirects actually differ. JSON.stringify reformats
+     the whole file, so writing unconditionally would put a cosmetic diff in
+     every single build on sites that have no redirects at all. */
+  const current = JSON.stringify(conf.redirects || []);
+  if (current === JSON.stringify(list)) return;
+
+  if (list.length) conf.redirects = list;
+  else delete conf.redirects;
+  fs.writeFileSync(file, JSON.stringify(conf, null, 2) + '\n');
+  console.log('[build] wrote ' + list.length + ' migration redirect(s) to vercel.json');
+}
+
 function reviewsSectionHtml() {
   if (!reviews || !reviews.quotes.length) {
     return (
@@ -878,6 +923,12 @@ function build() {
   if (fs.existsSync(vjson)) {
     fs.copyFileSync(vjson, path.join(OUTDIR, 'vercel.json'));
   }
+
+  /* Migration redirects go in the ROOT vercel.json, because that is the file
+     Vercel reads when outputDirectory is set — the copy inside the output
+     directory is ignored. Rewrite only the `redirects` key so hand-edited
+     headers and outputDirectory survive. */
+  writeRootRedirects();
 
   const imgMap = hashImages(OUTDIR);
   applyImageHashes(OUTDIR, imgMap);

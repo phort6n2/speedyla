@@ -460,6 +460,62 @@ for (const p of formPages) {
 }
 if (!failures) pass('timeout, re-entrancy, POST method, inline guard and noscript on all ' + formPages.length + ' form pages');
 
+/* ------------------------------------------------ 15. migration URL parity */
+
+/* When a client moves off an existing landing page, every URL their ads point
+   at has to keep resolving. A final URL that 404s gets the ad disapproved for
+   "Destination not working" within hours and the ad group stops serving. */
+
+head('15. Migration URL parity');
+
+const migration = require('./pages.config.cjs').migration || { preserve: [], redirects: [] };
+const normP = (u) => {
+  let s = String(u || '').trim().replace(/^https?:\/\/[^/]+/i, '').split('#')[0].split('?')[0];
+  if (!s.startsWith('/')) s = '/' + s;
+  return s.length > 1 ? s.replace(/\/+$/, '') : s;
+};
+const builtPaths = new Set(pages.map((p) => (p.slug === '/' ? '/' : '/' + p.slug)));
+
+for (const slug of migration.preserve || []) {
+  if (!builtPaths.has(normP(slug))) {
+    fail('migration.preserve lists ' + slug + ' but no page builds at that path');
+  }
+}
+
+const froms = new Set();
+for (const r of migration.redirects || []) {
+  const from = normP(r.from);
+  const to = normP(r.to);
+  /* A redirect whose source is also a real page never fires — the file wins. */
+  if (builtPaths.has(from)) fail('redirect source ' + from + ' is also a built page, so it will never fire');
+  if (!builtPaths.has(to)) fail('redirect ' + from + ' points at ' + to + ', which is not a built page');
+  if (froms.has(from)) fail('duplicate redirect source: ' + from);
+  froms.add(from);
+  if (from === to) fail('redirect loops on itself: ' + from);
+}
+
+/* What ships in vercel.json must match the config, or the build lies. */
+const rootVercel = path.join(__dirname, '..', 'vercel.json');
+if (fs.existsSync(rootVercel)) {
+  const conf = JSON.parse(fs.readFileSync(rootVercel, 'utf8'));
+  const shipped = (conf.redirects || []).length;
+  const configured = (migration.redirects || []).length;
+  if (shipped !== configured) {
+    fail('vercel.json ships ' + shipped + ' redirect(s) but config declares ' + configured +
+         ' — rebuild');
+  }
+  for (const r of conf.redirects || []) {
+    if (r.permanent !== true) fail('redirect ' + r.source + ' is not permanent (301)');
+  }
+}
+
+if (!failures) {
+  pass(
+    (migration.redirects || []).length + ' redirect(s), ' +
+    (migration.preserve || []).length + ' preserved slug(s) — all resolve'
+  );
+}
+
 /* -------------------------------------------------------------------- done */
 
 console.log(
