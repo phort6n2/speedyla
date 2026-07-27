@@ -165,6 +165,45 @@ module.exports = {
     ]
   },
 
+  /* ======================== trust strip ========================
+   * The band under the hero. Every item must be a fact you can substantiate on
+   * request — this is the most-read element on the page and the easiest place
+   * to accidentally publish a claim you cannot back.
+   *
+   * Do NOT put carrier logos, vehicle brand marks, or any certification you do
+   * not hold here. Icon names map to the set in build-pages.cjs. */
+  trust: [
+    { icon: 'van',    label: 'Mobile at no extra charge',   sub: 'We come to your home, office or job site' },
+    { icon: 'shield', label: 'Workmanship warranty',        sub: 'For as long as you own the vehicle' },
+    { icon: 'doc',    label: 'We bill your carrier direct', sub: 'You pay your deductible, if your policy has one' },
+    { icon: 'camera', label: 'ADAS recalibration',          sub: 'Done on the same visit as the glass' }
+  ],
+
+  /* ======================== photo gallery ========================
+   * Add entries as real photography arrives — this drives the "On the job"
+   * section, so growing it is a config edit, not a template edit. Width and
+   * height are required: they reserve the box and stop layout shift.
+   *
+   * Real photos of this business only. Stock on a local service page reads as
+   * fake and costs more trust than the visual polish gains. */
+  gallery: [
+    {
+      src: 'work-sedan-mobile-driveway.webp', w: 1230, h: 590,
+      alt: "Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway",
+      caption: 'Mobile windshield work on a residential driveway — the customer never left home.'
+    },
+    {
+      src: 'work-bmw-mobile-visit.webp', w: 440, h: 900,
+      alt: 'Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service',
+      caption: 'A Southern California driveway call — we work wherever the vehicle is parked.'
+    },
+    {
+      src: 'work-suv-windshield.webp', w: 765, h: 455,
+      alt: 'Mercedes G-Class SUV positioned for windshield replacement',
+      caption: 'Larger SUVs and trucks are the same visit — the glass and the camera are just bigger.'
+    }
+  ],
+
   /* Cities named in LocalBusiness.areaServed */
   areaServed: [
     'Anaheim','Santa Ana','Irvine','Huntington Beach','Costa Mesa','Fullerton',

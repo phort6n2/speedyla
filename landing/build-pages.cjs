@@ -205,6 +205,110 @@ function ratingBarHtml() {
   );
 }
 
+/* ------------------------------------------------- visual furniture ------- */
+
+/* Line icons, 24x24, drawn with currentColor so they inherit whatever they sit
+   on. Inline rather than a sprite or a font: the whole page is one document and
+   an icon that arrives late is an icon that shifts layout. */
+const ICONS = {
+  /* The four already drawn in the hero trust strip, kept byte-identical so
+     making that block config-driven changes nothing on screen. */
+  van: '<rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+  shield: '<path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4Z"/>',
+  doc: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6"/><path d="M9 15h6"/>',
+  camera: '<circle cx="12" cy="12" r="3"/><path d="M2 12h4m12 0h4M12 2v4m0 12v4"/>',
+  /* Added for the step cards. */
+  form: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  check: '<path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4Z"/><path d="M8.6 12.2l2.4 2.4 4.4-4.6"/>',
+  pin: '<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>'
+};
+
+function icon(name, opts) {
+  const d = ICONS[name];
+  if (!d) throw new Error('Unknown icon: ' + name + ' (have: ' + Object.keys(ICONS).join(', ') + ')');
+  const o = opts || {};
+  const size = o.size || 20;
+  return (
+    '<svg' + (o.cls ? ' class="' + o.cls + '"' : '') +
+    ' width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" ' +
+    'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
+    'aria-hidden="true">' + d + '</svg>'
+  );
+}
+
+/** Trust strip under the hero. Facts only — see the note in pages.config.cjs. */
+function trustStripHtml() {
+  const items = cfg.trust || [];
+  if (!items.length) return '';
+  return items
+    .map(
+      (t) =>
+        '<div>' + icon(t.icon) + '<div><b>' + esc(t.label) + '</b><span>' +
+        esc(t.sub) + '</span></div></div>'
+    )
+    .join('\n      ');
+}
+
+/**
+ * Stat band. Every number is derived from real data, never authored — the
+ * review figures come straight from reviews.json and drop out entirely when
+ * there is no live review data, the same as every other rating claim.
+ */
+function statBandHtml() {
+  const stats = [];
+  if (reviews) {
+    stats.push([String(reviews.rating), 'average rating']);
+    stats.push([fmtCount(reviews.count), 'Google reviews']);
+  }
+  if (site.established) stats.push(['Since ' + site.established, 'serving California drivers']);
+  stats.push([String(cityPages.length), 'cities covered across 2 counties']);
+  return stats
+    .map((s) => '<div class="stat"><b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>')
+    .join('\n        ');
+}
+
+/**
+ * Guarantee seal.
+ *
+ * Deliberately a SELF-ISSUED mark, not a third-party certification: it carries
+ * the firm's own name and states the warranty the site already defines in full
+ * further down the page. Nothing here implies an outside body has certified
+ * anything. Do not restyle it to imitate a certification seal.
+ */
+function sealHtml() {
+  return (
+    '<div class="seal" role="img" aria-label="' +
+    esc(site.legalName + ' workmanship warranty: covered for as long as you own the vehicle') +
+    '">' +
+    '<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">' +
+    '<circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="2" opacity=".35"/>' +
+    '<circle cx="60" cy="60" r="49" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/>' +
+    '</svg>' +
+    '<div class="seal-t">' +
+    '<b>Lifetime</b><span>workmanship<br>warranty</span>' +
+    '</div>' +
+    '</div>'
+  );
+}
+
+/** Photo gallery, driven from config so adding photography is a config edit. */
+function galleryHtml() {
+  const shots = cfg.gallery || [];
+  if (!shots.length) return '';
+  return shots
+    .map(
+      (g) =>
+        '<figure>' +
+        '<span class="shot">' +
+        '<img src="' + ASSET_PREFIX + '/img/' + esc(g.src) + '" width="' + esc(g.w) +
+        '" height="' + esc(g.h) + '" alt="' + esc(g.alt) + '" loading="lazy" decoding="async">' +
+        '</span>' +
+        (g.caption ? '<figcaption>' + esc(g.caption) + '</figcaption>' : '') +
+        '</figure>'
+    )
+    .join('\n        ');
+}
+
 /* Official four-colour Google mark, inlined. Never recoloured, never distorted:
    Google's brand terms require the mark be used as supplied, and .rev-g fixes
    its box so flex cannot squash it. Decorative here — the card already says
@@ -581,6 +685,10 @@ function renderPage(page) {
   s = region(s, 'FOOTER_LA', footerLA);
   s = region(s, 'RATINGBAR', ratingBarHtml());
   s = region(s, 'REVIEWS', reviewsSectionHtml());
+  s = region(s, 'TRUST', trustStripHtml());
+  s = region(s, 'STATS', statBandHtml());
+  s = region(s, 'GALLERY', galleryHtml());
+  s = region(s, 'SEAL', sealHtml());
   s = region(s, 'MAPBLOCK', mapBlockHtml());
 
   /* ---- pre-select the matching service in the quote form ----

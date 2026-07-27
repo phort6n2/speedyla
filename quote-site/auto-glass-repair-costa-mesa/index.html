@@ -571,6 +571,72 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 .rev-when{ font-weight:400; color:var(--text-muted); font-size:.8125rem; }
 /* Pinned right and never shrinks — a squashed Google mark is worse than none. */
 .rev-g{ flex:0 0 auto; margin-left:auto; width:18px; height:18px; display:block; }
+/* ---- stat band -------------------------------------------------------
+   Large numerals do visual work that prose cannot, and every figure here is
+   derived from real data by the generator rather than authored. */
+.statband{ background:var(--band-dark); color:#fff; padding:34px 0; }
+.stats{
+  display:grid; gap:22px 18px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  text-align:center;
+}
+.stat b{
+  display:block; font-size:clamp(1.75rem,4.2vw,2.5rem); font-weight:800;
+  letter-spacing:-.02em; line-height:1.05; color:var(--gold-on-dark);
+}
+.stat span{
+  display:block; margin-top:6px; font-size:.875rem; line-height:1.35;
+  color:rgba(255,255,255,.82);
+}
+
+/* ---- guarantee seal --------------------------------------------------
+   A SELF-ISSUED mark: it carries the firm's own promise, which the warranty
+   section defines in full directly beside it. It is not styled to imitate a
+   third-party certification and must not be — an invented credential costs
+   more trust than the decoration buys. */
+.promise-row{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+.promise-row h2{ margin:0; flex:1 1 320px; min-width:0; }
+@media (max-width:599px){ .promise-row{ gap:14px; } }
+.seal{
+  position:relative; flex:0 0 auto; margin-left:auto;
+  width:132px; height:132px; display:grid; place-items:center;
+  color:var(--cta); text-align:center;
+}
+.seal svg{ position:absolute; inset:0; width:100%; height:100%; }
+.seal-t b{
+  display:block; font-size:1.0625rem; font-weight:800; letter-spacing:-.01em;
+  text-transform:uppercase;
+}
+.seal-t span{
+  display:block; margin-top:2px; font-size:.75rem; line-height:1.25;
+  color:var(--text-2); font-weight:600;
+}
+
+/* ---- step cards ------------------------------------------------------
+   A large, very low-contrast icon behind each step. Texture, not information:
+   it is aria-hidden and the step still reads identically without it. */
+.step{ position:relative; overflow:hidden; }
+.step-ico{
+  position:absolute; top:-6px; right:-6px;
+  width:76px; height:76px; color:var(--brand); opacity:.07;
+  pointer-events:none;
+}
+
+/* ---- photo watermark -------------------------------------------------
+   Brands the photography and travels with the image if it is ever scraped.
+   Kept low-contrast so it never competes with the subject. */
+/* Anchored to the image, not the figure — the figure includes the caption, so
+   bottom:10px on it put the mark on the caption instead of the photo. */
+.gal .shot{ position:relative; display:block; }
+.gal .shot::after{
+  content:""; position:absolute; right:10px; bottom:10px;
+  width:74px; height:30px;
+  background:url(/img/logo-wordmark.fceba0c8.webp) right bottom/contain no-repeat;
+  opacity:.62; filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));
+  pointer-events:none;
+}
+@media (max-width:599px){ .gal .shot::after{ width:60px; height:24px; } }
+
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
 /* Empty state = one short sentence plus a button, so the whole band is narrow
    content in a wide container. Centre it, and centre the section head with it —
@@ -961,12 +1027,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       </div>
     </div>
 
-    <div class="tb">
-      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><b>Mobile at no extra charge</b><span>We come to your home, office or job site</span></div></div>
+    <div class="tb"><!--PAGE:TRUST--><div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><b>Mobile at no extra charge</b><span>We come to your home, office or job site</span></div></div>
       <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4Z"/></svg><div><b>Workmanship warranty</b><span>For as long as you own the vehicle</span></div></div>
       <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6"/><path d="M9 15h6"/></svg><div><b>We bill your carrier direct</b><span>You pay your deductible, if your policy has one</span></div></div>
-      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M2 12h4m12 0h4M12 2v4m0 12v4"/></svg><div><b>ADAS recalibration</b><span>Done on the same visit as the glass</span></div></div>
-    </div>
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M2 12h4m12 0h4M12 2v4m0 12v4"/></svg><div><b>ADAS recalibration</b><span>Done on the same visit as the glass</span></div></div><!--/PAGE:TRUST--></div>
   </div>
 </section>
 
@@ -1056,6 +1120,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     </div>
     <div class="steps">
       <div class="step">
+        <svg class="step-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
         <div class="step-n">1</div>
         <div>
           <h3>Tell us what broke</h3>
@@ -1063,6 +1128,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         </div>
       </div>
       <div class="step">
+        <svg class="step-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4Z"/><path d="M8.6 12.2l2.4 2.4 4.4-4.6"/></svg>
         <div class="step-n">2</div>
         <div>
           <h3>We check your coverage first</h3>
@@ -1070,6 +1136,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         </div>
       </div>
       <div class="step">
+        <svg class="step-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         <div class="step-n">3</div>
         <div>
           <h3>We come to you</h3>
@@ -1077,6 +1144,17 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Stat band. Every figure is derived from real data in the generator, never
+     authored here — the review numbers vanish entirely without reviews.json. -->
+<section class="statband">
+  <div class="wrap">
+    <div class="stats"><!--PAGE:STATS--><div class="stat"><b>4.9</b><span>average rating</span></div>
+        <div class="stat"><b>1,110</b><span>Google reviews</span></div>
+        <div class="stat"><b>Since 2018</b><span>serving California drivers</span></div>
+        <div class="stat"><b>12</b><span>cities covered across 2 counties</span></div><!--/PAGE:STATS--></div>
   </div>
 </section>
 
@@ -1117,20 +1195,9 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <span class="eyebrow">On the job</span>
       <h2>Real vehicles, real driveways</h2>
     </div>
-    <div class="gal">
-      <figure>
-        <img src="/img/work-sedan-mobile-driveway.3312ea8a.webp" width="1230" height="590" alt="Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway" loading="lazy" decoding="async">
-        <figcaption>Mobile windshield work on a residential driveway — the customer never left home.</figcaption>
-      </figure>
-      <figure>
-        <img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service" loading="lazy" decoding="async">
-        <figcaption>A Southern California driveway call — we work wherever the vehicle is parked.</figcaption>
-      </figure>
-      <figure>
-        <img src="/img/work-suv-windshield.c207430f.webp" width="765" height="455" alt="Mercedes G-Class SUV positioned for windshield replacement" loading="lazy" decoding="async">
-        <figcaption>Larger SUVs and trucks are the same visit — the glass and the camera are just bigger.</figcaption>
-      </figure>
-    </div>
+    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-sedan-mobile-driveway.3312ea8a.webp" width="1230" height="590" alt="Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway" loading="lazy" decoding="async"></span><figcaption>Mobile windshield work on a residential driveway — the customer never left home.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service" loading="lazy" decoding="async"></span><figcaption>A Southern California driveway call — we work wherever the vehicle is parked.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="765" height="455" alt="Mercedes G-Class SUV positioned for windshield replacement" loading="lazy" decoding="async"></span><figcaption>Larger SUVs and trucks are the same visit — the glass and the camera are just bigger.</figcaption></figure><!--/PAGE:GALLERY--></div>
   </div>
 </section>
 
@@ -1192,7 +1259,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Our promise</span>
-      <h2>What the warranty actually covers</h2>
+      <div class="promise-row">
+        <h2>What the warranty actually covers</h2>
+        <!--PAGE:SEAL--><div class="seal" role="img" aria-label="Speedy Windshield Repair workmanship warranty: covered for as long as you own the vehicle"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="2" opacity=".35"/><circle cx="60" cy="60" r="49" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/></svg><div class="seal-t"><b>Lifetime</b><span>workmanship<br>warranty</span></div></div><!--/PAGE:SEAL-->
+      </div>
       <p class="lead">"Lifetime warranty" is meaningless unless somebody writes down what it includes. Here's ours.</p>
     </div>
     <div class="grid grid-2">
