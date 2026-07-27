@@ -175,6 +175,31 @@ function starRow(n) {
   return out;
 }
 
+/**
+ * Compact rating for the mobile sticky header, filling the space between the
+ * logo and the call button.
+ *
+ * A <span>, never a link. The call button is the only thing in that header
+ * worth a tap, and a tappable rating sitting beside it would take taps aimed
+ * at the button. Drops out entirely without live review data, like every other
+ * rating claim on the site.
+ */
+function headerRatingHtml() {
+  if (!reviews) return '';
+  return (
+    '<span class="hdr-rating" aria-label="' +
+    esc(reviews.rating + ' out of 5 stars from ' + fmtCount(reviews.count) + ' Google reviews') +
+    '">' +
+    '<span class="hr-top" aria-hidden="true">' +
+    GOOGLE_G_SM.replace('class="rb-g"', 'class="hr-g"') +
+    '<span class="hr-score">' + esc(reviews.rating) + '</span>' +
+    '<span class="stars">' + starRow(reviews.rating) + '</span>' +
+    '</span>' +
+    '<span class="hr-sub" aria-hidden="true">' + esc(fmtCount(reviews.count)) + ' Google reviews</span>' +
+    '</span>'
+  );
+}
+
 function ratingBarHtml() {
   if (!reviews) {
     /* No live data → no numbers. Point at the real listing instead. */
@@ -695,6 +720,7 @@ function renderPage(page) {
   s = region(s, 'FOOTER_OC', footerOC);
   s = region(s, 'FOOTER_LA', footerLA);
   s = region(s, 'RATINGBAR', ratingBarHtml());
+  s = region(s, 'HDRRATING', headerRatingHtml());
   s = region(s, 'REVIEWS', reviewsSectionHtml());
   s = region(s, 'TRUST', trustStripHtml());
   s = region(s, 'STATS', statBandHtml());
