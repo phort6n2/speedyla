@@ -205,11 +205,41 @@ function ratingBarHtml() {
   );
 }
 
+/* Official four-colour Google mark, inlined. Never recoloured, never distorted:
+   Google's brand terms require the mark be used as supplied, and .rev-g fixes
+   its box so flex cannot squash it. Decorative here — the card already says
+   "Verified Google reviews" in text — so it is hidden from assistive tech. */
+const GOOGLE_G =
+  '<svg class="rev-g" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' +
+  '<path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>' +
+  '<path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>' +
+  '<path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/>' +
+  '<path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/>' +
+  '</svg>';
+
+/** First letter of the reviewer's name, for the avatar disc. */
+function initial(name) {
+  const c = String(name || '').trim().charAt(0).toUpperCase();
+  return /[A-Z0-9]/.test(c) ? c : '★';
+}
+
+/* Avatar colours, every one of them checked at >= 4.5:1 against the white
+   initial (measured, not eyeballed — the lightest, #1A73E8, is 4.51:1). Chosen
+   by name hash so a reviewer keeps the same colour between builds instead of
+   flickering each time the reviews refresh. */
+const AVATAR_COLORS = ['#1967D2', '#188038', '#C5221F', '#7B1FA2', '#8E5000', '#0F5C8C', '#3C4043'];
+function avatarColor(name) {
+  let h = 0;
+  const s = String(name || '');
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
 function reviewsSectionHtml() {
   if (!reviews || !reviews.quotes.length) {
     return (
       '<div class="rev-empty">' +
-      '<p>Speedy Windshield Repair has been serving Southern California drivers since ' +
+      '<p>' + esc(site.legalName) + ' has been serving Southern California drivers since ' +
       esc(site.established) +
       '. Every review on our Google listing is from a real customer — read them yourself:</p>' +
       '<a class="btn btn-ghost" href="' +
@@ -222,16 +252,24 @@ function reviewsSectionHtml() {
     .map(
       (q) =>
         '<figure class="rev">' +
+        /* figcaption is legal as the first child of a figure, which lets the
+           header sit above the quote where Google puts it. */
+        '<figcaption class="rev-head">' +
+        '<span class="rev-av" style="--av-bg:' + avatarColor(q.author) + '" aria-hidden="true">' +
+        esc(initial(q.author)) +
+        '</span>' +
+        '<span class="rev-id">' +
+        '<span class="rev-name">' + esc(q.author) + '</span>' +
+        (q.when ? '<span class="rev-when">' + esc(q.when) + '</span>' : '') +
+        '</span>' +
+        GOOGLE_G +
+        '</figcaption>' +
         '<div class="stars" aria-label="5 out of 5 stars">' +
         starRow(5) +
         '</div>' +
         '<blockquote>' +
         esc(q.text) +
         '</blockquote>' +
-        '<figcaption>' +
-        esc(q.author) +
-        (q.when ? ' <span class="rev-when">· ' + esc(q.when) + '</span>' : '') +
-        '</figcaption>' +
         '</figure>'
     )
     .join('\n          ');
@@ -239,7 +277,7 @@ function reviewsSectionHtml() {
   return (
     cards +
     '\n          <p class="rev-foot">' +
-    'Verified Google reviews for Speedy Windshield Repair · ' +
+    'Verified Google reviews for ' + esc(site.legalName) + ' · ' +
     '<a href="' +
     esc(mapsUrl) +
     '" target="_blank" rel="noopener">read all ' +

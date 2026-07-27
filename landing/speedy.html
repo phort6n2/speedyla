@@ -547,9 +547,30 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   border-radius:var(--r-lg); padding:22px; box-shadow:var(--sh-sm); min-width:0;
 }
 .rev .stars{ margin-bottom:12px; }
-.rev blockquote{ margin:0 0 14px; font-size:1rem; line-height:1.6; color:var(--text-2); }
-.rev figcaption{ font-size:.875rem; font-weight:700; color:var(--text); }
-.rev-when{ font-weight:400; color:var(--text-muted); }
+.rev blockquote{ margin:0; font-size:1rem; line-height:1.6; color:var(--text-2); }
+/* Card header: avatar, name over date, Google mark pinned right — the layout
+   Google itself uses, so the card reads as a review rather than a testimonial
+   we typed. The reviews are the real ones from the Places API, and Google's
+   terms require attribution when their Places content is displayed, so the
+   mark is doing compliance work as well as visual work. */
+.rev-head{
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:12px; font-size:.875rem;
+}
+.rev-av{
+  flex:0 0 auto; width:36px; height:36px; border-radius:50%;
+  display:grid; place-items:center;
+  font-weight:700; font-size:.9375rem; color:#fff; line-height:1;
+  background:var(--av-bg, #5F6368);
+}
+.rev-id{ min-width:0; display:flex; flex-direction:column; gap:1px; }
+.rev-name{
+  font-weight:700; color:var(--text);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.rev-when{ font-weight:400; color:var(--text-muted); font-size:.8125rem; }
+/* Pinned right and never shrinks — a squashed Google mark is worse than none. */
+.rev-g{ flex:0 0 auto; margin-left:auto; width:18px; height:18px; display:block; }
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
 /* Empty state = one short sentence plus a button, so the whole band is narrow
    content in a wide container. Centre it, and centre the section head with it —
