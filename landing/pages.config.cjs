@@ -130,6 +130,41 @@ module.exports = {
     }
   },
 
+  /* ==================== migration from an existing site ====================
+   * Fill this in BEFORE the first deploy when a client is moving off an
+   * existing landing page (HighLevel, Unbounce, WordPress, anything).
+   *
+   * The rule for anything an ad points at is EXACT PARITY: the new site serves
+   * the same path the old site served. Not a redirect to it — the same path.
+   *   - A final URL that 404s gets the ad disapproved for "Destination not
+   *     working", usually within hours and with no warning.
+   *   - A final URL redirecting off-domain is a policy violation outright.
+   *   - Even a same-domain redirect adds a hop the crawler follows before it
+   *     scores landing page experience, for no benefit.
+   *
+   * So the default posture is: name the page with the old slug. Do not rename
+   * and redirect.
+   *
+   * The authoritative URL list is the Google Ads account, not the old site — a
+   * final URL can be referenced by an ad without being linked anywhere
+   * crawlable. Export final URLs at keyword, ad and sitelink level, then:
+   *   npm run check:urls -- --file ads-final-urls.txt
+   *
+   * preserve  slugs that must exist unchanged because ads point at them.
+   *           Verified to exist on every build.
+   * redirects ONLY for legacy URLs no ad depends on — old organic pages, a
+   *           Google Business Profile link, printed material. Emitted as 301
+   *           into the root vercel.json. check:urls treats a redirect as a
+   *           failure unless you pass --allow-redirects.
+   *
+   * Empty here: this site was a new build, not a migration. */
+  migration: {
+    preserve: [],
+    redirects: [
+      // { from: '/old-organic-page', to: '/windshield-replacement' },
+    ]
+  },
+
   /* Cities named in LocalBusiness.areaServed */
   areaServed: [
     'Anaheim','Santa Ana','Irvine','Huntington Beach','Costa Mesa','Fullerton',

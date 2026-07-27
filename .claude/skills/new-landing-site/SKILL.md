@@ -50,32 +50,38 @@ also pull the old sitemap as a second source.
 
 1. Export final URLs from Google Ads into a text file, one per line. The
    checker tolerates a pasted export — it takes the first URL-looking column.
-2. Decide, per URL: **keep the slug**, or **redirect it**.
-   Keeping it is always safer. Rename only when the old slug is actively bad,
-   and never rename a slug that carries meaningful conversion history.
-3. Record the decision in `migration` in `pages.config.cjs`:
-   - `preserve: ['/windshield-replacement']` — must exist unchanged
-   - `redirects: [{ from: '/lp/old-quote', to: '/windshield-replacement' }]`
+2. **Name the new pages with the old slugs.** Exact parity, not a redirect.
+   Set `slug` in `pages.config.cjs` to whatever the old URL was. If the old
+   site used `/free-windshield-quote`, the new page is `/free-windshield-quote`
+   — ugly slugs are cheaper than disapproved ads. Rename later, deliberately,
+   after updating the final URLs in Ads first.
+3. List them in `migration.preserve` so a future edit cannot silently drop one:
+   `preserve: ['/free-windshield-quote', '/windshield-replacement']`
 4. Check it, before the DNS cutover:
    ```
    npm run build:landing
-   npm run check:urls -- --file old-urls.txt
+   npm run check:urls -- --file ads-final-urls.txt
    npm run check:urls -- --sitemap https://oldsite.com/sitemap.xml
    ```
-   It reports SERVED / REDIRECTED / WOULD 404 and exits non-zero on any break.
-5. `npm run verify` then enforces it on every future build: a preserved slug
-   that stops building, a redirect pointing at a page that does not exist, a
-   redirect whose source is also a real page (so it would never fire), a
-   duplicate source, or a loop, all fail the build.
+   Reports EXACT / REDIRECT ONLY / WOULD 404 and exits non-zero on anything
+   that is not exact.
+5. `npm run verify` then enforces it every build: a preserved slug that stops
+   building, a redirect pointing at a page that does not exist, a redirect
+   whose source is also a real page (so it would never fire), a duplicate
+   source, or a loop.
 
-Redirects are emitted as **301** into the root `vercel.json` — permanent, so
-link equity passes and Google treats the move as final. A 302 leaves the old URL
-canonical, which is the opposite of what a migration wants.
+### Redirects are the exception, not the tool
 
-**After cutover:** update the final URLs in Ads to the new paths anyway. Serving
-through a redirect works, but Google evaluates landing page experience on the
-final destination, and a redirect hop is a small penalty you do not need to pay
-forever.
+**Do not redirect anything an ad points at.** An off-domain redirect from a
+final URL is a policy violation outright (destination mismatch), and even a
+same-domain redirect adds a hop the crawler follows before it scores landing
+page experience — cost with no benefit.
+
+`migration.redirects` exists for legacy URLs **no ad depends on**: old organic
+pages, a Google Business Profile link, a number on a van. Those are emitted as
+301 into the root `vercel.json`. `check:urls` treats a redirect as a failure
+unless you pass `--allow-redirects`, so use that flag only for a list you have
+confirmed contains no ad final URLs.
 
 ## Build order for a new client
 
