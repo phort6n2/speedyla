@@ -283,14 +283,20 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 .nav a:hover{ color:var(--text); box-shadow:inset 0 -2px 0 var(--cta); }
 .hdr-cta{ margin-left:auto; display:flex; align-items:center; gap:10px; }
 .nav + .hdr-cta{ margin-left:0; }
+/* Solid CTA orange, matching the sticky bar. It was an outlined button with an
+   orange icon, which on mobile collapses to icon-only and read as a disabled
+   control rather than the second-highest-value action on the page. White on
+   --cta is 4.52:1, measured. */
 .callbtn{
-  display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px;
-  border-radius:var(--r-md); border:1.5px solid var(--line-strong);
-  background:var(--paper); color:var(--text); font-weight:700; font-size:.9375rem;
+  display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 16px;
+  border-radius:var(--r-md); border:1.5px solid var(--cta);
+  background:var(--cta); color:#fff; font-weight:800; font-size:.9375rem;
   text-decoration:none; white-space:nowrap;
+  box-shadow:0 1px 2px rgba(11,27,43,.16);
+  transition:background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
-.callbtn:hover{ background:var(--surface-1); border-color:var(--border-field); color:var(--text); }
-.callbtn svg{ flex:0 0 auto; color:var(--cta); }
+.callbtn:hover{ background:var(--cta-dark,#A93F13); border-color:var(--cta-dark,#A93F13); color:#fff; }
+.callbtn svg{ flex:0 0 auto; color:#fff; }
 .callbtn .cb-num{ display:none; }
 
 /* ---------------------------------------------------------------- hero */
@@ -327,6 +333,54 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 }
 .rb-item strong{ font-weight:800; }
 .rb-sub{ color:var(--text-muted); }
+
+/* ---- Google rating chip -------------------------------------------------
+   The rating is the strongest trust signal above the fold, so it carries the
+   Google mark and a score sized like a score rather than a run of body text.
+   The stars animate in on first view; see the reduced-motion guard below. */
+.rb-google{ gap:10px; padding:8px 16px; min-height:52px; }
+.rb-g{ width:20px; height:20px; flex:0 0 auto; }
+.rb-score{
+  font-size:1.5rem; font-weight:800; line-height:1; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; color:var(--text);
+}
+.rb-stack{ display:flex; flex-direction:column; gap:2px; line-height:1.1; }
+.rb-google .rb-sub{ font-size:.8125rem; }
+
+/* ---- Google score block on the map card -------------------------------- */
+.gscore-head{
+  display:flex; align-items:center; gap:8px; margin-bottom:10px;
+  font-size:.8125rem; font-weight:700; letter-spacing:.02em; color:var(--text-2);
+}
+.gscore-head svg{ width:18px; height:18px; flex:0 0 auto; margin-left:0; }
+.gscore-row{ display:flex; align-items:center; gap:14px; }
+
+/* ---- star entrance ------------------------------------------------------
+   Each star pops in turn once the block scrolls into view. Deliberately built
+   so the DEFAULT state is "visible": if JS never runs, or the visitor asks for
+   reduced motion, the stars are simply there. Animation is added, never
+   required, so it can never hide the rating. */
+@media (prefers-reduced-motion:no-preference){
+  [data-animate].in .star{
+    animation:starpop .42s var(--ease) backwards;
+  }
+  [data-animate].in .star:nth-child(1){ animation-delay:.02s }
+  [data-animate].in .star:nth-child(2){ animation-delay:.09s }
+  [data-animate].in .star:nth-child(3){ animation-delay:.16s }
+  [data-animate].in .star:nth-child(4){ animation-delay:.23s }
+  [data-animate].in .star:nth-child(5){ animation-delay:.30s }
+  [data-animate].in .rb-score,
+  [data-animate].in .big{ animation:scorepop .5s var(--ease) backwards; }
+}
+@keyframes starpop{
+  from{ opacity:0; transform:scale(.4) rotate(-18deg) }
+  70%{ opacity:1; transform:scale(1.18) rotate(3deg) }
+  to{ opacity:1; transform:none }
+}
+@keyframes scorepop{
+  from{ opacity:0; transform:translateY(6px) scale(.9) }
+  to{ opacity:1; transform:none }
+}
 .rb-link:hover{ border-color:var(--line-strong); color:var(--text); }
 .stars{ display:inline-flex; gap:1px; line-height:1; }
 .star{
@@ -1728,6 +1782,22 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       })
       .catch(function(){ clearTimeout(timer); showError(); });
     });
+  }
+
+  /* ---------------- rating entrance ----------------
+     Adds .in when a rating block first scrolls into view, which is what the
+     star animation hangs off. Everything is already visible without this —
+     the class only turns the entrance on — so no JS failure can hide a rating. */
+  if('IntersectionObserver' in window){
+    var animated = document.querySelectorAll('[data-animate]');
+    if(animated.length){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold:0.35 });
+      animated.forEach(function(el){ io.observe(el); });
+    }
   }
 
   /* ---------------- sticky mobile bar ----------------

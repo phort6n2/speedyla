@@ -283,14 +283,20 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 .nav a:hover{ color:var(--text); box-shadow:inset 0 -2px 0 var(--cta); }
 .hdr-cta{ margin-left:auto; display:flex; align-items:center; gap:10px; }
 .nav + .hdr-cta{ margin-left:0; }
+/* Solid CTA orange, matching the sticky bar. It was an outlined button with an
+   orange icon, which on mobile collapses to icon-only and read as a disabled
+   control rather than the second-highest-value action on the page. White on
+   --cta is 4.52:1, measured. */
 .callbtn{
-  display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px;
-  border-radius:var(--r-md); border:1.5px solid var(--line-strong);
-  background:var(--paper); color:var(--text); font-weight:700; font-size:.9375rem;
+  display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 16px;
+  border-radius:var(--r-md); border:1.5px solid var(--cta);
+  background:var(--cta); color:#fff; font-weight:800; font-size:.9375rem;
   text-decoration:none; white-space:nowrap;
+  box-shadow:0 1px 2px rgba(11,27,43,.16);
+  transition:background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
-.callbtn:hover{ background:var(--surface-1); border-color:var(--border-field); color:var(--text); }
-.callbtn svg{ flex:0 0 auto; color:var(--cta); }
+.callbtn:hover{ background:var(--cta-dark,#A93F13); border-color:var(--cta-dark,#A93F13); color:#fff; }
+.callbtn svg{ flex:0 0 auto; color:#fff; }
 .callbtn .cb-num{ display:none; }
 
 /* ---------------------------------------------------------------- hero */
@@ -327,6 +333,54 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 }
 .rb-item strong{ font-weight:800; }
 .rb-sub{ color:var(--text-muted); }
+
+/* ---- Google rating chip -------------------------------------------------
+   The rating is the strongest trust signal above the fold, so it carries the
+   Google mark and a score sized like a score rather than a run of body text.
+   The stars animate in on first view; see the reduced-motion guard below. */
+.rb-google{ gap:10px; padding:8px 16px; min-height:52px; }
+.rb-g{ width:20px; height:20px; flex:0 0 auto; }
+.rb-score{
+  font-size:1.5rem; font-weight:800; line-height:1; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; color:var(--text);
+}
+.rb-stack{ display:flex; flex-direction:column; gap:2px; line-height:1.1; }
+.rb-google .rb-sub{ font-size:.8125rem; }
+
+/* ---- Google score block on the map card -------------------------------- */
+.gscore-head{
+  display:flex; align-items:center; gap:8px; margin-bottom:10px;
+  font-size:.8125rem; font-weight:700; letter-spacing:.02em; color:var(--text-2);
+}
+.gscore-head svg{ width:18px; height:18px; flex:0 0 auto; margin-left:0; }
+.gscore-row{ display:flex; align-items:center; gap:14px; }
+
+/* ---- star entrance ------------------------------------------------------
+   Each star pops in turn once the block scrolls into view. Deliberately built
+   so the DEFAULT state is "visible": if JS never runs, or the visitor asks for
+   reduced motion, the stars are simply there. Animation is added, never
+   required, so it can never hide the rating. */
+@media (prefers-reduced-motion:no-preference){
+  [data-animate].in .star{
+    animation:starpop .42s var(--ease) backwards;
+  }
+  [data-animate].in .star:nth-child(1){ animation-delay:.02s }
+  [data-animate].in .star:nth-child(2){ animation-delay:.09s }
+  [data-animate].in .star:nth-child(3){ animation-delay:.16s }
+  [data-animate].in .star:nth-child(4){ animation-delay:.23s }
+  [data-animate].in .star:nth-child(5){ animation-delay:.30s }
+  [data-animate].in .rb-score,
+  [data-animate].in .big{ animation:scorepop .5s var(--ease) backwards; }
+}
+@keyframes starpop{
+  from{ opacity:0; transform:scale(.4) rotate(-18deg) }
+  70%{ opacity:1; transform:scale(1.18) rotate(3deg) }
+  to{ opacity:1; transform:none }
+}
+@keyframes scorepop{
+  from{ opacity:0; transform:translateY(6px) scale(.9) }
+  to{ opacity:1; transform:none }
+}
 .rb-link:hover{ border-color:var(--line-strong); color:var(--text); }
 .stars{ display:inline-flex; gap:1px; line-height:1; }
 .star{
@@ -882,7 +936,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         <h1><!--PAGE:H1-->Auto glass repair in Los Angeles County — mobile service<!--/PAGE:H1--></h1>
         <div class="hero-sub"><!--PAGE:SUB--><p>We cover the parts of LA County we can genuinely reach and service well: the South Bay, the Westside, Long Beach and the Gateway Cities, the San Gabriel Valley, and the Glendale–Burbank corridor.</p><!--/PAGE:SUB--></div>
 
-        <div class="rb"><!--PAGE:RATINGBAR--><a class="rb-item rb-link" href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener" aria-label="4.9 out of 5 stars from 1,110 Google reviews"><span class="stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></span><strong>4.9</strong> <span class="rb-sub">from 1,110 Google reviews</span></a><!--/PAGE:RATINGBAR--></div>
+        <div class="rb"><!--PAGE:RATINGBAR--><a class="rb-item rb-link rb-google" href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener" data-animate aria-label="4.9 out of 5 stars from 1,110 Google reviews"><svg class="rb-g" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span class="rb-score">4.9</span><span class="rb-stack"><span class="stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></span><span class="rb-sub">1,110 Google reviews</span></span></a><!--/PAGE:RATINGBAR--></div>
 
       </div>
 
@@ -1239,7 +1293,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ GOOGLE LISTING + MAP ============ -->
 <section class="sec">
   <div class="wrap">
-    <!--PAGE:MAPBLOCK--><div class="sec-head center"><span class="eyebrow">Verified on Google</span><h2>4.9 stars from 1,110 Google reviews</h2><p class="lead">Our shop and our Google listing are in San Diego. Orange County and Los Angeles County are served by mobile dispatch — there is no branch to visit in either county, and the rating below is the same team that comes to you.</p></div><div class="mapgrid"><div class="mapframe"><iframe src="https://maps.google.com/maps?q=2710%20Garnet%20Ave%20Suite%20201%2C%20San%20Diego%2C%20CA%2092109&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map showing Speedy Windshield Repair in San Diego, California"></iframe></div><div class="mapinfo"><div><div class="big">4.9</div><div class="stars" aria-label="4.9 out of 5 stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></div><p class="mapnote" style="margin:6px 0 0">from 1,110 reviews on Google</p></div><dl><div><dt>Registered shop</dt><dd>2710 Garnet Ave Suite 201<br>San Diego, CA 92109</dd></div><div><dt>Service area</dt><dd>Orange County &amp; Los Angeles County — mobile only</dd></div><div><dt>Hours</dt><dd>Mon–Fri 8:00am–6:30pm · Sat 8:00am–4:00pm · Sun closed</dd></div></dl><a class="btn btn-ghost" href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener">View our Google listing</a></div></div><!--/PAGE:MAPBLOCK-->
+    <!--PAGE:MAPBLOCK--><div class="sec-head center"><span class="eyebrow">Verified on Google</span><h2>4.9 stars from 1,110 Google reviews</h2><p class="lead">Our shop and our Google listing are in San Diego. Orange County and Los Angeles County are served by mobile dispatch — there is no branch to visit in either county, and the rating below is the same team that comes to you.</p></div><div class="mapgrid"><div class="mapframe"><iframe src="https://maps.google.com/maps?q=2710%20Garnet%20Ave%20Suite%20201%2C%20San%20Diego%2C%20CA%2092109&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map showing Speedy Windshield Repair in San Diego, California"></iframe></div><div class="mapinfo"><div class="gscore" data-animate><div class="gscore-head"><svg class="rb-g" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span>Google Reviews</span></div><div class="gscore-row"><div class="big">4.9</div><div><div class="stars" aria-label="4.9 out of 5 stars"><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span><span class="star" aria-hidden="true">★</span></div><p class="mapnote" style="margin:4px 0 0">1,110 reviews</p></div></div></div><dl><div><dt>Registered shop</dt><dd>2710 Garnet Ave Suite 201<br>San Diego, CA 92109</dd></div><div><dt>Service area</dt><dd>Orange County &amp; Los Angeles County — mobile only</dd></div><div><dt>Hours</dt><dd>Mon–Fri 8:00am–6:30pm · Sat 8:00am–4:00pm · Sun closed</dd></div></dl><a class="btn btn-ghost" href="https://maps.google.com/?cid=13554726476588803788&amp;g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA" target="_blank" rel="noopener">View our Google listing</a></div></div><!--/PAGE:MAPBLOCK-->
   </div>
 </section>
 
@@ -1804,6 +1858,22 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       })
       .catch(function(){ clearTimeout(timer); showError(); });
     });
+  }
+
+  /* ---------------- rating entrance ----------------
+     Adds .in when a rating block first scrolls into view, which is what the
+     star animation hangs off. Everything is already visible without this —
+     the class only turns the entrance on — so no JS failure can hide a rating. */
+  if('IntersectionObserver' in window){
+    var animated = document.querySelectorAll('[data-animate]');
+    if(animated.length){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold:0.35 });
+      animated.forEach(function(el){ io.observe(el); });
+    }
   }
 
   /* ---------------- sticky mobile bar ----------------
