@@ -742,19 +742,62 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 /* ---- step cards ------------------------------------------------------
    A large, very low-contrast icon behind each step. Texture, not information:
    it is aria-hidden and the step still reads identically without it. */
-.step{ position:relative; overflow:hidden; }
-.step-ico{
-  position:absolute; pointer-events:none;
-  color:var(--brand); opacity:.07;
-  /* Single column below 900px: the step spans the full width, so a top-right
-     icon lands squarely on the paragraph and muddies the text. Park it in the
-     gutter under the number disc instead — that column is 48px wide and empty
-     for the whole height of the copy. */
-  top:60px; left:0; right:auto; width:48px; height:48px; opacity:.10;
+/* ---- step timeline ------------------------------------------------------
+   The three steps are a sequence, and nothing on the page said so — they read
+   as three unrelated paragraphs. A line joining the numbered discs states the
+   order; it draws itself in when the block scrolls into view.
+
+   NOTE: no overflow:hidden on .step. The connector deliberately extends past
+   the step's own box to reach the next disc, and clipping it was the first
+   thing that broke when this was built. */
+.step{ position:relative; }
+.step-n{ position:relative; z-index:1; }   /* discs sit above the line */
+
+.step::after{
+  content:""; position:absolute; background:var(--line-strong);
+  transform-origin:top left; pointer-events:none;
 }
+.step:last-child::after{ content:none; }
+
+/* Single column: vertical run from the bottom of one disc to the top of the next. */
+.step::after{
+  left:23px; top:52px; width:2px; bottom:-26px;
+  transform:scaleY(0); transform-origin:top;
+}
+[data-animate].in .step::after{ transform:scaleY(1); }
+
+/* The watermark icons are gone at every width, not just mobile. The connector
+   crossed straight through them on desktop, and two faint decorations competing
+   in the same box reads worse than one clear one. The timeline states the
+   sequence, which is the thing this section actually needed to say. */
+.step-ico{ display:none; }
+
 @media (min-width:900px){
-  /* Three narrow columns: the top-right corner is genuinely empty here. */
-  .step-ico{ top:-6px; right:-6px; left:auto; width:76px; height:76px; opacity:.07; }
+  /* Three columns: the connector runs horizontally between discs, and the icon
+     goes back to the top-right corner, which is genuinely empty here. */
+  .step::after{
+    left:58px; top:23px; height:2px; width:auto; right:-34px; bottom:auto;
+    transform:scaleX(0); transform-origin:left;
+  }
+  [data-animate].in .step::after{ transform:scaleX(1); }
+}
+
+/* Motion is additive: without it the line is simply drawn. */
+@media (prefers-reduced-motion:no-preference){
+  .step::after{ transition:transform .55s var(--ease); }
+  .step:nth-child(2)::after{ transition-delay:.18s; }
+  [data-animate].in .step-n{ animation:discpop .45s var(--ease) backwards; }
+  .step:nth-child(1) .step-n{ animation-delay:.02s }
+  .step:nth-child(2) .step-n{ animation-delay:.16s }
+  .step:nth-child(3) .step-n{ animation-delay:.30s }
+}
+@media (prefers-reduced-motion:reduce){
+  .step::after{ transform:none; }
+}
+@keyframes discpop{
+  from{ opacity:0; transform:scale(.6) }
+  70%{ opacity:1; transform:scale(1.1) }
+  to{ opacity:1; transform:none }
 }
 
 /* ---- photo watermark -------------------------------------------------
@@ -1277,7 +1320,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <span class="eyebrow">How it works</span>
       <h2>Three steps, no shop visit</h2>
     </div>
-    <div class="steps">
+    <div class="steps" data-animate>
       <div class="step">
         <svg class="step-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
         <div class="step-n">1</div>
