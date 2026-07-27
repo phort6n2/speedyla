@@ -597,20 +597,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 .promise-row{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
 .promise-row h2{ margin:0; flex:1 1 320px; min-width:0; }
 @media (max-width:599px){ .promise-row{ gap:14px; } }
-.seal{
-  position:relative; flex:0 0 auto; margin-left:auto;
-  width:132px; height:132px; display:grid; place-items:center;
-  color:var(--cta); text-align:center;
-}
-.seal svg{ position:absolute; inset:0; width:100%; height:100%; }
-.seal-t b{
-  display:block; font-size:1.0625rem; font-weight:800; letter-spacing:-.01em;
-  text-transform:uppercase;
-}
-.seal-t span{
-  display:block; margin-top:2px; font-size:.75rem; line-height:1.25;
-  color:var(--text-2); font-weight:600;
-}
+.seal{ flex:0 0 auto; margin-left:auto; width:160px; height:auto; display:block; }
+@media (max-width:599px){ .seal{ width:118px; } }
 
 /* ---- step cards ------------------------------------------------------
    A large, very low-contrast icon behind each step. Texture, not information:

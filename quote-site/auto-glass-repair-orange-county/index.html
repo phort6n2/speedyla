@@ -597,20 +597,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 .promise-row{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
 .promise-row h2{ margin:0; flex:1 1 320px; min-width:0; }
 @media (max-width:599px){ .promise-row{ gap:14px; } }
-.seal{
-  position:relative; flex:0 0 auto; margin-left:auto;
-  width:132px; height:132px; display:grid; place-items:center;
-  color:var(--cta); text-align:center;
-}
-.seal svg{ position:absolute; inset:0; width:100%; height:100%; }
-.seal-t b{
-  display:block; font-size:1.0625rem; font-weight:800; letter-spacing:-.01em;
-  text-transform:uppercase;
-}
-.seal-t span{
-  display:block; margin-top:2px; font-size:.75rem; line-height:1.25;
-  color:var(--text-2); font-weight:600;
-}
+.seal{ flex:0 0 auto; margin-left:auto; width:160px; height:auto; display:block; }
+@media (max-width:599px){ .seal{ width:118px; } }
 
 /* ---- step cards ------------------------------------------------------
    A large, very low-contrast icon behind each step. Texture, not information:
@@ -1191,10 +1179,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <span class="eyebrow">On the job</span>
       <h2>Real vehicles, real driveways</h2>
     </div>
-    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-4runner-fresh-install.6771ecf5.webp" width="450" height="600" alt="Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner" loading="lazy" decoding="async"></span><figcaption>Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-sedan-mobile-driveway.3312ea8a.webp" width="1230" height="590" alt="Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway" loading="lazy" decoding="async"></span><figcaption>Mobile windshield work on a residential driveway — the customer never left home.</figcaption></figure>
+    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.94f751e0.webp" width="1360" height="1020" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-4runner-fresh-install.6771ecf5.webp" width="450" height="600" alt="Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner" loading="lazy" decoding="async"></span><figcaption>Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-van-driveway.3de883e5.webp" width="1360" height="1020" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit as the glass.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service" loading="lazy" decoding="async"></span><figcaption>A Southern California driveway call — we work wherever the vehicle is parked.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-bay-exotic.2dd7249b.webp" width="500" height="400" alt="Black Ferrari in the Speedy Windshield Repair workshop bay beneath the wall sign" loading="lazy" decoding="async"></span><figcaption>Exotics and late-model vehicles go through exactly the same process as everything else.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-front-san-diego.b5db48bd.webp" width="500" height="400" alt="The Speedy Windshield Repair storefront in San Diego with vehicles parked outside" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. Across Orange County and LA County we come to you instead.</figcaption></figure><!--/PAGE:GALLERY--></div>
   </div>
@@ -1260,7 +1248,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <span class="eyebrow">Our promise</span>
       <div class="promise-row">
         <h2>What the warranty actually covers</h2>
-        <!--PAGE:SEAL--><div class="seal" role="img" aria-label="Speedy Windshield Repair workmanship warranty: covered for as long as you own the vehicle"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="2" opacity=".35"/><circle cx="60" cy="60" r="49" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/></svg><div class="seal-t"><b>Lifetime</b><span>workmanship<br>warranty</span></div></div><!--/PAGE:SEAL-->
+        <!--PAGE:SEAL--><img class="seal" src="/img/warranty-badge.ce96bc90.png" width="160" height="139" loading="lazy" decoding="async" alt="Speedy Windshield Repair lifetime workmanship warranty"><!--/PAGE:SEAL-->
       </div>
       <p class="lead">"Lifetime warranty" is meaningless unless somebody writes down what it includes. Here's ours.</p>
     </div>

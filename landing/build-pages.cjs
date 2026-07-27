@@ -276,18 +276,14 @@ function statBandHtml() {
  * anything. Do not restyle it to imitate a certification seal.
  */
 function sealHtml() {
+  /* The client's own warranty badge, as used on their main site. It is a
+     SELF-ISSUED mark stating a promise this page defines in full directly
+     beside it — not a third-party certification, and it must never be swapped
+     for one that implies outside accreditation the business does not hold. */
   return (
-    '<div class="seal" role="img" aria-label="' +
-    esc(site.legalName + ' workmanship warranty: covered for as long as you own the vehicle') +
-    '">' +
-    '<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">' +
-    '<circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="2" opacity=".35"/>' +
-    '<circle cx="60" cy="60" r="49" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/>' +
-    '</svg>' +
-    '<div class="seal-t">' +
-    '<b>Lifetime</b><span>workmanship<br>warranty</span>' +
-    '</div>' +
-    '</div>'
+    '<img class="seal" src="' + ASSET_PREFIX + '/img/warranty-badge.png" ' +
+    'width="160" height="139" loading="lazy" decoding="async" alt="' +
+    esc(site.legalName + ' lifetime workmanship warranty') + '">'
   );
 }
 

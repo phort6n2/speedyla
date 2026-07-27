@@ -188,24 +188,24 @@ module.exports = {
    * fake and costs more trust than the visual polish gains. */
   gallery: [
     {
+      src: 'work-van-mobile-callout.webp', w: 1360, h: 1020,
+      alt: 'Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call',
+      caption: 'The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.'
+    },
+    {
       src: 'work-4runner-fresh-install.webp', w: 450, h: 600,
       alt: 'Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner',
       caption: 'Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.'
     },
     {
-      src: 'work-sedan-mobile-driveway.webp', w: 1230, h: 590,
-      alt: "Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway",
-      caption: 'Mobile windshield work on a residential driveway — the customer never left home.'
+      src: 'work-sclass-van-driveway.webp', w: 1360, h: 1020,
+      alt: 'Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it',
+      caption: 'A driveway call from start to finish. The customer never left the house.'
     },
     {
       src: 'work-volvo-xc90-adas.webp', w: 500, h: 400,
       alt: 'Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass',
       caption: 'Cars like this carry a camera behind the windshield. It is recalibrated on the same visit as the glass.'
-    },
-    {
-      src: 'work-bmw-mobile-visit.webp', w: 440, h: 900,
-      alt: 'Black BMW sedan parked on a flagstone driveway lined with palms, ready for mobile auto glass service',
-      caption: 'A Southern California driveway call — we work wherever the vehicle is parked.'
     },
     {
       src: 'shop-bay-exotic.webp', w: 500, h: 400,
@@ -215,7 +215,7 @@ module.exports = {
     {
       /* The registered shop is in San Diego. This caption says so plainly: the
          OC/LA promise is mobile service, and a storefront photo must never be
-         allowed to imply a location we do not have in either county. */
+         allowed to imply premises we do not have in either county. */
       src: 'shop-front-san-diego.webp', w: 500, h: 400,
       alt: 'The Speedy Windshield Repair storefront in San Diego with vehicles parked outside',
       caption: 'Our San Diego shop. Across Orange County and LA County we come to you instead.'
