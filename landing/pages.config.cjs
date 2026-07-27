@@ -188,9 +188,19 @@ module.exports = {
    * fake and costs more trust than the visual polish gains. */
   gallery: [
     {
+      src: 'work-4runner-fresh-install.webp', w: 450, h: 600,
+      alt: 'Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner',
+      caption: 'Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.'
+    },
+    {
       src: 'work-sedan-mobile-driveway.webp', w: 1230, h: 590,
       alt: "Technician's tool case beside a black Mercedes sedan during a mobile windshield job on a residential driveway",
       caption: 'Mobile windshield work on a residential driveway — the customer never left home.'
+    },
+    {
+      src: 'work-volvo-xc90-adas.webp', w: 500, h: 400,
+      alt: 'Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass',
+      caption: 'Cars like this carry a camera behind the windshield. It is recalibrated on the same visit as the glass.'
     },
     {
       src: 'work-bmw-mobile-visit.webp', w: 440, h: 900,
@@ -198,9 +208,17 @@ module.exports = {
       caption: 'A Southern California driveway call — we work wherever the vehicle is parked.'
     },
     {
-      src: 'work-suv-windshield.webp', w: 765, h: 455,
-      alt: 'Mercedes G-Class SUV positioned for windshield replacement',
-      caption: 'Larger SUVs and trucks are the same visit — the glass and the camera are just bigger.'
+      src: 'shop-bay-exotic.webp', w: 500, h: 400,
+      alt: 'Black Ferrari in the Speedy Windshield Repair workshop bay beneath the wall sign',
+      caption: 'Exotics and late-model vehicles go through exactly the same process as everything else.'
+    },
+    {
+      /* The registered shop is in San Diego. This caption says so plainly: the
+         OC/LA promise is mobile service, and a storefront photo must never be
+         allowed to imply a location we do not have in either county. */
+      src: 'shop-front-san-diego.webp', w: 500, h: 400,
+      alt: 'The Speedy Windshield Repair storefront in San Diego with vehicles parked outside',
+      caption: 'Our San Diego shop. Across Orange County and LA County we come to you instead.'
     }
   ],
 
