@@ -83,10 +83,77 @@ pages, a Google Business Profile link, a number on a van. Those are emitted as
 unless you pass `--allow-redirects`, so use that flag only for a list you have
 confirmed contains no ad final URLs.
 
+## Harvest their existing photography before asking for any
+
+Do this at the same time as the URL inventory — both come from the same sources.
+A client who says they have no photos usually has a dozen on a site they forgot
+about, at better resolution than anything they will shoot on a phone this week.
+
+**Where to look**, in order of yield:
+1. Their main website, including `/wp-content/uploads/` — WordPress keeps every
+   upload. Fetch the homepage, extract `src`, `data-src`, `srcset` and CSS
+   `url(...)`, then walk the service and gallery pages too.
+2. The old landing page you are replacing.
+3. Their Google Business Profile photos.
+4. Only then ask them to shoot something.
+
+**Take:** anything unmistakably theirs — the branded van, their premises, their
+signage, work in progress, vehicles they actually serviced. Date-named uploads
+(`2023-10-14.webp`) are almost always real job photos. For a mobile service
+business the **van shots are the most valuable thing on the site**, because the
+whole proposition is that the van comes to you.
+
+**Do not take:**
+- **Carrier or brand logos.** The reference client's own site carries GEICO,
+  USAA, AAA, Farmers, State Farm and Progressive marks. Those are a trademark
+  and affiliation problem and are already banned by the copy rules here. Leave
+  them, and mention to the client that they carry the same exposure on the site
+  they came from.
+- **Manufacturer press renders** — a vehicle on a flat studio background is
+  marketing imagery, not their work.
+- **Stock and Wikimedia** — the tells are a resolution that beats every other
+  file, a model-perfect subject, and no brand context anywhere in frame.
+  Obvious stock on a local service page costs more trust than the polish gains,
+  because a visitor who recognises it stops believing the reviews too.
+
+Strip EXIF on the way in (`Image.convert('RGB')` drops it), and check for GPS
+before publishing anything shot at a private address.
+
+**Captions carry technical detail, not description.** "Retention tape stays on
+while the urethane cures" earns more than "our team at work". And if a photo
+shows premises in a different city from the one the page sells to, say so in
+the caption — see the storefront entry in `pages.config.cjs`.
+
+## The warranty badge is reusable, with one condition
+
+`landing/img/warranty-badge.png` carries no business name, so it works on any
+client site. Two rules before reusing it:
+
+1. **Only if that client genuinely offers a lifetime workmanship warranty**, and
+   only where the page defines what it covers and excludes directly beside it.
+   The badge is honest because it is self-issued and substantiated. On a client
+   who does not offer the warranty it is a fabricated credential.
+2. **Confirm the licence.** It came from the reference client's site and may be
+   purchased or stock artwork their designer licensed for one business. Reusing
+   it across a portfolio is a licensing question worth asking before it appears
+   on five sites.
+
+Never restyle it, or anything else, to imply third-party accreditation.
+
+## Gallery symmetry is automatic
+
+The gallery grid is six columns with each photo spanning two, and CSS rules
+handle an incomplete final row: a lone last photo spans the full width at 21:9,
+and a last pair takes half each. Every count from 1 to 8 fills its rows with no
+stranded photo beside empty cells. Add as many photos as the client has without
+counting them into threes.
+
 ## Build order for a new client
 
 1. **Copy the repo.** New GitHub repo, new Vercel project.
-2. **Inventory existing URLs** if this is a migration — the section above.
+2. **Inventory existing URLs and harvest their photography** if this is a
+   migration — the two sections above. Both read the same sources, so do them
+   in one pass.
 3. **Fill `site` in `pages.config.cjs`.** Every field in the checklist below.
 4. **Palette.** Replace the `:root` variables. Compute contrast — do not
    estimate it. Body text needs 4.5:1, large text 3:1, and any colour carrying a

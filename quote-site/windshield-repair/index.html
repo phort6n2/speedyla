@@ -750,7 +750,18 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .tb{ grid-template-columns:repeat(2,minmax(0,1fr)); }
   .grid-2,.grid-3,.grid-4{ grid-template-columns:repeat(2,minmax(0,1fr)); }
   .revs{ grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .gal{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  /* Six columns, three photos per row (span 2 each). The sixths exist purely so
+     an incomplete last row can still divide evenly — see the rules below.
+     Symmetry cannot depend on somebody remembering to add photos in threes. */
+  .gal{ grid-template-columns:repeat(6,minmax(0,1fr)); }
+  .gal figure{ grid-column:span 2; }
+  /* Last row holds one: give it the full width rather than stranding it beside
+     two empty cells. */
+  .gal figure:last-child:nth-child(3n+1){ grid-column:span 6; }
+  .gal figure:last-child:nth-child(3n+1) img{ aspect-ratio:21/9; }
+  /* Last row holds two: half each, so the row still fills. */
+  .gal figure:nth-last-child(2):nth-child(3n+1),
+  .gal figure:last-child:nth-child(3n+2){ grid-column:span 3; }
   .callbtn .cb-num{ display:inline; }
   .areas{ grid-template-columns:repeat(3,minmax(0,1fr)); }
 }
