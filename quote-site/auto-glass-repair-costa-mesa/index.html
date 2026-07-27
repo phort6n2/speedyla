@@ -349,7 +349,31 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
   font-size:.9375rem; color:var(--text);
 }
 .qc-noscript a{ font-weight:800; }
+/* Off-screen, not display:none — a bot that skips hidden inputs skips the trap. */
+.hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 .qc-row{ display:grid; grid-template-columns:minmax(0,1fr); gap:14px; }
+.qc-row + .qc-row{ margin-top:14px; }
+/* Short laptop viewports (1280x720 and the like) had 2px of headroom below the
+   submit button once service and vehicle moved into the visible form. Tighten
+   only where height is actually scarce — taller screens keep the roomier
+   spacing, and phones are below the fold regardless. */
+@media (min-width:900px) and (max-height:820px){
+  .qc-sub{ margin-bottom:12px; }
+  .qc-row + .qc-row{ margin-top:10px; }
+  .qc-more-btn{ padding-top:10px; padding-bottom:10px; }
+  .qc-submit{ margin-top:12px; }
+}
+/* Shorter still (a 1366x768 laptop is a ~638px viewport). Drop the sub-heading
+   and tighten the inputs so the submit button stays reachable without a scroll.
+   Desktop only, so the 50px touch height is not in play. */
+@media (min-width:900px) and (max-height:720px){
+  .qc-sub{ display:none; }
+  .qc-more-btn{ padding-top:8px; padding-bottom:8px; }
+  .input{ min-height:44px; padding-top:10px; padding-bottom:10px; }
+  .qc-row{ gap:10px; }
+  .qc-row + .qc-row{ margin-top:8px; }
+  .qc-submit{ min-height:50px; }
+}
 .field{ display:grid; gap:6px; min-width:0; }
 .label{ font-size:.875rem; font-weight:600; color:var(--text); }
 .label .req{ color:var(--cta); margin-left:2px; }
@@ -816,7 +840,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
             </div>
           </div>
 
-          <div class="qc-row qc-row-2" style="margin-top:14px">
+          <div class="qc-row qc-row-2">
             <div class="field">
               <label class="label" for="em">Email<span class="req" aria-hidden="true">*</span></label>
               <input class="input" id="em" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com">
@@ -829,31 +853,50 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
             </div>
           </div>
 
+          <!-- Service and vehicle are required, so they live in the always-visible
+               part of the form. A required field inside a collapsed drawer is a
+               trap: you press submit, and the error is on something you cannot
+               see. Costs one extra row; the drawer keeps VIN and insurance. -->
+          <div class="qc-row qc-row-2">
+            <div class="field">
+              <label class="label" for="svc">What do you need?<span class="req" aria-hidden="true">*</span></label>
+              <select class="input" id="svc" name="service">
+                <option value="windshield-replacement" selected>Windshield replacement</option>
+                <option value="chip-crack-repair">Windshield chip or crack repair</option>
+                <option value="back-glass">Back glass / rear window</option>
+                <option value="door-side-glass">Door or side window glass</option>
+                <option value="adas-calibration">ADAS camera recalibration</option>
+                <option value="not-sure">Not sure — help me work it out</option>
+              </select>
+              <p class="err" id="svc-err"></p>
+            </div>
+            <div class="field">
+              <label class="label" for="veh">Vehicle<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="veh" name="vehicle" type="text" autocomplete="off" placeholder="2021 Toyota RAV4">
+              <p class="err" id="veh-err"></p>
+            </div>
+          </div>
+
+          <!-- Honeypot. Real people never see it and never fill it; scripted
+               submitters that render the page fill every input they find.
+               Kept off-screen rather than display:none, which is the first
+               thing a bot checks for. Not a defence against a direct POST to
+               the webhook — nothing on the page can be. -->
+          <div class="hp" aria-hidden="true">
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
           <div style="margin-top:16px">
             <button type="button" class="qc-more-btn" id="qcExpand" aria-expanded="false" aria-controls="qcMore">
               <span>
                 <span class="qc-more-t">Speed up my quote <span class="opt">(optional)</span></span><br>
-                <span class="qc-more-s">Add your vehicle and insurance for an exact price</span>
+                <span class="qc-more-s">Add your VIN and insurance for an exact price</span>
               </span>
               <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
             </button>
 
             <div id="qcMore" hidden>
-              <div class="field">
-                <label class="label" for="svc">What do you need?</label>
-                <select class="input" id="svc" name="service">
-                  <option value="windshield-replacement" selected>Windshield replacement</option>
-                  <option value="chip-crack-repair">Windshield chip or crack repair</option>
-                  <option value="back-glass">Back glass / rear window</option>
-                  <option value="door-side-glass">Door or side window glass</option>
-                  <option value="adas-calibration">ADAS camera recalibration</option>
-                  <option value="not-sure">Not sure — help me work it out</option>
-                </select>
-              </div>
-              <div class="field">
-                <label class="label" for="veh">Vehicle <span class="opt">— year, make, model</span></label>
-                <input class="input" id="veh" name="vehicle" type="text" placeholder="2021 Toyota RAV4">
-              </div>
               <div class="field">
                 <label class="label" for="vin">VIN <span class="opt">— optional, gets us the exact glass</span></label>
                 <input class="input" id="vin" name="vin" type="text" maxlength="17" autocapitalize="characters" spellcheck="false" placeholder="JTMRFREV7HD000000">
@@ -1469,7 +1512,13 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       { el:'em',  err:'em-err',  msg:'Enter a valid email address.',
         ok:function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); } },
       { el:'zip', err:'zip-err', msg:'Enter the 5-digit ZIP where the vehicle is.',
-        ok:function(v){ return /^\d{5}$/.test(v.trim()); } }
+        ok:function(v){ return /^\d{5}$/.test(v.trim()); } },
+      { el:'svc', err:'svc-err', msg:'Tell us which glass you need.',
+        ok:function(v){ return !!v; } },
+      /* Year make model. Two words minimum, so "car" and "." do not pass —
+         a vehicle we cannot identify is a vehicle we cannot quote. */
+      { el:'veh', err:'veh-err', msg:'Add the year, make and model, e.g. 2021 Toyota RAV4.',
+        ok:function(v){ return v.trim().replace(/\s+/g,' ').split(' ').length >= 2 && v.trim().length >= 6; } }
     ];
 
     function setErr(rule, show){
@@ -1531,10 +1580,31 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
        always deduped by transaction_id; this protects the CRM. */
     var submitting = false;
 
+    /* Bot signal: a human cannot submit without generating a trusted pointerdown
+       or keydown inside the form — clicking the button or pressing Enter both
+       count. A script that sets .value and calls click() generates neither.
+       Deliberately NOT a time threshold: browser autofill can populate the whole
+       form in one tap, and dropping that visitor would lose a paid lead and show
+       them a success screen that lied. A false negative costs one junk row in
+       the CRM; a false positive costs a customer. */
+    var interacted = false;
+    function sawUser(e){ if(e.isTrusted) interacted = true; }
+    form.addEventListener('pointerdown', sawUser, true);
+    form.addEventListener('keydown', sawUser, true);
+
     form.addEventListener('submit', function(e){
       e.preventDefault();
       if(submitting) return;
       errBox.classList.remove('on');
+
+      /* Show the normal success screen rather than an error — telling a bot why
+         it failed is how it learns to pass. Nothing is POSTed and no conversion
+         is reported. */
+      var hp = document.getElementById('company');
+      if((hp && hp.value) || !interacted){
+        showSuccess((document.getElementById('nm').value || '').trim().split(/\s+/)[0] || 'there');
+        return;
+      }
 
       var bad = [];
       RULES.forEach(function(rule){

@@ -81,13 +81,31 @@ const server = http.createServer((req,res)=>{
   if (svc === 'adas-calibration') pass('form pre-selects this page\'s service ('+svc+')');
   else fail('service dropdown not pre-selected, got: ' + svc);
 
-  // ---- fill + submit ----
+  /* ---- bot trap, before anything touches the page ----
+     A submit with no trusted pointerdown/keydown inside the form is a script.
+     This has to run on a pristine page: Playwright's fill() and click() dispatch
+     real trusted events, so any interaction here would satisfy the guard and the
+     assertion would pass for the wrong reason. Values are set through the DOM
+     and the submit is requested programmatically — exactly what a bot does. */
+  await page.evaluate(() => {
+    const set = (id, v) => { const e = document.getElementById(id); e.value = v;
+      e.dispatchEvent(new Event('input', { bubbles:true })); };
+    set('nm','Bot Script'); set('ph','7145550199'); set('em','bot@example.com');
+    set('zip','92614'); set('veh','2021 Toyota RAV4');
+    document.getElementById('quoteForm').requestSubmit();
+  });
+  await page.waitForTimeout(400);
+  if (webhookCalls === 0) pass('scripted submit with no user interaction is dropped (bot trap)');
+  else fail('scripted submit reached the webhook — the interaction trap is not working');
+
+  // ---- fill + submit as a real visitor ----
+  await page.reload({ waitUntil:'load' });
   await page.fill('#nm','Alex Ramirez');
   await page.fill('#ph','7145550142');
   await page.fill('#em','alex@example.com');
   await page.fill('#zip','92614');
+  await page.fill('#veh','2021 Toyota RAV4');   // now a required, always-visible field
   await page.click('#qcExpand');
-  await page.fill('#veh','2021 Toyota RAV4');
   await page.check('#ins-y');
   await page.selectOption('#carrier','GEICO');
   await page.click('.qc-submit');
@@ -138,6 +156,7 @@ const server = http.createServer((req,res)=>{
   await page2.goto('http://localhost:8098/?utm_source=google', {waitUntil:'load'});
   await page2.fill('#nm','Alex Ramirez'); await page2.fill('#ph','7145550142');
   await page2.fill('#em','alex@example.com'); await page2.fill('#zip','92614');
+  await page2.fill('#veh','2021 Toyota RAV4');
   await page2.click('.qc-submit'); await page2.waitForTimeout(600);
   const dl3 = await page2.evaluate(() => (window.dataLayer||[]).map(a=>Array.from(a)));
   const conv3 = dl3.filter(a => a[0]==='event' && a[1]==='conversion');

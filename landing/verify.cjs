@@ -446,6 +446,17 @@ for (const p of formPages) {
   if (!/id="quoteForm"[^>]*method="post"/.test(f)) fail(p.slug + ' form is missing method="post"');
   if (!/id="quoteForm"[^>]*onsubmit="return false"/.test(f)) fail(p.slug + ' form is missing the inline onsubmit guard');
   if (f.indexOf('<noscript>') === -1) fail(p.slug + ' has no noscript fallback for the form');
+  /* Required fields must be outside the collapsed drawer, or submitting raises
+     an error on a field the visitor cannot see. */
+  const drawer = f.slice(f.indexOf('id="qcMore"'), f.indexOf('</form>'));
+  for (const id of ['svc', 'veh']) {
+    if (drawer.indexOf('id="' + id + '"') !== -1) {
+      fail(p.slug + ' has required field #' + id + ' hidden inside the collapsed drawer');
+    }
+    if (f.indexOf('id="' + id + '-err"') === -1) fail(p.slug + ' has no error slot for #' + id);
+  }
+  if (f.indexOf('class="hp"') === -1) fail(p.slug + ' is missing the honeypot field');
+  if (!/form\.addEventListener\('pointerdown'/.test(f)) fail(p.slug + ' has no bot interaction check');
 }
 if (!failures) pass('timeout, re-entrancy, POST method, inline guard and noscript on all ' + formPages.length + ' form pages');
 
