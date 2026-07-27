@@ -357,6 +357,14 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 .hero-bul li{ margin:0; display:flex; gap:10px; align-items:flex-start; font-size:1rem; color:var(--text-2); }
 .hero-bul svg{ flex:0 0 auto; margin-top:3px; color:var(--success); }
 .hero-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+/* Full width on phones, not centred. The hero column is left-aligned all the
+   way down — eyebrow, headline, subhead, rating — so a centred button breaks
+   the left edge the eye is following. Filling the column aligns with both
+   edges, reads as deliberate, and gives a bigger tap target. */
+@media (max-width:719px){
+  .hero-actions{ display:block; }
+  .hero-actions .btn{ display:flex; width:100%; }
+}
 
 /* rating chip */
 .rb{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:0 0 18px; }
@@ -382,6 +390,19 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 .rb-google .rb-sub{ font-size:.8125rem; }
 
 /* ---- Google score block on the map card -------------------------------- */
+/* Google mark inline with the eyebrow that makes the verification claim. */
+/* The eyebrow's ::before is a block accent bar that sits ABOVE the text. Do not
+   make this element a flex container — that turns the bar into a flex item and
+   drags it onto the same line. Keep it block and inline the mark with the text. */
+.eyebrow-g svg{
+  width:15px; height:15px; vertical-align:-2px; margin-right:6px;
+}
+/* Stars under the rating heading, sized up from the inline ones so the claim
+   in the heading is shown as well as stated. */
+.head-stars{ margin:10px 0 0; display:flex; justify-content:center; }
+.head-stars .star{ font-size:1.375rem; -webkit-text-stroke-width:1.1px; }
+.sec-head.center .head-stars + .lead{ margin-top:12px; }
+
 .gscore-head{
   display:flex; align-items:center; gap:8px; margin-bottom:10px;
   font-size:.8125rem; font-weight:700; letter-spacing:.02em; color:var(--text-2);

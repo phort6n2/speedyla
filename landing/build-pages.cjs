@@ -499,8 +499,14 @@ function mapBlockHtml() {
 
   return (
     '<div class="sec-head center">' +
-      '<span class="eyebrow">Verified on Google</span>' +
+      /* The eyebrow said "Verified on Google" in plain text while the card
+         below carried the actual mark. Put the mark on the claim itself — this
+         is the line doing the verifying. */
+      '<span class="eyebrow eyebrow-g">' + GOOGLE_G_SM + 'Verified on Google</span>' +
       '<h2>' + heading + '</h2>' +
+      (reviews
+        ? '<div class="head-stars" data-animate aria-hidden="true">' + starRow(reviews.rating) + '</div>'
+        : '') +
       '<p class="lead">Our shop and our Google listing are in San Diego. Orange County and ' +
       'Los Angeles County are served by mobile dispatch — there is no branch to visit in ' +
       'either county, and the rating below is the same team that comes to you.</p>' +
