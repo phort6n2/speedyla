@@ -52,6 +52,13 @@ const server = http.createServer((req,res)=>{
     }));
     if (ov.scrollW > ov.clientW + 1) {
       errors.push(`${slug} ${w}px HORIZONTAL OVERFLOW ${ov.scrollW}>${ov.clientW} :: ${ov.offenders.join(' | ')}`);
+    } else if (ov.offenders.length) {
+      /* Elements sitting past the viewport while the document does NOT scroll.
+         A parent is clipping them, so the content is simply invisible and the
+         old scrollWidth test stayed silent. That is how a broken card heading
+         shipped: it wrapped one word per line off the right edge and this check
+         reported "no overflow". Clipped is worse than scrollable, not better. */
+      errors.push(`${slug} ${w}px CLIPPED OVERFLOW (content past the viewport, hidden by a parent) :: ${ov.offenders.join(' | ')}`);
     }
     // tap target check
     const small = await page.evaluate(() => [...document.querySelectorAll('a,button,input,select')]
