@@ -8,6 +8,15 @@ description: Build a new Google Ads landing site for a client from this repo's g
 This repo is the template. `la.speedywindshield.com` is the reference build.
 The machinery is client-agnostic; the content is not.
 
+**Start by copying the repo, never by rebuilding from the live site.** If
+someone says "use la.speedywindshield.com as the model", they mean the layout
+and the finished look — treat the URL as a visual reference, and fetch it if a
+detail is easier to see than to read. Do not reconstruct the site from its
+rendered HTML: that markup is build output, and everything that makes it worth
+copying is invisible from the browser — the generator, the region markers, the
+config-driven content, the preflight, the four verification suites, the ads
+sheet. A page rebuilt from scraped HTML looks similar and carries none of it.
+
 ## What is reusable and what is not
 
 **Reuse unchanged** — `landing/build-pages.cjs` (generator), `landing/verify.cjs`
