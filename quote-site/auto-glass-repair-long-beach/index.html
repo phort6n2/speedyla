@@ -210,7 +210,11 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
   display:block; font-size:.8125rem; font-weight:700; letter-spacing:.09em;
   text-transform:uppercase; color:var(--navy); margin:0 0 10px;
 }
-.sec-dark .eyebrow{ color:var(--cyan-light); }
+/* Any dark band, not just .sec-dark. The closing CTA is .final — its own navy
+   gradient — and the eyebrow there inherited --navy on navy: 1.33:1, which is
+   invisible rather than merely low. --cyan-light measures 6.74:1 on the
+   lightest part of that gradient. */
+.sec-dark .eyebrow, .final .eyebrow{ color:var(--cyan-light); }
 .eyebrow::before{
   content:""; display:block; width:26px; height:3px; border-radius:2px;
   background:var(--cta); margin:0 0 12px;
@@ -2013,7 +2017,15 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         entries.forEach(function(e){
           if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
         });
-      }, { threshold:0.35 });
+      }, {
+        /* threshold alone fires off the bottom edge: .steps is ~700px tall, so
+           35% of it is visible while its top is still near the foot of the
+           screen — the animation played where it could not be seen. Shrinking
+           the root's bottom by 30% means the block has to climb into the upper
+           two thirds of the viewport before it counts as visible. */
+        threshold: 0,
+        rootMargin: '0px 0px -30% 0px'
+      });
       animated.forEach(function(el){ io.observe(el); });
     }
   }
