@@ -252,16 +252,21 @@ input,select,textarea,button{ font:inherit; max-width:100%; }
 .btn-call svg{ color:#fff; }
 /* On the navy band the solid orange would vibrate against the background;
    invert to a white button there instead. */
-.sec-dark .btn-call{ background:#fff; border-color:#fff; color:var(--cta); }
-.sec-dark .btn-call:hover{ background:var(--surface-1); border-color:var(--surface-1); color:var(--cta); }
-.sec-dark .btn-call svg{ color:var(--cta); }
+/* :is(.sec-dark,.final) — .final is a dark band that is NOT .sec-dark, and
+   forgetting that has now produced two separate bugs: an eyebrow at 1.33:1 and,
+   here, a call button that stayed solid orange beside the solid orange submit
+   so neither read as primary. Any rule written for a dark background needs both
+   selectors. */
+:is(.sec-dark,.final) .btn-call{ background:#fff; border-color:#fff; color:var(--cta); }
+:is(.sec-dark,.final) .btn-call:hover{ background:var(--surface-1); border-color:var(--surface-1); color:var(--cta); }
+:is(.sec-dark,.final) .btn-call svg{ color:var(--cta); }
 .btn-ghost{
   color:var(--text); background:var(--paper);
   border:1.5px solid var(--line-strong); box-shadow:var(--sh-xs);
 }
 .btn-ghost:hover{ background:var(--surface-1); border-color:var(--border-field); color:var(--text); }
-.sec-dark .btn-ghost{ background:transparent; color:#fff; border-color:#3A5E8C; }
-.sec-dark .btn-ghost:hover{ background:rgba(255,255,255,.08); color:#fff; }
+:is(.sec-dark,.final) .btn-ghost{ background:transparent; color:#fff; border-color:#3A5E8C; }
+:is(.sec-dark,.final) .btn-ghost:hover{ background:rgba(255,255,255,.08); color:#fff; }
 .btn-block{ width:100%; }
 
 /* ------------------------------------------------------------- top bars */
