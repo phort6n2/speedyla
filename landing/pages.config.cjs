@@ -249,6 +249,18 @@ module.exports = {
     eyebrow: 'Orange County &amp; LA County · Mobile service',
     h1: 'Mobile windshield replacement across Orange County &amp; LA County',
     sub: '<p>Cracked windshield? We come to you at no extra charge<span class="sub-more"> — your driveway, your office lot, your job site — fit the glass, recalibrate the camera behind it, and bill your insurance direct</span>.</p>',
+    /* Photos beside the body. `chapter` is the 0-based index of the <h2> the
+       photo illustrates; `src` names an entry in the gallery array above, so
+       the alt text and caption are written once. A photo used here is dropped
+       from this page's gallery — the same shot twice on one page reads as a
+       thin library rather than a rich one.
+       Attach one only where it genuinely illustrates that chapter. There are
+       98 chapters on this site and six photographs; the chapters without one
+       are not missing anything. */
+    figures: [
+      { chapter: 0, src: 'work-van-mobile-callout.webp' },
+      { chapter: 2, src: 'shop-bay-exotic.webp' }
+    ],
     svcValue: 'windshield-replacement',
     body: `
 <h2>A mobile glass shop, not a shop you drive to</h2>
@@ -298,6 +310,13 @@ module.exports = {
       eyebrow: 'Windshield replacement',
       h1: 'Mobile windshield replacement in Orange County &amp; LA County',
       sub: '<p>Crack gone too far to repair? We bring the right glass to wherever your car is parked, bond it to the adhesive maker\'s specification, and recalibrate the camera behind it before we leave.</p>',
+      /* Photos beside the body. `chapter` is the 0-based index of the <h2> the
+         photo illustrates; `src` names an entry in the gallery array above, so the
+         alt text and caption are written once. A photo used here is dropped from
+         this page's gallery. */
+      figures: [
+        { chapter: 2, src: 'work-4runner-fresh-install.webp' }
+      ],
       svcValue: 'windshield-replacement',
       body: `
 <h2>When a windshield has to be replaced rather than repaired</h2>
@@ -394,6 +413,13 @@ module.exports = {
       eyebrow: 'ADAS calibration',
       h1: 'ADAS calibration after windshield replacement',
       sub: '<p>The camera that aims your lane-keeping and automatic braking is mounted to the windshield. Move the glass and you move the camera — so it has to be recalibrated. We do it on the same visit and give you the scan report.</p>',
+      /* Photos beside the body. `chapter` is the 0-based index of the <h2> the
+         photo illustrates; `src` names an entry in the gallery array above, so the
+         alt text and caption are written once. A photo used here is dropped from
+         this page's gallery. */
+      figures: [
+        { chapter: 0, src: 'work-volvo-xc90-adas.webp' }
+      ],
       svcValue: 'adas-calibration',
       body: `
 <h2>No, you are not being upsold</h2>
@@ -436,6 +462,13 @@ module.exports = {
       eyebrow: 'Mobile service',
       h1: 'Mobile auto glass — we come to you across OC &amp; LA',
       sub: '<p>There is no shop for you to drive to in Orange County or Los Angeles County. We are a mobile operation, mobile service is included rather than surcharged, and we will tell you straight whether we can work where your car is parked.</p>',
+      /* Photos beside the body. `chapter` is the 0-based index of the <h2> the
+         photo illustrates; `src` names an entry in the gallery array above, so the
+         alt text and caption are written once. A photo used here is dropped from
+         this page's gallery. */
+      figures: [
+        { chapter: 0, src: 'work-sclass-van-driveway.webp' }
+      ],
       svcValue: 'windshield-replacement',
       body: `
 <h2>The practical questions nobody answers on their website</h2>
@@ -583,6 +616,13 @@ module.exports = {
       eyebrow: 'Auto glass',
       h1: 'Auto glass replacement across Orange County &amp; LA County',
       sub: '<p>Not sure which piece of glass you need or what it is called? Start here — pick what broke and we will take you to the right page, or just call and describe it to us.</p>',
+      /* Photos beside the body. `chapter` is the 0-based index of the <h2> the
+         photo illustrates; `src` names an entry in the gallery array above, so the
+         alt text and caption are written once. A photo used here is dropped from
+         this page's gallery. */
+      figures: [
+        { chapter: 1, src: 'shop-front-san-diego.webp' }
+      ],
       svcValue: 'not-sure',
       body: `
 <h2>Which glass are we talking about?</h2>

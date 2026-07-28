@@ -386,6 +386,23 @@ pass('accessibility basics checked');
 
 /* -------------------------------------------------- 12. honest review claims */
 
+/* A photo used beside the body is removed from that page's gallery. If that
+   ever regresses the page shows the same photograph twice, which reads as a
+   thin photo library rather than a rich one — and it is invisible in a diff. */
+for (const p of contentPages) {
+  /* Photography only — matched inside the .shot wrapper. The logo is
+     deliberately in both the header and the footer, so a plain <img> sweep
+     flags every page. */
+  const srcs = (p.html.match(/<span class="shot"><img[^>]+src="([^"]+)"/g) || [])
+    .map((t) => /src="([^"]+)"/.exec(t)[1]);
+  const seen = new Set();
+  const twice = srcs.filter((u) => (seen.has(u) ? true : (seen.add(u), false)));
+  if (twice.length) {
+    fail(p.slug + ' shows the same photo twice: ' + Array.from(new Set(twice)).join(', '));
+  }
+}
+if (!failures) pass('no page repeats a photograph');
+
 head('12. Review claims match available data');
 const hasReviews = fs.existsSync(path.join(__dirname, 'reviews.json'));
 for (const p of contentPages) {

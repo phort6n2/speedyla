@@ -644,9 +644,32 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    than average lowercase, so 72ch rendered 96 characters per line — a third
    over the 75 that prose should top out at. Measured per line with
    Range.getBoundingClientRect(), not estimated from the font size. */
+/* The body is emitted as chapters, one per <h2> — see proseHtml() in
+   build-pages.cjs. .prose is still the text column and keeps every rule below,
+   so nothing about the typography changed; what changed is where the column
+   sits and what is beside it. */
+.chaps{ display:grid; gap:40px; }
 .prose{ max-width:56ch; margin-inline:auto; }
-.prose h2{ margin:34px 0 12px; }
-.prose h2:first-child{ margin-top:0; }
+.pchap > h2, .pchap-t > h2{ margin:0 0 12px; }
+.pchap .prose > :first-child{ margin-top:0; }
+/* Left-aligned, not centred. Between 600 and 900px the container is wider than
+   56ch, so the inherited margin-inline:auto indented every paragraph while its
+   heading still started at the container edge. */
+.pchap .prose{ margin-inline:0; }
+.pchap h3{ margin:26px 0 10px; }
+/* Mobile: the photo sits between the heading and the prose, which is the only
+   thing breaking up 400-900 words on a phone. Bounded height so a portrait
+   shot cannot take a whole screen on its own. */
+.pchap-fig figure{
+  margin:0 0 20px; background:var(--paper); border:1px solid var(--line-card);
+  border-radius:var(--r-lg); overflow:hidden;
+}
+.pchap-fig img{
+  display:block; width:100%; height:auto; max-height:340px; object-fit:cover;
+  background:var(--surface-2);
+}
+.pchap-fig figcaption{ padding:12px 16px; font-size:.875rem; color:var(--text-muted); }
+
 .prose h3{ margin:26px 0 10px; }
 .prose p,.prose li{ color:var(--text-2); }
 .prose ul{ padding-left:1.1em; }
@@ -861,15 +884,18 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    Kept low-contrast so it never competes with the subject. */
 /* Anchored to the image, not the figure — the figure includes the caption, so
    bottom:10px on it put the mark on the caption instead of the photo. */
-.gal .shot{ position:relative; display:block; }
-.gal .shot::after{
+/* Scoped to .shot rather than .gal .shot: body-chapter figures use the same
+   figureHtml() and would otherwise be the one place a photo appears without
+   the mark — the same photograph watermarked in a gallery and bare in a body. */
+.shot{ position:relative; display:block; }
+.shot::after{
   content:""; position:absolute; right:10px; bottom:10px;
   width:74px; height:30px;
   background:url(/img/logo-wordmark.fceba0c8.webp) right bottom/contain no-repeat;
   opacity:.62; filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));
   pointer-events:none;
 }
-@media (max-width:599px){ .gal .shot::after{ width:60px; height:24px; } }
+@media (max-width:599px){ .shot::after{ width:60px; height:24px; } }
 
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
 /* Empty state = one short sentence plus a button, so the whole band is narrow
@@ -1037,6 +1063,42 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .areas{ grid-template-columns:repeat(4,minmax(0,1fr)); }
   .sticky{ display:none; }
   body.has-sticky{ padding-bottom:0; }
+
+  /* -------------------------------------------------- body chapters
+     Two variants, deliberately the same total width and both centred, so the
+     prose column only ever lands in one of two x positions. Alternating the
+     photo then reads as rhythm; letting each chapter size itself would read as
+     text that will not sit still.
+
+     The prose column stays at 56ch in both. That figure is measured, not
+     chosen — 72ch rendered 96 characters per line — so filling the container
+     had to come from what sits BESIDE the text, never from widening it. */
+  .chaps{ gap:64px; }
+  .pchap{
+    display:grid; grid-template-columns:minmax(0,380px) minmax(0,56ch);
+    /* Column gap only. `gap:56px` also opened 56px between the heading row and
+       the prose row of a figure chapter, which read as a missing paragraph —
+       the h2's own 12px bottom margin is the spacing that belongs there. */
+    gap:0 56px; justify-content:center; align-items:start;
+  }
+  /* A 380px rail holding one heading is generous on purpose: it is the same
+     column the photographs use, so the two chapter types line up instead of
+     each finding its own edges. */
+  /* Sticky needs room to travel, and align-items:start sizes the heading to
+     its own text. Stretch it to the row so it can follow its chapter, and let
+     it release naturally at the chapter boundary. 96px clears the 72px sticky
+     header. */
+  .pchap > h2{ align-self:stretch; position:sticky; top:96px; }
+  /* The figure spans both rows of its own column, so heading and prose stack
+     against it. Areas rather than order: the three are siblings precisely so
+     the phone gets heading -> photo -> text from source order. */
+  .pchap-fig{ grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr; }
+  .pchap-alt{ grid-template-columns:minmax(0,56ch) minmax(0,380px);
+              grid-template-areas:"head fig" "prose fig"; }
+  .pchap-fig > h2{ grid-area:head; position:static; }
+  .pchap-fig > figure{ grid-area:fig; align-self:center; margin:0; }
+  .pchap-fig > .prose{ grid-area:prose; max-width:none; }
+  .pchap-fig img{ max-height:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
    to a column is behind min-width:900px. Functional, but the highest-value
@@ -1302,9 +1364,9 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ PER-PAGE BODY ============ -->
 <section class="sec sec-1">
   <div class="wrap">
-    <div class="prose"><!--PAGE:BODY-->
-<h2>Four questions to ask before anyone touches your glass</h2>
-<p>Whoever you end up using — us or somebody else — these are worth asking, because the answers separate a proper installation from a fast one:</p>
+    <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
+         wrapping the chapter grid in a 56ch box crushed every column inside it. -->
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Four questions to ask before anyone touches your glass</h2><div class="prose"><p>Whoever you end up using — us or somebody else — these are worth asking, because the answers separate a proper installation from a fast one:</p>
 <ol>
   <li><strong>"What is your BAR number?"</strong> Every California repair dealer must hold one, and it is public — the Bureau of Automotive Repair publishes a licence lookup you can check in a minute. Ask for the number and check it. Somebody who cannot produce one is operating outside the system, and you will have nowhere to go if the bond leaks.</li>
   <li><strong>"Are you cleaning and priming the pinchweld?"</strong> The channel your glass bonds into decides whether the job holds. Skipping that prep is invisible on the day and shows up as a wet footwell in January.</li>
@@ -1317,27 +1379,21 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <h3>Servicio en español</h3>
   <p>Spanish is the language of most households here, so it is the language a lot of these jobs get done in. There are Spanish speakers on our vans and answering our phones — ask for one and you will get one. Pregunte por servicio en español cuando llame.</p>
 </div>
-
-<h2>Three freeways on three sides</h2>
-<p>No other city we serve is enclosed like this. Interstate 5 runs along the north and north-east, I-605 down the east, and I-105 across the south, with the I-5/I-605 interchange at the north-east corner and the I-105's eastern end tying into the 605. Lakewood Boulevard and Firestone Boulevard cut through as the main arterials.</p>
+</div></div>
+      <div class="pchap"><h2>Three freeways on three sides</h2><div class="prose"><p>No other city we serve is enclosed like this. Interstate 5 runs along the north and north-east, I-605 down the east, and I-105 across the south, with the I-5/I-605 interchange at the north-east corner and the I-105's eastern end tying into the 605. Lakewood Boulevard and Firestone Boulevard cut through as the main arterials.</p>
 <p>The specific hazard is the interchanges. Where freeways meet, traffic changes lanes and changes speed constantly, and that is when stones get thrown sideways and at an angle rather than straight back. It is also why so much Downey chip damage lands away from the centre of the glass — which is actually good news, because damage outside the driver's primary sightline is more often a straightforward <a href="/windshield-repair">resin repair</a> than a replacement.</p>
 <p>Both I-5 and I-605 are primary goods-movement corridors, and the warehouse belt immediately east and north — Santa Fe Springs, Norwalk, Commerce — puts tractor-trailers onto Firestone, Imperial Highway, Telegraph Road and Florence Avenue all day. The port freight corridor is only a couple of miles west, with those same arterials as the connectors. There is also a large beverage distribution operation in the city, which means heavy delivery trucks cycling through local streets constantly.</p>
 <p>Two roadwork notes: the city has had construction at the Firestone and Lakewood intersection — its busiest crossroads — and has approved design work for pavement rehabilitation on Imperial Highway, Lakewood Boulevard and Washburn Road. Metro's I-105 ExpressLanes programme is also building eastward along the city's southern edge through the late 2020s.</p>
-
-<h2>Family cars, firm prices, and a night shift</h2>
-<p>The vehicle mix here is mostly family transport — minivans, mid-size SUVs, sedans doing real mileage — plus a solid share of work trucks. Practically that means two things.</p>
+</div></div>
+      <div class="pchap"><h2>Family cars, firm prices, and a night shift</h2><div class="prose"><p>The vehicle mix here is mostly family transport — minivans, mid-size SUVs, sedans doing real mileage — plus a solid share of work trucks. Practically that means two things.</p>
 <p>First, price clarity matters more than options. Most Downey callers do not want a discussion of glass tiers; they want to know what it costs and when. So we quote a firm number for the specific glass the vehicle takes, mobile visit included, and we do not revise it in your driveway. That is what the VIN is for. A lot of these are cash jobs too — either no comprehensive cover, or a deductible bigger than the work. Both are normal; just say so and we will quote accordingly rather than routing you through an insurance conversation you did not ask for.</p>
 <p>Second, and unusually: Downey runs a substantial 24-hour healthcare workforce. Kaiser Permanente's Downey medical centre employs over 6,000 people and Rancho Los Amigos a couple of thousand more, which puts a lot of local drivers on the freeway at night and before dawn — <strong>exactly when truck volumes are highest.</strong> If you work those shifts, your windshield exposure per mile is meaningfully worse than a nine-to-five commuter's, and it is worth dealing with chips early rather than at the next inspection.</p>
-
-<h2>Not everyone here is on a budget</h2>
-<p>Worth saying, because plenty of shops assume otherwise. Downey has real affluence in its north-eastern pockets — locally it has been nicknamed the Mexican Beverly Hills — where newer ADAS-equipped vehicles are common and a documented camera recalibration after glass replacement is required rather than optional. We do both conversations properly.</p>
-
-<h2>Southeast LA County coverage</h2>
-<p>Norwalk, Bellflower, Whittier, Pico Rivera, Santa Fe Springs, Paramount and Lakewood are all on the same runs as Downey. This part of the county is straightforward to work in — mostly single-family housing with driveways, which is the easiest possible mobile glass setup: level ground, room around the vehicle, and clear space in front for a camera calibration.</p>
-
-<h2>Where we work</h2>
-<p>Residential driveways across north-east and north-west Downey and the downtown area, apartment surface lots along Firestone and Lakewood, the retail lots around Stonewood, business and industrial parks in the south of the city, and out through the neighbouring cities above.</p>
-<!--/PAGE:BODY--></div>
+</div></div>
+      <div class="pchap"><h2>Not everyone here is on a budget</h2><div class="prose"><p>Worth saying, because plenty of shops assume otherwise. Downey has real affluence in its north-eastern pockets — locally it has been nicknamed the Mexican Beverly Hills — where newer ADAS-equipped vehicles are common and a documented camera recalibration after glass replacement is required rather than optional. We do both conversations properly.</p>
+</div></div>
+      <div class="pchap"><h2>Southeast LA County coverage</h2><div class="prose"><p>Norwalk, Bellflower, Whittier, Pico Rivera, Santa Fe Springs, Paramount and Lakewood are all on the same runs as Downey. This part of the county is straightforward to work in — mostly single-family housing with driveways, which is the easiest possible mobile glass setup: level ground, room around the vehicle, and clear space in front for a camera calibration.</p>
+</div></div>
+      <div class="pchap"><h2>Where we work</h2><div class="prose"><p>Residential driveways across north-east and north-west Downey and the downtown area, apartment surface lots along Firestone and Lakewood, the retail lots around Stonewood, business and industrial parks in the south of the city, and out through the neighbouring cities above.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 

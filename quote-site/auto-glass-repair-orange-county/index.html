@@ -644,9 +644,32 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    than average lowercase, so 72ch rendered 96 characters per line — a third
    over the 75 that prose should top out at. Measured per line with
    Range.getBoundingClientRect(), not estimated from the font size. */
+/* The body is emitted as chapters, one per <h2> — see proseHtml() in
+   build-pages.cjs. .prose is still the text column and keeps every rule below,
+   so nothing about the typography changed; what changed is where the column
+   sits and what is beside it. */
+.chaps{ display:grid; gap:40px; }
 .prose{ max-width:56ch; margin-inline:auto; }
-.prose h2{ margin:34px 0 12px; }
-.prose h2:first-child{ margin-top:0; }
+.pchap > h2, .pchap-t > h2{ margin:0 0 12px; }
+.pchap .prose > :first-child{ margin-top:0; }
+/* Left-aligned, not centred. Between 600 and 900px the container is wider than
+   56ch, so the inherited margin-inline:auto indented every paragraph while its
+   heading still started at the container edge. */
+.pchap .prose{ margin-inline:0; }
+.pchap h3{ margin:26px 0 10px; }
+/* Mobile: the photo sits between the heading and the prose, which is the only
+   thing breaking up 400-900 words on a phone. Bounded height so a portrait
+   shot cannot take a whole screen on its own. */
+.pchap-fig figure{
+  margin:0 0 20px; background:var(--paper); border:1px solid var(--line-card);
+  border-radius:var(--r-lg); overflow:hidden;
+}
+.pchap-fig img{
+  display:block; width:100%; height:auto; max-height:340px; object-fit:cover;
+  background:var(--surface-2);
+}
+.pchap-fig figcaption{ padding:12px 16px; font-size:.875rem; color:var(--text-muted); }
+
 .prose h3{ margin:26px 0 10px; }
 .prose p,.prose li{ color:var(--text-2); }
 .prose ul{ padding-left:1.1em; }
@@ -861,15 +884,18 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    Kept low-contrast so it never competes with the subject. */
 /* Anchored to the image, not the figure — the figure includes the caption, so
    bottom:10px on it put the mark on the caption instead of the photo. */
-.gal .shot{ position:relative; display:block; }
-.gal .shot::after{
+/* Scoped to .shot rather than .gal .shot: body-chapter figures use the same
+   figureHtml() and would otherwise be the one place a photo appears without
+   the mark — the same photograph watermarked in a gallery and bare in a body. */
+.shot{ position:relative; display:block; }
+.shot::after{
   content:""; position:absolute; right:10px; bottom:10px;
   width:74px; height:30px;
   background:url(/img/logo-wordmark.fceba0c8.webp) right bottom/contain no-repeat;
   opacity:.62; filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));
   pointer-events:none;
 }
-@media (max-width:599px){ .gal .shot::after{ width:60px; height:24px; } }
+@media (max-width:599px){ .shot::after{ width:60px; height:24px; } }
 
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
 /* Empty state = one short sentence plus a button, so the whole band is narrow
@@ -1037,6 +1063,42 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .areas{ grid-template-columns:repeat(4,minmax(0,1fr)); }
   .sticky{ display:none; }
   body.has-sticky{ padding-bottom:0; }
+
+  /* -------------------------------------------------- body chapters
+     Two variants, deliberately the same total width and both centred, so the
+     prose column only ever lands in one of two x positions. Alternating the
+     photo then reads as rhythm; letting each chapter size itself would read as
+     text that will not sit still.
+
+     The prose column stays at 56ch in both. That figure is measured, not
+     chosen — 72ch rendered 96 characters per line — so filling the container
+     had to come from what sits BESIDE the text, never from widening it. */
+  .chaps{ gap:64px; }
+  .pchap{
+    display:grid; grid-template-columns:minmax(0,380px) minmax(0,56ch);
+    /* Column gap only. `gap:56px` also opened 56px between the heading row and
+       the prose row of a figure chapter, which read as a missing paragraph —
+       the h2's own 12px bottom margin is the spacing that belongs there. */
+    gap:0 56px; justify-content:center; align-items:start;
+  }
+  /* A 380px rail holding one heading is generous on purpose: it is the same
+     column the photographs use, so the two chapter types line up instead of
+     each finding its own edges. */
+  /* Sticky needs room to travel, and align-items:start sizes the heading to
+     its own text. Stretch it to the row so it can follow its chapter, and let
+     it release naturally at the chapter boundary. 96px clears the 72px sticky
+     header. */
+  .pchap > h2{ align-self:stretch; position:sticky; top:96px; }
+  /* The figure spans both rows of its own column, so heading and prose stack
+     against it. Areas rather than order: the three are siblings precisely so
+     the phone gets heading -> photo -> text from source order. */
+  .pchap-fig{ grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr; }
+  .pchap-alt{ grid-template-columns:minmax(0,56ch) minmax(0,380px);
+              grid-template-areas:"head fig" "prose fig"; }
+  .pchap-fig > h2{ grid-area:head; position:static; }
+  .pchap-fig > figure{ grid-area:fig; align-self:center; margin:0; }
+  .pchap-fig > .prose{ grid-area:prose; max-width:none; }
+  .pchap-fig img{ max-height:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
    to a column is behind min-width:900px. Functional, but the highest-value
@@ -1302,9 +1364,9 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ PER-PAGE BODY ============ -->
 <section class="sec sec-1">
   <div class="wrap">
-    <div class="prose"><!--PAGE:BODY-->
-<h2>Where we go in Orange County</h2>
-<p>Orange County is about 948 square miles and, unlike LA County, it is coherent to serve end to end — no mountain passes, no hour-long dispatch into a high desert. We take work across the whole county.</p>
+    <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
+         wrapping the chapter grid in a 56ch box crushed every column inside it. -->
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Where we go in Orange County</h2><div class="prose"><p>Orange County is about 948 square miles and, unlike LA County, it is coherent to serve end to end — no mountain passes, no hour-long dispatch into a high desert. We take work across the whole county.</p>
 <p>We have dedicated pages for the cities we get asked about most: <a href="/auto-glass-repair-anaheim">Anaheim</a>, <a href="/auto-glass-repair-santa-ana">Santa Ana</a>, <a href="/auto-glass-repair-irvine">Irvine</a>, <a href="/auto-glass-repair-huntington-beach">Huntington Beach</a>, <a href="/auto-glass-repair-costa-mesa">Costa Mesa</a> and <a href="/auto-glass-repair-fullerton">Fullerton</a>. We also regularly work in Newport Beach, Orange, Garden Grove, Tustin, Brea, Placentia, La Habra, Yorba Linda, Westminster, Fountain Valley, Mission Viejo, Lake Forest, Laguna Niguel, San Juan Capistrano, Dana Point and San Clemente.</p>
 <p>If your city is not on that list, it does not mean no. Send us your ZIP and you will get a straight answer.</p>
 
@@ -1312,14 +1374,11 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <h3>South Orange County is closer to us than you would think</h3>
   <p>We dispatch out of San Diego, which means San Clemente, Dana Point and San Juan Capistrano are among our <em>nearest</em> Orange County territory rather than our furthest. South county customers often assume a San Diego shop is a stretch — for us it is the short run up the 5.</p>
 </div>
-
-<h2>What Orange County drivers actually call us about</h2>
-<p>Two patterns dominate. The first is freeway chip damage — the 5, the 405, the 55, the 91 and the 57 all carry heavy truck traffic, and sitting behind a gravel or construction load at 65mph is how most windshields in this county get hit. Those chips are cheap and quick to fix in the first week and expensive to ignore for a month.</p>
+</div></div>
+      <div class="pchap"><h2>What Orange County drivers actually call us about</h2><div class="prose"><p>Two patterns dominate. The first is freeway chip damage — the 5, the 405, the 55, the 91 and the 57 all carry heavy truck traffic, and sitting behind a gravel or construction load at 65mph is how most windshields in this county get hit. Those chips are cheap and quick to fix in the first week and expensive to ignore for a month.</p>
 <p>The second is camera recalibration, because Orange County has one of the newer vehicle fleets in Southern California. A large share of the windshields we replace here have a forward-facing camera bonded behind them, which means the job is not finished when the glass goes in. We do the <a href="/adas-calibration">recalibration</a> on the same visit rather than sending you elsewhere.</p>
-
-<h2>Mobile, at your home or your office</h2>
-<p>A great deal of our Orange County work happens in business parks during the workday — Irvine especially, but also the Anaheim resort corridor, South Coast Metro and the Santa Ana civic and industrial areas. Leave the car in your employer's lot, hand us the keys, and it is done by the time you finish. There is no charge for coming to you.</p>
-<!--/PAGE:BODY--></div>
+</div></div>
+      <div class="pchap"><h2>Mobile, at your home or your office</h2><div class="prose"><p>A great deal of our Orange County work happens in business parks during the workday — Irvine especially, but also the Anaheim resort corridor, South Coast Metro and the Santa Ana civic and industrial areas. Leave the car in your employer's lot, hand us the keys, and it is done by the time you finish. There is no charge for coming to you.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 

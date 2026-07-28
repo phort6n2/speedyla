@@ -340,22 +340,109 @@ function sealHtml() {
   );
 }
 
-/** Photo gallery, driven from config so adding photography is a config edit. */
-function galleryHtml() {
-  const shots = cfg.gallery || [];
+/** One photo, card-styled, with the .shot wrapper the watermark anchors to.
+ *  Shared by the gallery and by the body chapters so a photo looks the same
+ *  either way and only has to be described once in config. */
+function figureHtml(g) {
+  return (
+    '<figure>' +
+    '<span class="shot">' +
+    '<img src="' + ASSET_PREFIX + '/img/' + esc(g.src) + '" width="' + esc(g.w) +
+    '" height="' + esc(g.h) + '" alt="' + esc(g.alt) + '" loading="lazy" decoding="async">' +
+    '</span>' +
+    (g.caption ? '<figcaption>' + esc(g.caption) + '</figcaption>' : '') +
+    '</figure>'
+  );
+}
+
+/** Resolve a body figure against the gallery config, so src, dimensions, alt
+ *  text and caption are written once. A page names a photo; it does not
+ *  re-describe it. */
+function galleryEntry(src) {
+  const g = (cfg.gallery || []).find((x) => x.src === src);
+  if (!g) {
+    throw new Error(
+      'figures references "' + src + '", which is not in cfg.gallery. Add the photo ' +
+      'to the gallery array (that is where src/w/h/alt/caption live) and name it here.'
+    );
+  }
+  return g;
+}
+
+/**
+ * Photo gallery.
+ *
+ * Photos already used in THIS page's body are dropped: the same photograph
+ * twice on one page reads as a thin library rather than a rich one. The grid's
+ * nth-last-child rules keep the last row symmetric at any count, so removing
+ * one or two costs nothing visually. verify.cjs asserts no page repeats a shot.
+ */
+function galleryHtml(page) {
+  const used = new Set(((page && page.figures) || []).map((f) => f.src));
+  const shots = (cfg.gallery || []).filter((g) => !used.has(g.src));
   if (!shots.length) return '';
-  return shots
-    .map(
-      (g) =>
-        '<figure>' +
-        '<span class="shot">' +
-        '<img src="' + ASSET_PREFIX + '/img/' + esc(g.src) + '" width="' + esc(g.w) +
-        '" height="' + esc(g.h) + '" alt="' + esc(g.alt) + '" loading="lazy" decoding="async">' +
-        '</span>' +
-        (g.caption ? '<figcaption>' + esc(g.caption) + '</figcaption>' : '') +
-        '</figure>'
-    )
-    .join('\n        ');
+  return shots.map(figureHtml).join('\n        ');
+}
+
+/**
+ * The per-page body, split into chapters at each top-level <h2>.
+ *
+ * It used to render as one 56ch column centred in a 1180px container, which
+ * left more than half the desktop width empty beside a 400-900 word wall of
+ * text. Splitting at the headings gives two chapter layouts, both of which put
+ * something in that space:
+ *
+ *   .pchap       heading in a left rail, prose beside it. This is the default
+ *                and the only one that scales: there are 98 h2 chapters across
+ *                this site and six real photographs, so a photo beside every
+ *                block is not reachable, and recycling the same six across all
+ *                of them would look worse than the wall of text does.
+ *   .pchap-fig   a photo in the rail instead of the heading, with the heading
+ *                and prose beside it, alternating side down the page. Only
+ *                where `figures` names a photo that genuinely illustrates that
+ *                chapter.
+ *
+ * Both variants are the same total width and centred, so the prose column lands
+ * in one of exactly two positions — the alternation reads as rhythm rather than
+ * as text that will not sit still.
+ */
+function proseHtml(page) {
+  const byChapter = new Map();
+  for (const f of page.figures || []) byChapter.set(f.chapter, f);
+
+  /* Split before an <h2> that starts a line. Every body is authored that way
+     and callouts use <h3>, so this cannot catch a nested heading. */
+  const parts = page.body.trim().split(/\n(?=<h2>)/);
+
+  let illustrated = 0;
+  const chapters = parts.map((part, i) => {
+    const m = /^<h2>([\s\S]*?)<\/h2>\s*/.exec(part);
+    const heading = m ? '<h2>' + m[1] + '</h2>' : '';
+    const rest = m ? part.slice(m[0].length) : part;
+    const fig = byChapter.get(i);
+
+    if (!fig) {
+      return '<div class="pchap">' + heading + '<div class="prose">' + rest + '</div></div>';
+    }
+    /* Alternate against the other illustrated chapters, not the absolute index
+       — otherwise two figures three chapters apart land on the same side and
+       the alternation disappears. */
+    const alt = illustrated++ % 2 === 1 ? ' pchap-alt' : '';
+    /* Heading, figure and prose as three siblings rather than a figure beside a
+       wrapped heading+prose. Source order is what a phone gets, and heading ->
+       photo -> text is the readable order there; on desktop grid-template-areas
+       lifts the figure into its own column spanning both rows. Wrapping the text
+       instead delivered the photo before its own heading on mobile. */
+    return (
+      '<div class="pchap pchap-fig' + alt + '">' +
+      heading +
+      figureHtml(galleryEntry(fig.src)) +
+      '<div class="prose">' + rest + '</div>' +
+      '</div>'
+    );
+  });
+
+  return '<div class="chaps">' + chapters.join('\n      ') + '</div>';
 }
 
 /* Official four-colour Google mark, inlined. Never recoloured, never distorted:
@@ -743,7 +830,7 @@ function renderPage(page) {
   s = region(s, 'EYEBROW', page.eyebrow);   // authored HTML — already entity-encoded
   s = region(s, 'H1', page.h1);
   s = region(s, 'SUB', page.sub);
-  s = region(s, 'BODY', page.body);
+  s = region(s, 'BODY', proseHtml(page));
   s = region(s, 'FAQ', faqHtml(page.faq));
   s = region(s, 'JSONLD', jsonLdHtml(page));
   s = region(s, 'NAV', navHtml);
@@ -755,7 +842,7 @@ function renderPage(page) {
   s = region(s, 'REVIEWS', reviewsSectionHtml());
   s = region(s, 'TRUST', trustStripHtml());
   s = region(s, 'STATS', statBandHtml());
-  s = region(s, 'GALLERY', galleryHtml());
+  s = region(s, 'GALLERY', galleryHtml(page));
   s = region(s, 'SEAL', sealHtml());
   s = region(s, 'MAPBLOCK', mapBlockHtml());
 

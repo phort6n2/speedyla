@@ -644,9 +644,32 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    than average lowercase, so 72ch rendered 96 characters per line — a third
    over the 75 that prose should top out at. Measured per line with
    Range.getBoundingClientRect(), not estimated from the font size. */
+/* The body is emitted as chapters, one per <h2> — see proseHtml() in
+   build-pages.cjs. .prose is still the text column and keeps every rule below,
+   so nothing about the typography changed; what changed is where the column
+   sits and what is beside it. */
+.chaps{ display:grid; gap:40px; }
 .prose{ max-width:56ch; margin-inline:auto; }
-.prose h2{ margin:34px 0 12px; }
-.prose h2:first-child{ margin-top:0; }
+.pchap > h2, .pchap-t > h2{ margin:0 0 12px; }
+.pchap .prose > :first-child{ margin-top:0; }
+/* Left-aligned, not centred. Between 600 and 900px the container is wider than
+   56ch, so the inherited margin-inline:auto indented every paragraph while its
+   heading still started at the container edge. */
+.pchap .prose{ margin-inline:0; }
+.pchap h3{ margin:26px 0 10px; }
+/* Mobile: the photo sits between the heading and the prose, which is the only
+   thing breaking up 400-900 words on a phone. Bounded height so a portrait
+   shot cannot take a whole screen on its own. */
+.pchap-fig figure{
+  margin:0 0 20px; background:var(--paper); border:1px solid var(--line-card);
+  border-radius:var(--r-lg); overflow:hidden;
+}
+.pchap-fig img{
+  display:block; width:100%; height:auto; max-height:340px; object-fit:cover;
+  background:var(--surface-2);
+}
+.pchap-fig figcaption{ padding:12px 16px; font-size:.875rem; color:var(--text-muted); }
+
 .prose h3{ margin:26px 0 10px; }
 .prose p,.prose li{ color:var(--text-2); }
 .prose ul{ padding-left:1.1em; }
@@ -861,15 +884,18 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    Kept low-contrast so it never competes with the subject. */
 /* Anchored to the image, not the figure — the figure includes the caption, so
    bottom:10px on it put the mark on the caption instead of the photo. */
-.gal .shot{ position:relative; display:block; }
-.gal .shot::after{
+/* Scoped to .shot rather than .gal .shot: body-chapter figures use the same
+   figureHtml() and would otherwise be the one place a photo appears without
+   the mark — the same photograph watermarked in a gallery and bare in a body. */
+.shot{ position:relative; display:block; }
+.shot::after{
   content:""; position:absolute; right:10px; bottom:10px;
   width:74px; height:30px;
   background:url(/img/logo-wordmark.fceba0c8.webp) right bottom/contain no-repeat;
   opacity:.62; filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));
   pointer-events:none;
 }
-@media (max-width:599px){ .gal .shot::after{ width:60px; height:24px; } }
+@media (max-width:599px){ .shot::after{ width:60px; height:24px; } }
 
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
 /* Empty state = one short sentence plus a button, so the whole band is narrow
@@ -1037,6 +1063,42 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .areas{ grid-template-columns:repeat(4,minmax(0,1fr)); }
   .sticky{ display:none; }
   body.has-sticky{ padding-bottom:0; }
+
+  /* -------------------------------------------------- body chapters
+     Two variants, deliberately the same total width and both centred, so the
+     prose column only ever lands in one of two x positions. Alternating the
+     photo then reads as rhythm; letting each chapter size itself would read as
+     text that will not sit still.
+
+     The prose column stays at 56ch in both. That figure is measured, not
+     chosen — 72ch rendered 96 characters per line — so filling the container
+     had to come from what sits BESIDE the text, never from widening it. */
+  .chaps{ gap:64px; }
+  .pchap{
+    display:grid; grid-template-columns:minmax(0,380px) minmax(0,56ch);
+    /* Column gap only. `gap:56px` also opened 56px between the heading row and
+       the prose row of a figure chapter, which read as a missing paragraph —
+       the h2's own 12px bottom margin is the spacing that belongs there. */
+    gap:0 56px; justify-content:center; align-items:start;
+  }
+  /* A 380px rail holding one heading is generous on purpose: it is the same
+     column the photographs use, so the two chapter types line up instead of
+     each finding its own edges. */
+  /* Sticky needs room to travel, and align-items:start sizes the heading to
+     its own text. Stretch it to the row so it can follow its chapter, and let
+     it release naturally at the chapter boundary. 96px clears the 72px sticky
+     header. */
+  .pchap > h2{ align-self:stretch; position:sticky; top:96px; }
+  /* The figure spans both rows of its own column, so heading and prose stack
+     against it. Areas rather than order: the three are siblings precisely so
+     the phone gets heading -> photo -> text from source order. */
+  .pchap-fig{ grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr; }
+  .pchap-alt{ grid-template-columns:minmax(0,56ch) minmax(0,380px);
+              grid-template-areas:"head fig" "prose fig"; }
+  .pchap-fig > h2{ grid-area:head; position:static; }
+  .pchap-fig > figure{ grid-area:fig; align-self:center; margin:0; }
+  .pchap-fig > .prose{ grid-area:prose; max-width:none; }
+  .pchap-fig img{ max-height:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
    to a column is behind min-width:900px. Functional, but the highest-value
@@ -1302,12 +1364,11 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ PER-PAGE BODY ============ -->
 <section class="sec sec-1">
   <div class="wrap">
-    <div class="prose"><!--PAGE:BODY-->
-<h2>We check the coverage first, not after</h2>
-<p>The usual sequence at a glass shop is that you book, the technician arrives, and only then does anyone work out what your insurer will pay. We do it the other way round. Tell us your carrier, your policy number and your vehicle, and we will confirm what is covered and what your deductible is before we send anyone. Nothing is filed until you tell us to go ahead — so if the numbers do not work for you, you have lost nothing but a phone call.</p>
-
-<h2>Your insurer cannot choose your shop</h2>
-<p>This is worth knowing before you ring your carrier, because a lot of drivers are steered without realising it. Under <strong>California Insurance Code § 758.5</strong>:</p>
+    <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
+         wrapping the chapter grid in a 56ch box crushed every column inside it. -->
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>We check the coverage first, not after</h2><div class="prose"><p>The usual sequence at a glass shop is that you book, the technician arrives, and only then does anyone work out what your insurer will pay. We do it the other way round. Tell us your carrier, your policy number and your vehicle, and we will confirm what is covered and what your deductible is before we send anyone. Nothing is filed until you tell us to go ahead — so if the numbers do not work for you, you have lost nothing but a phone call.</p>
+</div></div>
+      <div class="pchap"><h2>Your insurer cannot choose your shop</h2><div class="prose"><p>This is worth knowing before you ring your carrier, because a lot of drivers are steered without realising it. Under <strong>California Insurance Code § 758.5</strong>:</p>
 <ul>
   <li>Your insurer <strong>cannot require</strong> you to have the vehicle repaired at a specific shop.</li>
   <li>It <strong>cannot suggest or recommend</strong> a specific shop unless you asked for a referral, or you were told in writing that you have the right to choose your own.</li>
@@ -1320,22 +1381,18 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <h3>What California law does <em>not</em> do</h3>
   <p>It does not make your windshield free. You may have seen advertising implying otherwise. Florida, Kentucky and South Carolina require insurers to cover glass with no deductible; <strong>California has no equivalent law.</strong> If your glass is fully covered in California, it is because your policy includes a full-glass endorsement you bought — not because of a statute. We would rather tell you that plainly than let you find out when the bill arrives.</p>
 </div>
-
-<h2>What is usually true about glass coverage</h2>
-<ul>
+</div></div>
+      <div class="pchap"><h2>What is usually true about glass coverage</h2><div class="prose"><ul>
   <li><strong>Comprehensive coverage</strong> is the part of your policy that pays for glass. Liability-only policies do not cover your own glass at all.</li>
   <li><strong>Your deductible applies</strong> to a replacement unless you carry a full-glass endorsement.</li>
   <li><strong>Most carriers waive the deductible on chip repair</strong>, because a resin repair costs them far less than a new windshield plus a camera recalibration. That is the insurer's commercial decision — we cannot offer to cover anybody's deductible ourselves.</li>
   <li><strong>Calibration is usually covered</strong> where it is required as part of a covered replacement, since the vehicle is not back to its prior condition without it.</li>
 </ul>
-
-<h2>Which carriers we bill directly</h2>
-<p>GEICO, State Farm, USAA, AAA, Farmers and Progressive, among others. Direct billing means we invoice them and you pay only your deductible, if you have one — no paying up front and chasing a reimbursement.</p>
+</div></div>
+      <div class="pchap"><h2>Which carriers we bill directly</h2><div class="prose"><p>GEICO, State Farm, USAA, AAA, Farmers and Progressive, among others. Direct billing means we invoice them and you pay only your deductible, if you have one — no paying up front and chasing a reimbursement.</p>
 <p><em>Speedy Windshield Repair is not affiliated with, endorsed by or sponsored by any insurance company. Carrier names appear here only to indicate that we bill those insurers directly.</em></p>
-
-<h2>No insurance, or not worth claiming?</h2>
-<p>Both are common and neither is a problem. Plenty of our work is cash-pay — especially <a href="/car-window-replacement">door glass</a>, which frequently costs less than a comprehensive deductible, making a claim pointless. Tell us the vehicle and we will quote you a real cash number with mobile service included.</p>
-<!--/PAGE:BODY--></div>
+</div></div>
+      <div class="pchap"><h2>No insurance, or not worth claiming?</h2><div class="prose"><p>Both are common and neither is a problem. Plenty of our work is cash-pay — especially <a href="/car-window-replacement">door glass</a>, which frequently costs less than a comprehensive deductible, making a claim pointless. Tell us the vehicle and we will quote you a real cash number with mobile service included.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 

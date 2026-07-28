@@ -644,9 +644,32 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    than average lowercase, so 72ch rendered 96 characters per line — a third
    over the 75 that prose should top out at. Measured per line with
    Range.getBoundingClientRect(), not estimated from the font size. */
+/* The body is emitted as chapters, one per <h2> — see proseHtml() in
+   build-pages.cjs. .prose is still the text column and keeps every rule below,
+   so nothing about the typography changed; what changed is where the column
+   sits and what is beside it. */
+.chaps{ display:grid; gap:40px; }
 .prose{ max-width:56ch; margin-inline:auto; }
-.prose h2{ margin:34px 0 12px; }
-.prose h2:first-child{ margin-top:0; }
+.pchap > h2, .pchap-t > h2{ margin:0 0 12px; }
+.pchap .prose > :first-child{ margin-top:0; }
+/* Left-aligned, not centred. Between 600 and 900px the container is wider than
+   56ch, so the inherited margin-inline:auto indented every paragraph while its
+   heading still started at the container edge. */
+.pchap .prose{ margin-inline:0; }
+.pchap h3{ margin:26px 0 10px; }
+/* Mobile: the photo sits between the heading and the prose, which is the only
+   thing breaking up 400-900 words on a phone. Bounded height so a portrait
+   shot cannot take a whole screen on its own. */
+.pchap-fig figure{
+  margin:0 0 20px; background:var(--paper); border:1px solid var(--line-card);
+  border-radius:var(--r-lg); overflow:hidden;
+}
+.pchap-fig img{
+  display:block; width:100%; height:auto; max-height:340px; object-fit:cover;
+  background:var(--surface-2);
+}
+.pchap-fig figcaption{ padding:12px 16px; font-size:.875rem; color:var(--text-muted); }
+
 .prose h3{ margin:26px 0 10px; }
 .prose p,.prose li{ color:var(--text-2); }
 .prose ul{ padding-left:1.1em; }
@@ -861,15 +884,18 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    Kept low-contrast so it never competes with the subject. */
 /* Anchored to the image, not the figure — the figure includes the caption, so
    bottom:10px on it put the mark on the caption instead of the photo. */
-.gal .shot{ position:relative; display:block; }
-.gal .shot::after{
+/* Scoped to .shot rather than .gal .shot: body-chapter figures use the same
+   figureHtml() and would otherwise be the one place a photo appears without
+   the mark — the same photograph watermarked in a gallery and bare in a body. */
+.shot{ position:relative; display:block; }
+.shot::after{
   content:""; position:absolute; right:10px; bottom:10px;
   width:74px; height:30px;
   background:url(/img/logo-wordmark.fceba0c8.webp) right bottom/contain no-repeat;
   opacity:.62; filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));
   pointer-events:none;
 }
-@media (max-width:599px){ .gal .shot::after{ width:60px; height:24px; } }
+@media (max-width:599px){ .shot::after{ width:60px; height:24px; } }
 
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
 /* Empty state = one short sentence plus a button, so the whole band is narrow
@@ -1037,6 +1063,42 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .areas{ grid-template-columns:repeat(4,minmax(0,1fr)); }
   .sticky{ display:none; }
   body.has-sticky{ padding-bottom:0; }
+
+  /* -------------------------------------------------- body chapters
+     Two variants, deliberately the same total width and both centred, so the
+     prose column only ever lands in one of two x positions. Alternating the
+     photo then reads as rhythm; letting each chapter size itself would read as
+     text that will not sit still.
+
+     The prose column stays at 56ch in both. That figure is measured, not
+     chosen — 72ch rendered 96 characters per line — so filling the container
+     had to come from what sits BESIDE the text, never from widening it. */
+  .chaps{ gap:64px; }
+  .pchap{
+    display:grid; grid-template-columns:minmax(0,380px) minmax(0,56ch);
+    /* Column gap only. `gap:56px` also opened 56px between the heading row and
+       the prose row of a figure chapter, which read as a missing paragraph —
+       the h2's own 12px bottom margin is the spacing that belongs there. */
+    gap:0 56px; justify-content:center; align-items:start;
+  }
+  /* A 380px rail holding one heading is generous on purpose: it is the same
+     column the photographs use, so the two chapter types line up instead of
+     each finding its own edges. */
+  /* Sticky needs room to travel, and align-items:start sizes the heading to
+     its own text. Stretch it to the row so it can follow its chapter, and let
+     it release naturally at the chapter boundary. 96px clears the 72px sticky
+     header. */
+  .pchap > h2{ align-self:stretch; position:sticky; top:96px; }
+  /* The figure spans both rows of its own column, so heading and prose stack
+     against it. Areas rather than order: the three are siblings precisely so
+     the phone gets heading -> photo -> text from source order. */
+  .pchap-fig{ grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr; }
+  .pchap-alt{ grid-template-columns:minmax(0,56ch) minmax(0,380px);
+              grid-template-areas:"head fig" "prose fig"; }
+  .pchap-fig > h2{ grid-area:head; position:static; }
+  .pchap-fig > figure{ grid-area:fig; align-self:center; margin:0; }
+  .pchap-fig > .prose{ grid-area:prose; max-width:none; }
+  .pchap-fig img{ max-height:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
    to a column is behind min-width:900px. Functional, but the highest-value
@@ -1302,26 +1364,22 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ PER-PAGE BODY ============ -->
 <section class="sec sec-1">
   <div class="wrap">
-    <div class="prose"><!--PAGE:BODY-->
-<h2>No, you are not being upsold</h2>
-<p>If a shop just told you your new windshield needs a calibration and your instinct was that you are being worked, that is a reasonable instinct and the answer is still that the calibration is real. Here is why, without the jargon.</p>
+    <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
+         wrapping the chapter grid in a 56ch box crushed every column inside it. -->
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>No, you are not being upsold</h2><figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit as the glass.</figcaption></figure><div class="prose"><p>If a shop just told you your new windshield needs a calibration and your instinct was that you are being worked, that is a reasonable instinct and the answer is still that the calibration is real. Here is why, without the jargon.</p>
 <p>On most vehicles built in roughly the last decade, a forward-facing camera sits in a bracket bonded to the inside of the windshield, usually behind the mirror. That camera is what the car uses to see lane markings, the vehicle in front, and pedestrians. Lane-keeping assist, adaptive cruise control, forward-collision warning and automatic emergency braking all read from it.</p>
 <p>The camera's aim is calibrated to the exact position it was mounted in. Replace the windshield and the bracket is now sitting in a very slightly different place — a fraction of a degree is enough. A fraction of a degree at the camera becomes feet of error a hundred yards down the road. The car does not know it is wrong. It will confidently steer to a lane edge that is not where it thinks, or brake late, or brake at nothing.</p>
-
-<h2>Static, dynamic, or both</h2>
-<p><strong>Static calibration</strong> is done stationary, with a printed target board set at a manufacturer-specified distance, height and angle in front of the vehicle, on level ground. <strong>Dynamic calibration</strong> is done by driving the vehicle at a specified speed on well-marked road while the system relearns. Which one your vehicle needs is decided by the manufacturer, not by preference — some require static, some dynamic, and a good number require static followed by dynamic.</p>
+</div></div>
+      <div class="pchap"><h2>Static, dynamic, or both</h2><div class="prose"><p><strong>Static calibration</strong> is done stationary, with a printed target board set at a manufacturer-specified distance, height and angle in front of the vehicle, on level ground. <strong>Dynamic calibration</strong> is done by driving the vehicle at a specified speed on well-marked road while the system relearns. Which one your vehicle needs is decided by the manufacturer, not by preference — some require static, some dynamic, and a good number require static followed by dynamic.</p>
 
 <div class="callout">
   <h3>The scan report is the thing to ask for</h3>
   <p>A calibration you cannot see the evidence of is a calibration you should not pay for. We run a pre-scan before the work and a post-scan afterwards, and we hand you both. That documents which systems reported faults, that the calibration completed, and that no codes were left stored. If anybody replaces your glass and cannot produce that, ask them why.</p>
 </div>
-
-<h2>What we need to do it properly</h2>
-<p>Static calibration has real physical requirements — level ground, enough clear space in front of the vehicle for the target at the specified distance, and controlled lighting without strong glare or deep shadow across the target. A sloped street or a cramped tandem parking space will not produce a valid calibration, and we would rather move to a suitable nearby surface lot than complete a procedure we know is compromised. Tell us where the vehicle will be and we will tell you whether it will work.</p>
-
-<h2>Body shops, dealers and used-car lots</h2>
-<p>We also take calibration work as a subcontractor. If you are a collision shop, a dealer, or a reconditioning operation that needs mobile calibration on your own site rather than sending vehicles out, call us and ask for trade work — it is a different conversation from a retail booking, and we are set up for volume.</p>
-<!--/PAGE:BODY--></div>
+</div></div>
+      <div class="pchap"><h2>What we need to do it properly</h2><div class="prose"><p>Static calibration has real physical requirements — level ground, enough clear space in front of the vehicle for the target at the specified distance, and controlled lighting without strong glare or deep shadow across the target. A sloped street or a cramped tandem parking space will not produce a valid calibration, and we would rather move to a suitable nearby surface lot than complete a procedure we know is compromised. Tell us where the vehicle will be and we will tell you whether it will work.</p>
+</div></div>
+      <div class="pchap"><h2>Body shops, dealers and used-car lots</h2><div class="prose"><p>We also take calibration work as a subcontractor. If you are a collision shop, a dealer, or a reconditioning operation that needs mobile calibration on your own site rather than sending vehicles out, call us and ask for trade work — it is a different conversation from a retail booking, and we are set up for volume.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 
@@ -1461,7 +1519,6 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.94f751e0.webp" width="1360" height="1020" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-4runner-fresh-install.6771ecf5.webp" width="450" height="600" alt="Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner" loading="lazy" decoding="async"></span><figcaption>Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-sclass-van-driveway.3de883e5.webp" width="1360" height="1020" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit as the glass.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-bay-exotic.2dd7249b.webp" width="500" height="400" alt="Black Ferrari in the Speedy Windshield Repair workshop bay beneath the wall sign" loading="lazy" decoding="async"></span><figcaption>Exotics and late-model vehicles go through exactly the same process as everything else.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-front-san-diego.b5db48bd.webp" width="500" height="400" alt="The Speedy Windshield Repair storefront in San Diego with vehicles parked outside" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. Across Orange County and LA County we come to you instead.</figcaption></figure><!--/PAGE:GALLERY--></div>
   </div>

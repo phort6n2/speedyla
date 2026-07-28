@@ -644,9 +644,32 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    than average lowercase, so 72ch rendered 96 characters per line — a third
    over the 75 that prose should top out at. Measured per line with
    Range.getBoundingClientRect(), not estimated from the font size. */
+/* The body is emitted as chapters, one per <h2> — see proseHtml() in
+   build-pages.cjs. .prose is still the text column and keeps every rule below,
+   so nothing about the typography changed; what changed is where the column
+   sits and what is beside it. */
+.chaps{ display:grid; gap:40px; }
 .prose{ max-width:56ch; margin-inline:auto; }
-.prose h2{ margin:34px 0 12px; }
-.prose h2:first-child{ margin-top:0; }
+.pchap > h2, .pchap-t > h2{ margin:0 0 12px; }
+.pchap .prose > :first-child{ margin-top:0; }
+/* Left-aligned, not centred. Between 600 and 900px the container is wider than
+   56ch, so the inherited margin-inline:auto indented every paragraph while its
+   heading still started at the container edge. */
+.pchap .prose{ margin-inline:0; }
+.pchap h3{ margin:26px 0 10px; }
+/* Mobile: the photo sits between the heading and the prose, which is the only
+   thing breaking up 400-900 words on a phone. Bounded height so a portrait
+   shot cannot take a whole screen on its own. */
+.pchap-fig figure{
+  margin:0 0 20px; background:var(--paper); border:1px solid var(--line-card);
+  border-radius:var(--r-lg); overflow:hidden;
+}
+.pchap-fig img{
+  display:block; width:100%; height:auto; max-height:340px; object-fit:cover;
+  background:var(--surface-2);
+}
+.pchap-fig figcaption{ padding:12px 16px; font-size:.875rem; color:var(--text-muted); }
+
 .prose h3{ margin:26px 0 10px; }
 .prose p,.prose li{ color:var(--text-2); }
 .prose ul{ padding-left:1.1em; }
@@ -861,15 +884,18 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    Kept low-contrast so it never competes with the subject. */
 /* Anchored to the image, not the figure — the figure includes the caption, so
    bottom:10px on it put the mark on the caption instead of the photo. */
-.gal .shot{ position:relative; display:block; }
-.gal .shot::after{
+/* Scoped to .shot rather than .gal .shot: body-chapter figures use the same
+   figureHtml() and would otherwise be the one place a photo appears without
+   the mark — the same photograph watermarked in a gallery and bare in a body. */
+.shot{ position:relative; display:block; }
+.shot::after{
   content:""; position:absolute; right:10px; bottom:10px;
   width:74px; height:30px;
   background:url(/img/logo-wordmark.fceba0c8.webp) right bottom/contain no-repeat;
   opacity:.62; filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));
   pointer-events:none;
 }
-@media (max-width:599px){ .gal .shot::after{ width:60px; height:24px; } }
+@media (max-width:599px){ .shot::after{ width:60px; height:24px; } }
 
 .rev-foot{ grid-column:1/-1; margin:4px 0 0; font-size:.875rem; color:var(--text-muted); }
 /* Empty state = one short sentence plus a button, so the whole band is narrow
@@ -1037,6 +1063,42 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .areas{ grid-template-columns:repeat(4,minmax(0,1fr)); }
   .sticky{ display:none; }
   body.has-sticky{ padding-bottom:0; }
+
+  /* -------------------------------------------------- body chapters
+     Two variants, deliberately the same total width and both centred, so the
+     prose column only ever lands in one of two x positions. Alternating the
+     photo then reads as rhythm; letting each chapter size itself would read as
+     text that will not sit still.
+
+     The prose column stays at 56ch in both. That figure is measured, not
+     chosen — 72ch rendered 96 characters per line — so filling the container
+     had to come from what sits BESIDE the text, never from widening it. */
+  .chaps{ gap:64px; }
+  .pchap{
+    display:grid; grid-template-columns:minmax(0,380px) minmax(0,56ch);
+    /* Column gap only. `gap:56px` also opened 56px between the heading row and
+       the prose row of a figure chapter, which read as a missing paragraph —
+       the h2's own 12px bottom margin is the spacing that belongs there. */
+    gap:0 56px; justify-content:center; align-items:start;
+  }
+  /* A 380px rail holding one heading is generous on purpose: it is the same
+     column the photographs use, so the two chapter types line up instead of
+     each finding its own edges. */
+  /* Sticky needs room to travel, and align-items:start sizes the heading to
+     its own text. Stretch it to the row so it can follow its chapter, and let
+     it release naturally at the chapter boundary. 96px clears the 72px sticky
+     header. */
+  .pchap > h2{ align-self:stretch; position:sticky; top:96px; }
+  /* The figure spans both rows of its own column, so heading and prose stack
+     against it. Areas rather than order: the three are siblings precisely so
+     the phone gets heading -> photo -> text from source order. */
+  .pchap-fig{ grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr; }
+  .pchap-alt{ grid-template-columns:minmax(0,56ch) minmax(0,380px);
+              grid-template-areas:"head fig" "prose fig"; }
+  .pchap-fig > h2{ grid-area:head; position:static; }
+  .pchap-fig > figure{ grid-area:fig; align-self:center; margin:0; }
+  .pchap-fig > .prose{ grid-area:prose; max-width:none; }
+  .pchap-fig img{ max-height:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
    to a column is behind min-width:900px. Functional, but the highest-value
@@ -1302,30 +1364,26 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <!-- ============ PER-PAGE BODY ============ -->
 <section class="sec sec-1">
   <div class="wrap">
-    <div class="prose"><!--PAGE:BODY-->
-<h2>The 710 is the worst road for windshields in our entire service area</h2>
-<p>The Long Beach Freeway's southern terminus is inside this city, splitting into spurs that feed the container terminals directly. This is where the nation's port drayage fleet begins and ends its runs. The Port of Long Beach moved 9,881,595 TEUs in 2025 — its busiest year in 115 years — and every container that does not leave by rail leaves on a chassis behind a tractor.</p>
+    <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
+         wrapping the chapter grid in a 56ch box crushed every column inside it. -->
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>The 710 is the worst road for windshields in our entire service area</h2><div class="prose"><p>The Long Beach Freeway's southern terminus is inside this city, splitting into spurs that feed the container terminals directly. This is where the nation's port drayage fleet begins and ends its runs. The Port of Long Beach moved 9,881,595 TEUs in 2025 — its busiest year in 115 years — and every container that does not leave by rail leaves on a chassis behind a tractor.</p>
 <p>Metro's own corridor data puts heavy-duty trucks at 14 to 19% of I-710 traffic, and at over 30% of the daytime traffic stream on the Long Beach segment between Ocean Boulevard and 9th Street. No other freeway in our service area comes close to that share. Every one of those trucks throws grit, and a proportion are hauling aggregate or debris.</p>
 <p>Damage from that corridor also runs worse than average. A stone off a container truck at freeway speed arrives with real energy, so we see fewer neat little bullseyes here and more combination breaks and long cracks that were never going to be repairable. If you have just taken a hit on the 710, look at it properly before assuming it is a quick fix.</p>
 <p>Two things to have on your radar: the Shoemaker Bridge — the 710 connector into Downtown — came out of service in May 2026 with demolition following, and a large Caltrans I-405 rehabilitation covering 118 lane-miles of concrete pavement began in late July 2026 and runs to 2031. Both mean years of active work zones on the roads you use daily.</p>
-
-<h2>Street parking is why we do so much side and back glass here</h2>
-<p>Long Beach is dense and largely street-parked, and that shifts the work mix considerably. In some neighbourhoods we replace more <a href="/car-window-replacement">door windows</a> and <a href="/back-glass-replacement">back glass</a> than windshields, because break-ins rather than road debris are the main cause.</p>
+</div></div>
+      <div class="pchap"><h2>Street parking is why we do so much side and back glass here</h2><div class="prose"><p>Long Beach is dense and largely street-parked, and that shifts the work mix considerably. In some neighbourhoods we replace more <a href="/car-window-replacement">door windows</a> and <a href="/back-glass-replacement">back glass</a> than windshields, because break-ins rather than road debris are the main cause.</p>
 <p>Two things worth knowing if that is you. Back glass is tempered, so it does not crack — it shatters completely into thousands of small cubes across the back seat and into the trunk channel. It cannot be repaired, only replaced, and the cleanup is a genuine part of the job. And an open vehicle overnight in a dense neighbourhood invites a second visit, so this is urgent rather than a weekend task.</p>
 
 <div class="callout">
   <h3>Tell us the neighbourhood, not just the city</h3>
   <p>Long Beach residents identify by neighbourhood and so do we, because the parking reality changes completely across town. <strong>Belmont Shore and Naples</strong> — narrow streets, permit parking, tight kerbside. <strong>Downtown and the East Village</strong> — towers and structures, often subterranean. <strong>Bixby Knolls, California Heights and Los Cerritos</strong> — proper driveways, the easiest work in the city. <strong>Signal Hill</strong> — slopes, which matter for camera calibration. Knowing which one you are in tells us immediately whether we can work at your address or should suggest a nearby lot.</p>
 </div>
-
-<h2>A city with two very different fleets</h2>
-<p>The east and south-east side — Naples, Belmont Shore, Belmont Heights, Bluff Park, Los Cerritos, Bixby Knolls — runs newer, camera-equipped vehicles where a documented recalibration after glass replacement is standard. The west side and the port belt run Class 8 tractors, drayage chassis and work trucks. And CSULB, with over 42,000 students, adds a large pool of older high-mileage cars where a repair beats a replacement every time. Central Long Beach is more price-sensitive again. Tell us which of those you are and the quote conversation changes.</p>
+</div></div>
+      <div class="pchap"><h2>A city with two very different fleets</h2><div class="prose"><p>The east and south-east side — Naples, Belmont Shore, Belmont Heights, Bluff Park, Los Cerritos, Bixby Knolls — runs newer, camera-equipped vehicles where a documented recalibration after glass replacement is standard. The west side and the port belt run Class 8 tractors, drayage chassis and work trucks. And CSULB, with over 42,000 students, adds a large pool of older high-mileage cars where a repair beats a replacement every time. Central Long Beach is more price-sensitive again. Tell us which of those you are and the quote conversation changes.</p>
 <p>One more local hazard nobody expects: Los Alamitos Circle carries over 60,000 vehicles a day and is the only high-volume traffic circle in Southern California. Heavy merging at speed with very close following is exactly the condition that picks a stone off the car in front.</p>
-
-<h2>Where we work in Long Beach</h2>
-<p>Driveways and streets across Bixby Knolls, Los Cerritos, California Heights, Wrigley and the East Side; Belmont Shore, Belmont Heights and Naples with a parking plan; Downtown, the East Village and Alamitos Beach where a structure allows it; the CSULB area; and Signal Hill. Everything mobile — there is no shop here to drive to.</p>
-<p>If you are in a subterranean garage, mention it early. Many buildings prohibit vehicle work in their rules, and static ADAS calibration needs level ground and clear space in front of the car that a tight structure bay will not provide. The usual fix is a nearby surface lot.</p>
-<!--/PAGE:BODY--></div>
+</div></div>
+      <div class="pchap"><h2>Where we work in Long Beach</h2><div class="prose"><p>Driveways and streets across Bixby Knolls, Los Cerritos, California Heights, Wrigley and the East Side; Belmont Shore, Belmont Heights and Naples with a parking plan; Downtown, the East Village and Alamitos Beach where a structure allows it; the CSULB area; and Signal Hill. Everything mobile — there is no shop here to drive to.</p>
+<p>If you are in a subterranean garage, mention it early. Many buildings prohibit vehicle work in their rules, and static ADAS calibration needs level ground and clear space in front of the car that a tight structure bay will not provide. The usual fix is a nearby surface lot.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 
