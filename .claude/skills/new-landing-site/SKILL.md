@@ -188,6 +188,23 @@ client site. Two rules before reusing it:
 
 Never restyle it, or anything else, to imply third-party accreditation.
 
+## Illustrate every page, from two separate pools
+
+`gallery` is the six-up grid at the bottom of every page. `bodyPhotos` is a
+separate pool of process and detail shots that sit beside the prose. **They must
+not overlap** — a body figure that names a gallery photo is dropped from that
+page's grid, and the grid stops being six-up.
+
+Every page carries figures, not only the service pages. A hub or a city page
+without them reads as a wall of text beside pages that alternate text and image.
+Two per page at chapters 0 and 2 matches the rest of the site.
+
+Photos repeat across pages and that is correct. Nobody reads two city pages, and
+a real photograph reused beats a stock one that is not this business. A client
+will rarely supply enough for one photo per chapter — a site of this shape has
+around a hundred — so the layout is built so the chapters without one lose
+nothing.
+
 ## Gallery symmetry is automatic
 
 The gallery grid is six columns with each photo spanning two, and CSS rules
