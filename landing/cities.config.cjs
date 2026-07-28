@@ -69,8 +69,6 @@ module.exports = [
 <h2>Where we work in Anaheim</h2>
 <p>Hotel and convention-centre car parks, driveways across West Anaheim and the historic Colony district, apartment lots along Brookhurst and Euclid, the Anaheim Canyon industrial and R&amp;D district along the 91/57 corridor, business parks in the Platinum Triangle, and up through the hills. Standard surface parking is all we need. Everything is mobile — there is no Anaheim shop to drive to, which on a spreading crack is the point.</p>
 
-<h2>Hablamos español</h2>
-<p>A large share of Anaheim households speak Spanish at home, and we have Spanish-speaking staff on the phone. Ask when you call — you will not be handed a translation app.</p>
 `,
     faq: [
       { q: 'Can you come to a hotel car park near the convention centre?',
@@ -90,7 +88,7 @@ module.exports = [
     navLabel: 'Santa Ana',
     shortLabel: 'Santa Ana',
     title: 'Auto Glass Repair Santa Ana | Registered Shop | Speedy',
-    desc: 'Mobile auto glass repair in Santa Ana. Windshield replacement, chip repair and side glass, at your home or work. Hablamos español. Free quote in under a minute.',
+    desc: 'Mobile auto glass repair in Santa Ana. Windshield replacement, chip repair and side glass, at your home or work. Free quote in under a minute.',
     eyebrow: 'Santa Ana, CA',
     h1: 'Auto glass repair in Santa Ana from a registered shop',
     sub: '<p>Santa Ana has no shortage of people who will fit a windshield out of the back of a van. Fewer of them are registered with the state. We are, our registration number is at the bottom of this page, and we quote a firm number before we drive out.</p>',
@@ -99,11 +97,6 @@ module.exports = [
 <h2>Why we lead with a registration number here</h2>
 <p>Santa Ana is, by the city's own figures, the fourth most densely populated place in the United States among cities over 300,000 — around 12,471 people per square mile. Density like that supports a large informal auto glass trade: operators working from a van with no registration, no insurance, and no address you could find again if the glass leaked.</p>
 <p>Plenty of them do acceptable work. The problem is that you cannot tell which from a phone call, and if it goes wrong there is nobody to go back to. Every automotive repair dealer in California is required to be registered with the Bureau of Automotive Repair. Ours is printed in the footer of this page, next to the business name exactly as it appears on the certificate and the phone number the Bureau has on file. You can check it — and it is the single most useful question to put to anyone quoting you for mobile glass. A registered dealer hands you a number you can verify; an unregistered one changes the subject.</p>
-
-<div class="callout">
-  <h3>Hablamos español — de verdad</h3>
-  <p>Most Santa Ana households speak Spanish at home. We have Spanish-speaking staff answering the phone and on the vans, so the quote, the appointment and the safe drive-away instructions can all be handled in Spanish. You will not be put on hold for a translator.</p>
-</div>
 
 <h2>The city is currently rebuilding its main arterial</h2>
 <p>This is worth knowing because it is actively affecting your windshield. Santa Ana is partway through a phased reconstruction of Bristol Street — a 3.9-mile arterial rebuild that has been running in stages, widening the roadway, adding protected bike lanes and a raised median. Combine that with the OC Streetcar's years of embedded-rail construction along Santa Ana Boulevard and Fourth Street, and you have torn-up arterials across a dense street grid.</p>
@@ -121,8 +114,6 @@ module.exports = [
 <p>Residential streets and apartment lots citywide, Downtown Santa Ana and the Civic Center area, the industrial belt along South Grand and East Dyer, workplace car parks along Grand and Bristol, and the South Coast Metro edge.</p>
 `,
     faq: [
-      { q: '¿Puedo hacer todo el trabajo en español?',
-        a: '<p>Sí. Tenemos personal que habla español para darle el precio, coordinar la cita y explicarle cuándo puede volver a manejar el vehículo. Llámenos y pida atención en español.</p>' },
       { q: 'How do I know you\'re a real shop and not a guy with a van?',
         a: '<p>Check our Bureau of Automotive Repair registration number in the footer of this page, next to our registered business name and the phone number the Bureau holds for us. Ask the same of anyone else quoting you — a registered dealer can give you a number you can verify, and an unregistered one cannot.</p>' },
       { q: 'My apartment only has tandem parking. Can you still do it?',
@@ -514,11 +505,6 @@ module.exports = [
 </ul>
 <p>None of it is a dealbreaker. Most Glendale jobs happen either at the customer's workplace or in a nearby surface lot, and it takes one phone conversation. Just do not book a driveway appointment for a car that lives on level P2.</p>
 
-<div class="callout">
-  <h3>Խոսում ենք հայերեն · Hablamos español</h3>
-  <p>Glendale is the most concentrated Armenian community anywhere outside Armenia — depending on the source, somewhere between a third and 40% of residents claim Armenian ancestry — and there is a substantial Spanish-speaking population too. Ask when you call and we will do our best to put you with someone who speaks your language. If we cannot, we will say so rather than muddle through a job where the safe drive-away instructions genuinely matter.</p>
-</div>
-
 <h2>The mountain highway on your northern doorstep</h2>
 <p>Here is something specific to Glendale: the SR-2 Glendale Freeway runs north and continues, past I-210, as the Angeles Crest Highway — an 80-plus mile mountain road climbing to nearly 7,900 feet. Caltrans currently has an active winter-storm repair project on it, with landslides, rockfalls and slope erosion at roughly 40 identified locations and about a 30-mile stretch closed indefinitely.</p>
 <p>The accessible lower section runs straight off Glendale's northern edge, and it is a real rockfall and loose-gravel corridor. If you drive it for recreation, or you live up in Montrose, La Crescenta or the Crescenta Highlands and use those approaches, that is a very likely source of edge damage — the kind that spreads and usually means replacement rather than repair.</p>
@@ -607,7 +593,7 @@ module.exports = [
     navLabel: 'Downey',
     shortLabel: 'Downey',
     title: 'Auto Glass Repair Downey | Registered Shop, Firm Prices | Speedy',
-    desc: 'Mobile auto glass repair in Downey, Norwalk, Bellflower, Whittier and Pico Rivera. A state-registered repair dealer with firm cash prices. Hablamos español.',
+    desc: 'Mobile auto glass repair in Downey, Norwalk, Bellflower, Whittier and Pico Rivera. A state-registered repair dealer with firm cash prices.',
     eyebrow: 'Southeast LA County',
     h1: 'Auto glass repair in Downey from a state-registered shop',
     sub: '<p>Downey is hemmed in by three freeways on three sides, and there is no shortage of people who will fit a windshield out of a van here. We are a registered California repair dealer, our number is on this page, and we quote a firm price.</p>',
@@ -622,11 +608,6 @@ module.exports = [
   <li><strong>"What is the safe drive-away time for the adhesive you are using?"</strong> A real answer names the product and the conditions. "About an hour" is a guess.</li>
 </ol>
 <p>We are answering all four before you ask, which is the point of putting them here.</p>
-
-<div class="callout">
-  <h3>Servicio en español</h3>
-  <p>Spanish is the language of most households here, so it is the language a lot of these jobs get done in. There are Spanish speakers on our vans and answering our phones — ask for one and you will get one. Pregunte por servicio en español cuando llame.</p>
-</div>
 
 <h2>Three freeways on three sides</h2>
 <p>No other city we serve is enclosed like this. Interstate 5 runs along the north and north-east, I-605 down the east, and I-105 across the south, with the I-5/I-605 interchange at the north-east corner and the I-105's eastern end tying into the 605. Lakewood Boulevard and Firestone Boulevard cut through as the main arterials.</p>
@@ -649,8 +630,6 @@ module.exports = [
 <p>Residential driveways across north-east and north-west Downey and the downtown area, apartment surface lots along Firestone and Lakewood, the retail lots around Stonewood, business and industrial parks in the south of the city, and out through the neighbouring cities above.</p>
 `,
     faq: [
-      { q: '¿Hablan español?',
-        a: '<p>Sí. Tenemos personal que habla español para el presupuesto, la cita y las instrucciones sobre cuándo puede manejar el vehículo después de instalar el cristal. Llámenos y pida atención en español.</p>' },
       { q: 'How do I check you\'re a registered shop?',
         a: '<p>Our Bureau of Automotive Repair registration number is in the footer of every page on this site, next to the business name as registered and the phone number the Bureau holds for us. Ask anyone else quoting you for theirs — it is the fastest way to tell a registered dealer from an operator working out of a van.</p>' },
       { q: 'Will the price change when you arrive?',
