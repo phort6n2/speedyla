@@ -769,10 +769,13 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 
 /* Single column: vertical run from the bottom of one disc to the top of the next. */
 .step::after{
-  left:23px; top:52px; width:2px; bottom:-26px;
-  transform:scaleY(0); transform-origin:top;
+  left:23px; top:52px; width:2px; bottom:-26px; transform-origin:top;
 }
-[data-animate].in .step::after{ transform:scaleY(1); }
+/* .js-anim is added by script. Without it — no JS, script error — the line is
+   simply drawn. The collapsed start state must never be the default, or a
+   decoration failure removes the thing it was decorating. */
+.js-anim .step::after{ transform:scaleY(0); }
+.js-anim.in .step::after{ transform:scaleY(1); }
 
 /* The watermark icons are gone at every width, not just mobile. The connector
    crossed straight through them on desktop, and two faint decorations competing
@@ -785,9 +788,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      goes back to the top-right corner, which is genuinely empty here. */
   .step::after{
     left:58px; top:23px; height:2px; width:auto; right:-34px; bottom:auto;
-    transform:scaleX(0); transform-origin:left;
+    transform-origin:left;
   }
-  [data-animate].in .step::after{ transform:scaleX(1); }
+  .js-anim .step::after{ transform:scaleX(0); }
+  .js-anim.in .step::after{ transform:scaleX(1); }
 }
 
 /* Motion is additive: without it the line is simply drawn. */
@@ -800,7 +804,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .step:nth-child(3) .step-n{ animation-delay:.30s }
 }
 @media (prefers-reduced-motion:reduce){
-  .step::after{ transform:none; }
+  .js-anim .step::after, .js-anim.in .step::after{ transform:none; }
 }
 @keyframes discpop{
   from{ opacity:0; transform:scale(.6) }
@@ -2022,9 +2026,17 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   if('IntersectionObserver' in window){
     var animated = document.querySelectorAll('[data-animate]');
     if(animated.length){
+      /* Tells the CSS that script is running, so the collapsed start states are
+         safe to apply. Set before observing, never after. */
+      animated.forEach(function(el){ el.classList.add('js-anim'); });
+
+      /* Two observers rather than one, deliberately. Entry fires early (the
+         block only has to reach the upper two thirds), exit fires late (the
+         block has to leave the viewport completely). That hysteresis is what
+         stops the animation retriggering while it is still half on screen. */
       var io = new IntersectionObserver(function(entries){
         entries.forEach(function(e){
-          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+          if(e.isIntersecting){ e.target.classList.add('in'); }
         });
       }, {
         /* threshold alone fires off the bottom edge: .steps is ~700px tall, so
@@ -2035,7 +2047,16 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         threshold: 0,
         rootMargin: '0px 0px -30% 0px'
       });
-      animated.forEach(function(el){ io.observe(el); });
+
+      /* Removing .in restarts the CSS animations next time it is added, which
+         is what makes them replay on the way back down. */
+      var out = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(!e.isIntersecting){ e.target.classList.remove('in'); }
+        });
+      }, { threshold: 0 });
+
+      animated.forEach(function(el){ io.observe(el); out.observe(el); });
     }
   }
 
