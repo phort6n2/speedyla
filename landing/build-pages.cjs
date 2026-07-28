@@ -425,12 +425,30 @@ function galleryHtml(page) {
  * as text that will not sit still.
  */
 function proseHtml(page) {
-  const byChapter = new Map();
-  for (const f of page.figures || []) byChapter.set(f.chapter, f);
-
   /* Split before an <h2> that starts a line. Every body is authored that way
      and callouts use <h3>, so this cannot catch a nested heading. */
   const parts = page.body.trim().split(/\n(?=<h2>)/);
+
+  const byChapter = new Map();
+  for (const f of page.figures || []) byChapter.set(f.chapter, f);
+
+  /* With bodyPhotoFill on, every remaining chapter takes the next unused body
+     photo. That is what makes the section one shape: a chapter without a photo
+     is a different width from one with, and mixing the two down a page reads as
+     a layout that could not make up its mind. Explicit `figures` still win, so a
+     photo that genuinely belongs to a chapter stays put.
+     Photos never repeat within a page — the fill stops when the pool runs dry,
+     and the CSS keeps an unillustrated chapter on the same block width. */
+  if (cfg.bodyPhotoFill) {
+    const used = new Set(Array.from(byChapter.values()).map((f) => f.src));
+    const spare = (cfg.bodyPhotos || []).filter((g) => !used.has(g.src));
+    let next = 0;
+    for (let i = 0; i < parts.length; i++) {
+      if (byChapter.has(i)) continue;
+      if (next >= spare.length) break;
+      byChapter.set(i, { chapter: i, src: spare[next++].src });
+    }
+  }
 
   let illustrated = 0;
   const chapters = parts.map((part, i) => {

@@ -1142,13 +1142,22 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      heading resolves against the heading's own font — 1170px at this size, so
      it constrained nothing and the h2 ran the full width while its paragraphs
      sat centred beneath it. ch is a property of the element you put it on. */
-  /* :not(), not source order. .pchap and .pchap-fig have equal specificity, so
+  /* A chapter with no photo keeps the SAME block — same width, same left edge,
+     text in the same column an alternated chapter uses. It was centred in the
+     container before, which gave the section two different outer widths and
+     read as a layout that could not decide. bodyPhotoFill means this is now
+     rare, but rare is exactly when an inconsistency is most jarring.
+
+     :not(), not source order. .pchap and .pchap-fig have equal specificity, so
      whichever is written second wins — and this one was, which quietly replaced
      the two-column illustrated grid with a single column plus an implicit auto
      track. The exclusion says what is meant and cannot be undone by moving a
      block. */
-  .pchap:not(.pchap-fig){ display:grid; grid-template-columns:minmax(0,56ch);
-                          justify-content:center; }
+  .pchap:not(.pchap-fig){
+    max-width:934px; margin-inline:auto;
+    display:grid; grid-template-columns:minmax(0,56ch) minmax(0,380fr);
+    gap:0 56px; justify-content:start;
+  }
   .pchap:not(.pchap-fig) > .prose{ max-width:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it

@@ -1142,13 +1142,22 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      heading resolves against the heading's own font — 1170px at this size, so
      it constrained nothing and the h2 ran the full width while its paragraphs
      sat centred beneath it. ch is a property of the element you put it on. */
-  /* :not(), not source order. .pchap and .pchap-fig have equal specificity, so
+  /* A chapter with no photo keeps the SAME block — same width, same left edge,
+     text in the same column an alternated chapter uses. It was centred in the
+     container before, which gave the section two different outer widths and
+     read as a layout that could not decide. bodyPhotoFill means this is now
+     rare, but rare is exactly when an inconsistency is most jarring.
+
+     :not(), not source order. .pchap and .pchap-fig have equal specificity, so
      whichever is written second wins — and this one was, which quietly replaced
      the two-column illustrated grid with a single column plus an implicit auto
      track. The exclusion says what is meant and cannot be undone by moving a
      block. */
-  .pchap:not(.pchap-fig){ display:grid; grid-template-columns:minmax(0,56ch);
-                          justify-content:center; }
+  .pchap:not(.pchap-fig){
+    max-width:934px; margin-inline:auto;
+    display:grid; grid-template-columns:minmax(0,56ch) minmax(0,380fr);
+    gap:0 56px; justify-content:start;
+  }
   .pchap:not(.pchap-fig) > .prose{ max-width:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
@@ -1417,7 +1426,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Can yours be repaired? Here is the actual test</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.66dc3696.webp" width="896" height="1200" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>Most people searching for "windshield repair" genuinely do not know whether they need a repair or a replacement, and plenty of shops are happy to leave that ambiguity in place. So here is the honest rule of thumb, and you can apply it in your own driveway right now:</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Can yours be repaired? Here is the actual test</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.fb5afee6.webp" width="747" height="1000" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>Most people searching for "windshield repair" genuinely do not know whether they need a repair or a replacement, and plenty of shops are happy to leave that ambiguity in place. So here is the honest rule of thumb, and you can apply it in your own driveway right now:</p>
 <ul>
   <li><strong>Smaller than a quarter?</strong> A bullseye or star chip that size is usually a straightforward repair.</li>
   <li><strong>Crack shorter than a dollar bill?</strong> Often repairable, depending on where it sits.</li>
@@ -1427,14 +1436,14 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 </ul>
 <p>If your damage fails that test, you want <a href="/windshield-replacement">windshield replacement</a> instead — and we would rather tell you that up front than take a repair booking we know will not hold.</p>
 </div></div>
-      <div class="pchap"><h2>Why fixing it this week actually matters</h2><div class="prose"><p>A chip is a stress concentration in a sheet of laminated glass that flexes every time you go over a driveway lip or slam a door. Southern California adds two specific accelerators: the temperature swing between a car sitting in full sun and the cold blast when you turn the air conditioning on, and the freeway expansion joints that put a small shock through the body at speed. A chip that was a dot in April becomes a twelve-inch crack across your sightline in July, and at that point the repairable window has closed and you are buying glass.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Why fixing it this week actually matters</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.67fcd9f4.webp" width="747" height="1000" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p>A chip is a stress concentration in a sheet of laminated glass that flexes every time you go over a driveway lip or slam a door. Southern California adds two specific accelerators: the temperature swing between a car sitting in full sun and the cold blast when you turn the air conditioning on, and the freeway expansion joints that put a small shock through the body at speed. A chip that was a dot in April becomes a twelve-inch crack across your sightline in July, and at that point the repairable window has closed and you are buying glass.</p>
 
 <div class="callout">
   <h3>The deductible point, stated accurately</h3>
   <p>Most carriers waive the deductible on a chip <em>repair</em>, because paying for a half-hour resin injection is dramatically cheaper for them than paying for a new windshield plus a camera recalibration. That is the insurer's own commercial decision, not a discount from us — we cannot and do not offer to offset anybody's deductible. We will confirm how your specific policy treats repair before we dispatch, and it usually takes about five minutes on the phone.</p>
 </div>
 </div></div>
-      <div class="pchap"><h2>What the repair involves</h2><div class="prose"><p>We clean the damage out, draw the air from the break under vacuum, inject a clear resin under pressure so it fills the fracture right into the legs of the star, cure it with ultraviolet light, then scrape and polish the surface flush. Done properly, it restores most of the structural integrity of the laminate and stops the crack travelling. It will not vanish completely — expect a faint mark where the impact point was. Any shop promising an invisible repair is overselling it.</p></div></div></div><!--/PAGE:BODY-->
+      <div class="pchap pchap-fig"><h2>What the repair involves</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>We clean the damage out, draw the air from the break under vacuum, inject a clear resin under pressure so it fills the fracture right into the legs of the star, cure it with ultraviolet light, then scrape and polish the surface flush. Done properly, it restores most of the structural integrity of the laminate and stops the crack travelling. It will not vanish completely — expect a faint mark where the impact point was. Any shop promising an invisible repair is overselling it.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 
@@ -1571,10 +1580,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <span class="eyebrow">On the job</span>
       <h2>Real vehicles, real driveways</h2>
     </div>
-    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.94f751e0.webp" width="1360" height="1020" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
+    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.358b7704.webp" width="1000" height="750" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-4runner-fresh-install.6771ecf5.webp" width="450" height="600" alt="Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner" loading="lazy" decoding="async"></span><figcaption>Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-sclass-van-driveway.3de883e5.webp" width="1360" height="1020" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-sclass-door-driveway.b5c4735e.webp" width="1360" height="1020" alt="Mercedes S-Class with the driver door open on a residential driveway during a mobile visit" loading="lazy" decoding="async"></span><figcaption>Front lawn, side street, office lot — wherever the car already is.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-van-driveway.9dceb25b.webp" width="1000" height="750" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-door-driveway.4ff5d80c.webp" width="1000" height="750" alt="Mercedes S-Class with the driver door open on a residential driveway during a mobile visit" loading="lazy" decoding="async"></span><figcaption>Front lawn, side street, office lot — wherever the car already is.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-bay-exotic.2dd7249b.webp" width="500" height="400" alt="Black Ferrari in the Speedy Windshield Repair workshop bay beneath the wall sign" loading="lazy" decoding="async"></span><figcaption>Exotics and late-model vehicles go through exactly the same process as everything else.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-front-san-diego.b5db48bd.webp" width="500" height="400" alt="The Speedy Windshield Repair storefront in San Diego with vehicles parked outside" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. Across Orange County and LA County we come to you instead.</figcaption></figure><!--/PAGE:GALLERY--></div>
   </div>

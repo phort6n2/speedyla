@@ -234,6 +234,11 @@ function bodyText(html) {
   const sub = html.match(/<!--PAGE:SUB-->([\s\S]*?)<!--\/PAGE:SUB-->/);
   s = (h ? h[1] : '') + ' ' + (sub ? sub[1] : '') + ' ' + s;
   return s
+    /* Figure captions are generated, not authored, and the same photo carries
+       the same caption wherever it is reused — which is deliberate. Counting
+       them as body copy made two pages look 8% duplicated purely because they
+       shared photographs. This check exists to catch duplicated PROSE. */
+    .replace(/<figcaption>[\s\S]*?<\/figcaption>/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')

@@ -1142,13 +1142,22 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      heading resolves against the heading's own font — 1170px at this size, so
      it constrained nothing and the h2 ran the full width while its paragraphs
      sat centred beneath it. ch is a property of the element you put it on. */
-  /* :not(), not source order. .pchap and .pchap-fig have equal specificity, so
+  /* A chapter with no photo keeps the SAME block — same width, same left edge,
+     text in the same column an alternated chapter uses. It was centred in the
+     container before, which gave the section two different outer widths and
+     read as a layout that could not decide. bodyPhotoFill means this is now
+     rare, but rare is exactly when an inconsistency is most jarring.
+
+     :not(), not source order. .pchap and .pchap-fig have equal specificity, so
      whichever is written second wins — and this one was, which quietly replaced
      the two-column illustrated grid with a single column plus an implicit auto
      track. The exclusion says what is meant and cannot be undone by moving a
      block. */
-  .pchap:not(.pchap-fig){ display:grid; grid-template-columns:minmax(0,56ch);
-                          justify-content:center; }
+  .pchap:not(.pchap-fig){
+    max-width:934px; margin-inline:auto;
+    display:grid; grid-template-columns:minmax(0,56ch) minmax(0,380fr);
+    gap:0 56px; justify-content:start;
+  }
   .pchap:not(.pchap-fig) > .prose{ max-width:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
@@ -1420,7 +1429,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>A mobile glass shop, not a shop you drive to</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>Speedy Windshield Repair has been replacing and repairing auto glass in Southern California since 2018. We're now taking work across Orange County and Los Angeles County — and in these two counties we operate purely mobile. There is no waiting room, no shuttle, and no morning lost to dropping your car off. You tell us where the vehicle is parked and we bring the glass, the urethane and the calibration equipment to it.</p>
 <p>That matters more than it sounds. A cracked windshield is a structural part of your vehicle — it's bonded in, it supports the roof in a rollover, and on most cars built in the last decade it holds the camera that aims lane-keeping and automatic emergency braking. Driving across the county on a spreading crack to reach a shop is the exact thing you should not be doing.</p>
 </div></div>
-      <div class="pchap"><h2>What we handle</h2><div class="prose"><ul>
+      <div class="pchap pchap-fig pchap-alt"><h2>What we handle</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.67fcd9f4.webp" width="747" height="1000" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><ul>
   <li><strong>Windshield replacement</strong> — including acoustic, heated, heads-up-display and camera-equipped glass</li>
   <li><strong>Chip and crack repair</strong> — resin injection, usually around half an hour</li>
   <li><strong>ADAS camera recalibration</strong> — static, dynamic, or both, on the same visit as the glass</li>
@@ -1433,7 +1442,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <p>California has no law making windshields free. Some drivers here do pay nothing, but that's because they bought a full-glass endorsement — not because of a statute, whatever you may have read in an ad. What is broadly true is that comprehensive coverage pays for glass minus your deductible, and that <strong>most carriers waive the deductible on chip repair</strong> because repairing is far cheaper for them than replacing. We check your actual policy before we dispatch anyone, and no claim gets filed until you tell us to.</p>
 </div>
 </div></div>
-      <div class="pchap pchap-fig pchap-alt"><h2>Why drivers pick us over the national chains</h2><figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="595" height="320" alt="Mercedes G-Class close up, showing the windshield and A-pillar" loading="lazy" decoding="async"></span><figcaption>The person who quotes you is connected to the person who turns up.</figcaption></figure><div class="prose"><p>The chains are competent and they're everywhere. What they're not is flexible. We're small enough that the person who quotes you is connected to the person who shows up, we'll tell you when a repair will do instead of upselling you a replacement, and we do the ADAS recalibration ourselves rather than booking you a second appointment somewhere else a week later.</p>
+      <div class="pchap pchap-fig"><h2>Why drivers pick us over the national chains</h2><figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="595" height="320" alt="Mercedes G-Class close up, showing the windshield and A-pillar" loading="lazy" decoding="async"></span><figcaption>The person who quotes you is connected to the person who turns up.</figcaption></figure><div class="prose"><p>The chains are competent and they're everywhere. What they're not is flexible. We're small enough that the person who quotes you is connected to the person who shows up, we'll tell you when a repair will do instead of upselling you a replacement, and we do the ADAS recalibration ourselves rather than booking you a second appointment somewhere else a week later.</p>
 <p>We also won't quote you a number and then change it in your driveway. If your vehicle needs a specific piece of glass — and camera-equipped, acoustic and HUD windshields all cost genuinely different amounts — we'd rather find that out from your VIN up front than surprise you later.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
@@ -1571,10 +1580,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <span class="eyebrow">On the job</span>
       <h2>Real vehicles, real driveways</h2>
     </div>
-    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.94f751e0.webp" width="1360" height="1020" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
+    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.358b7704.webp" width="1000" height="750" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-4runner-fresh-install.6771ecf5.webp" width="450" height="600" alt="Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner" loading="lazy" decoding="async"></span><figcaption>Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-sclass-van-driveway.3de883e5.webp" width="1360" height="1020" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-sclass-door-driveway.b5c4735e.webp" width="1360" height="1020" alt="Mercedes S-Class with the driver door open on a residential driveway during a mobile visit" loading="lazy" decoding="async"></span><figcaption>Front lawn, side street, office lot — wherever the car already is.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-van-driveway.9dceb25b.webp" width="1000" height="750" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-door-driveway.4ff5d80c.webp" width="1000" height="750" alt="Mercedes S-Class with the driver door open on a residential driveway during a mobile visit" loading="lazy" decoding="async"></span><figcaption>Front lawn, side street, office lot — wherever the car already is.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-bay-exotic.2dd7249b.webp" width="500" height="400" alt="Black Ferrari in the Speedy Windshield Repair workshop bay beneath the wall sign" loading="lazy" decoding="async"></span><figcaption>Exotics and late-model vehicles go through exactly the same process as everything else.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-front-san-diego.b5db48bd.webp" width="500" height="400" alt="The Speedy Windshield Repair storefront in San Diego with vehicles parked outside" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. Across Orange County and LA County we come to you instead.</figcaption></figure><!--/PAGE:GALLERY--></div>
   </div>

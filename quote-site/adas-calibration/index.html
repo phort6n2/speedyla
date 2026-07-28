@@ -1142,13 +1142,22 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      heading resolves against the heading's own font — 1170px at this size, so
      it constrained nothing and the h2 ran the full width while its paragraphs
      sat centred beneath it. ch is a property of the element you put it on. */
-  /* :not(), not source order. .pchap and .pchap-fig have equal specificity, so
+  /* A chapter with no photo keeps the SAME block — same width, same left edge,
+     text in the same column an alternated chapter uses. It was centred in the
+     container before, which gave the section two different outer widths and
+     read as a layout that could not decide. bodyPhotoFill means this is now
+     rare, but rare is exactly when an inconsistency is most jarring.
+
+     :not(), not source order. .pchap and .pchap-fig have equal specificity, so
      whichever is written second wins — and this one was, which quietly replaced
      the two-column illustrated grid with a single column plus an implicit auto
      track. The exclusion says what is meant and cannot be undone by moving a
      block. */
-  .pchap:not(.pchap-fig){ display:grid; grid-template-columns:minmax(0,56ch);
-                          justify-content:center; }
+  .pchap:not(.pchap-fig){
+    max-width:934px; margin-inline:auto;
+    display:grid; grid-template-columns:minmax(0,56ch) minmax(0,380fr);
+    gap:0 56px; justify-content:start;
+  }
   .pchap:not(.pchap-fig) > .prose{ max-width:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
@@ -1421,16 +1430,16 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <p>On most vehicles built in roughly the last decade, a forward-facing camera sits in a bracket bonded to the inside of the windshield, usually behind the mirror. That camera is what the car uses to see lane markings, the vehicle in front, and pedestrians. Lane-keeping assist, adaptive cruise control, forward-collision warning and automatic emergency braking all read from it.</p>
 <p>The camera's aim is calibrated to the exact position it was mounted in. Replace the windshield and the bracket is now sitting in a very slightly different place — a fraction of a degree is enough. A fraction of a degree at the camera becomes feet of error a hundred yards down the road. The car does not know it is wrong. It will confidently steer to a lane edge that is not where it thinks, or brake late, or brake at nothing.</p>
 </div></div>
-      <div class="pchap"><h2>Static, dynamic, or both</h2><div class="prose"><p><strong>Static calibration</strong> is done stationary, with a printed target board set at a manufacturer-specified distance, height and angle in front of the vehicle, on level ground. <strong>Dynamic calibration</strong> is done by driving the vehicle at a specified speed on well-marked road while the system relearns. Which one your vehicle needs is decided by the manufacturer, not by preference — some require static, some dynamic, and a good number require static followed by dynamic.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Static, dynamic, or both</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.67fcd9f4.webp" width="747" height="1000" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p><strong>Static calibration</strong> is done stationary, with a printed target board set at a manufacturer-specified distance, height and angle in front of the vehicle, on level ground. <strong>Dynamic calibration</strong> is done by driving the vehicle at a specified speed on well-marked road while the system relearns. Which one your vehicle needs is decided by the manufacturer, not by preference — some require static, some dynamic, and a good number require static followed by dynamic.</p>
 
 <div class="callout">
   <h3>The scan report is the thing to ask for</h3>
   <p>A calibration you cannot see the evidence of is a calibration you should not pay for. We run a pre-scan before the work and a post-scan afterwards, and we hand you both. That documents which systems reported faults, that the calibration completed, and that no codes were left stored. If anybody replaces your glass and cannot produce that, ask them why.</p>
 </div>
 </div></div>
-      <div class="pchap"><h2>What we need to do it properly</h2><div class="prose"><p>Static calibration has real physical requirements — level ground, enough clear space in front of the vehicle for the target at the specified distance, and controlled lighting without strong glare or deep shadow across the target. A sloped street or a cramped tandem parking space will not produce a valid calibration, and we would rather move to a suitable nearby surface lot than complete a procedure we know is compromised. Tell us where the vehicle will be and we will tell you whether it will work.</p>
+      <div class="pchap pchap-fig"><h2>What we need to do it properly</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.fb5afee6.webp" width="747" height="1000" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>Static calibration has real physical requirements — level ground, enough clear space in front of the vehicle for the target at the specified distance, and controlled lighting without strong glare or deep shadow across the target. A sloped street or a cramped tandem parking space will not produce a valid calibration, and we would rather move to a suitable nearby surface lot than complete a procedure we know is compromised. Tell us where the vehicle will be and we will tell you whether it will work.</p>
 </div></div>
-      <div class="pchap"><h2>Body shops, dealers and used-car lots</h2><div class="prose"><p>We also take calibration work as a subcontractor. If you are a collision shop, a dealer, or a reconditioning operation that needs mobile calibration on your own site rather than sending vehicles out, call us and ask for trade work — it is a different conversation from a retail booking, and we are set up for volume.</p></div></div></div><!--/PAGE:BODY-->
+      <div class="pchap pchap-fig pchap-alt"><h2>Body shops, dealers and used-car lots</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>We also take calibration work as a subcontractor. If you are a collision shop, a dealer, or a reconditioning operation that needs mobile calibration on your own site rather than sending vehicles out, call us and ask for trade work — it is a different conversation from a retail booking, and we are set up for volume.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 
@@ -1567,10 +1576,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <span class="eyebrow">On the job</span>
       <h2>Real vehicles, real driveways</h2>
     </div>
-    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.94f751e0.webp" width="1360" height="1020" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
+    <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.358b7704.webp" width="1000" height="750" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-4runner-fresh-install.6771ecf5.webp" width="450" height="600" alt="Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner" loading="lazy" decoding="async"></span><figcaption>Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-sclass-van-driveway.3de883e5.webp" width="1360" height="1020" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-sclass-door-driveway.b5c4735e.webp" width="1360" height="1020" alt="Mercedes S-Class with the driver door open on a residential driveway during a mobile visit" loading="lazy" decoding="async"></span><figcaption>Front lawn, side street, office lot — wherever the car already is.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-van-driveway.9dceb25b.webp" width="1000" height="750" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-door-driveway.4ff5d80c.webp" width="1000" height="750" alt="Mercedes S-Class with the driver door open on a residential driveway during a mobile visit" loading="lazy" decoding="async"></span><figcaption>Front lawn, side street, office lot — wherever the car already is.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-bay-exotic.2dd7249b.webp" width="500" height="400" alt="Black Ferrari in the Speedy Windshield Repair workshop bay beneath the wall sign" loading="lazy" decoding="async"></span><figcaption>Exotics and late-model vehicles go through exactly the same process as everything else.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-front-san-diego.b5db48bd.webp" width="500" height="400" alt="The Speedy Windshield Repair storefront in San Diego with vehicles parked outside" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. Across Orange County and LA County we come to you instead.</figcaption></figure><!--/PAGE:GALLERY--></div>
   </div>

@@ -207,7 +207,7 @@ module.exports = {
    * fake and costs more trust than the visual polish gains. */
   gallery: [
     {
-      src: 'work-van-mobile-callout.webp', w: 1360, h: 1020,
+      src: 'work-van-mobile-callout.webp', w: 1000, h: 750,
       alt: 'Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call',
       caption: 'The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.'
     },
@@ -217,12 +217,12 @@ module.exports = {
       caption: 'Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.'
     },
     {
-      src: 'work-sclass-van-driveway.webp', w: 1360, h: 1020,
+      src: 'work-sclass-van-driveway.webp', w: 1000, h: 750,
       alt: 'Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it',
       caption: 'A driveway call from start to finish. The customer never left the house.'
     },
     {
-      src: 'work-sclass-door-driveway.webp', w: 1360, h: 1020,
+      src: 'work-sclass-door-driveway.webp', w: 1000, h: 750,
       alt: 'Mercedes S-Class with the driver door open on a residential driveway during a mobile visit',
       caption: 'Front lawn, side street, office lot — wherever the car already is.'
     },
@@ -255,12 +255,12 @@ module.exports = {
    * the only kind of photograph that belongs on a local service page. */
   bodyPhotos: [
     {
-      src: 'work-glass-detail-hands.webp', w: 896, h: 1200,
+      src: 'work-glass-detail-hands.webp', w: 747, h: 1000,
       alt: 'Gloved hands of a technician working along the edge of a windshield during a fitting',
       caption: 'The pinchweld is the step that decides whether the bond holds, and the step most often rushed.'
     },
     {
-      src: 'work-crack-from-cabin.webp', w: 896, h: 1200,
+      src: 'work-crack-from-cabin.webp', w: 747, h: 1000,
       alt: 'A long crack across a windshield seen from the driver\'s seat on a palm-lined street',
       caption: 'What a chip looks like a few months after it was still repairable.'
     },
@@ -285,6 +285,19 @@ module.exports = {
       caption: 'Cars like this carry a camera behind the windshield. It is recalibrated on the same visit.'
     }
   ],
+
+  /* Give every remaining chapter a photo from bodyPhotos above.
+   *
+   * A chapter with a photo is a two-column block; one without is a single
+   * column. Mixing the two down a page gives the section two different widths
+   * and reads as a layout that could not decide. With enough photography to
+   * cover the longest page, turning this on removes the problem at the source
+   * rather than papering over it in CSS.
+   *
+   * Explicit `figures` still win, so a photo that belongs to a specific chapter
+   * stays there. Nothing repeats within a page; if the pool runs dry the
+   * remaining chapters keep the same block width and simply have no photo. */
+  bodyPhotoFill: true,
 
   /* Cities named in LocalBusiness.areaServed */
   areaServed: [
