@@ -283,15 +283,40 @@ function trustStripHtml() {
  * there is no live review data, the same as every other rating claim.
  */
 function statBandHtml() {
+  /* data-count marks the figures that can be counted up on screen. The element
+     already contains the final formatted value, so with no JS or reduced motion
+     the correct number is simply there — the animation only ever replaces it
+     temporarily. */
   const stats = [];
   if (reviews) {
-    stats.push([String(reviews.rating), 'average rating']);
-    stats.push([fmtCount(reviews.count), 'Google reviews']);
+    stats.push({ value: String(reviews.rating), label: 'average rating',
+                 count: reviews.rating, decimals: 1 });
+    stats.push({ value: fmtCount(reviews.count), label: 'Google reviews',
+                 count: reviews.count, group: true });
   }
-  if (site.established) stats.push(['Since ' + site.established, 'serving California drivers']);
-  stats.push([String(cityPages.length), 'cities covered']);
+  if (site.established) {
+    /* Years in business rather than "Since 2018": a short countable number
+       instead of a two-line string, and it stays current on its own because the
+       weekly review refresh rebuilds the site. */
+    const years = new Date().getFullYear() - Number(site.established);
+    if (years > 0) {
+      stats.push({ value: String(years), label: 'years in business', count: years });
+    }
+  }
+  stats.push({ value: String(cityPages.length), label: 'cities covered',
+               count: cityPages.length });
+
   return stats
-    .map((s) => '<div class="stat"><b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>')
+    .map((st) => {
+      const attrs =
+        st.count === undefined
+          ? ''
+          : ' data-count="' + esc(st.count) + '"' +
+            (st.decimals ? ' data-decimals="' + st.decimals + '"' : '') +
+            (st.group ? ' data-group="1"' : '');
+      return '<div class="stat"><b' + attrs + '>' + esc(st.value) + '</b>' +
+             '<span>' + esc(st.label) + '</span></div>';
+    })
     .join('\n        ');
 }
 

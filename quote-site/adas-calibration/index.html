@@ -727,19 +727,44 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 /* ---- stat band -------------------------------------------------------
    Large numerals do visual work that prose cannot, and every figure here is
    derived from real data by the generator rather than authored. */
-.statband{ background:var(--band-dark); color:#fff; padding:34px 0; }
+/* Depth from a radial wash rather than a flat fill, matching the closing CTA,
+   plus hairline panels so each figure reads as its own object at any column
+   count. Dividers via nth-child break when the grid reflows; panels do not. */
+.statband{
+  background:radial-gradient(120% 120% at 50% 0%,#153C6B,#0A2650);
+  color:#fff; padding:40px 0;
+  border-block:1px solid rgba(255,255,255,.08);
+}
 .stats{
-  display:grid; gap:22px 18px;
+  display:grid; gap:12px;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
   text-align:center;
 }
+.stat{
+  padding:18px 12px; border-radius:16px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.10);
+}
 .stat b{
-  display:block; font-size:clamp(1.75rem,4.2vw,2.5rem); font-weight:800;
-  letter-spacing:-.02em; line-height:1.05; color:var(--gold-on-dark);
+  display:block; font-size:clamp(1.875rem,4.6vw,2.625rem); font-weight:800;
+  letter-spacing:-.025em; line-height:1.05; color:var(--gold-on-dark);
+  font-variant-numeric:tabular-nums;   /* stops the width jittering while counting */
 }
 .stat span{
-  display:block; margin-top:6px; font-size:.875rem; line-height:1.35;
+  display:block; margin-top:8px; font-size:.875rem; line-height:1.35;
   color:rgba(255,255,255,.82);
+}
+/* Panels rise in on a stagger. Additive: without .in they are simply in place. */
+@media (prefers-reduced-motion:no-preference){
+  .js-anim.in .stat{ animation:statrise .5s var(--ease) backwards; }
+  .js-anim.in .stat:nth-child(1){ animation-delay:.04s }
+  .js-anim.in .stat:nth-child(2){ animation-delay:.12s }
+  .js-anim.in .stat:nth-child(3){ animation-delay:.20s }
+  .js-anim.in .stat:nth-child(4){ animation-delay:.28s }
+}
+@keyframes statrise{
+  from{ opacity:0; transform:translateY(10px) }
+  to{ opacity:1; transform:none }
 }
 
 /* ---- guarantee seal --------------------------------------------------
@@ -1384,10 +1409,10 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      authored here — the review numbers vanish entirely without reviews.json. -->
 <section class="statband">
   <div class="wrap">
-    <div class="stats"><!--PAGE:STATS--><div class="stat"><b>4.9</b><span>average rating</span></div>
-        <div class="stat"><b>1,110</b><span>Google reviews</span></div>
-        <div class="stat"><b>Since 2018</b><span>serving California drivers</span></div>
-        <div class="stat"><b>12</b><span>cities covered</span></div><!--/PAGE:STATS--></div>
+    <div class="stats" data-animate><!--PAGE:STATS--><div class="stat"><b data-count="4.9" data-decimals="1">4.9</b><span>average rating</span></div>
+        <div class="stat"><b data-count="1110" data-group="1">1,110</b><span>Google reviews</span></div>
+        <div class="stat"><b data-count="8">8</b><span>years in business</span></div>
+        <div class="stat"><b data-count="12">12</b><span>cities covered</span></div><!--/PAGE:STATS--></div>
   </div>
 </section>
 
@@ -2037,7 +2062,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
          stops the animation retriggering while it is still half on screen. */
       var io = new IntersectionObserver(function(entries){
         entries.forEach(function(e){
-          if(e.isIntersecting){ e.target.classList.add('in'); }
+          if(e.isIntersecting){ e.target.classList.add('in'); countUp(e.target); }
         });
       }, {
         /* threshold alone fires off the bottom edge: .steps is ~700px tall, so
@@ -2048,6 +2073,38 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
         threshold: 0,
         rootMargin: '0px 0px -30% 0px'
       });
+
+      /* Count-up for [data-count]. The element already contains the final
+         formatted value, so no JS and reduced motion both leave the correct
+         number on screen — the animation only ever replaces it temporarily and
+         always restores the exact original string at the end. */
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function countUp(root){
+        if(reduce) return;
+        root.querySelectorAll('[data-count]').forEach(function(el){
+          var target = parseFloat(el.getAttribute('data-count'));
+          if(!isFinite(target)) return;
+          var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+          var group = el.hasAttribute('data-group');
+          var final = el.getAttribute('data-final') || el.textContent;
+          el.setAttribute('data-final', final);          // never re-derive from a mid-count value
+          if(el._raf) cancelAnimationFrame(el._raf);
+          var dur = 900, t0 = 0;
+          function frame(t){
+            if(!t0) t0 = t;
+            var k = Math.min(1, (t - t0) / dur);
+            var eased = 1 - Math.pow(1 - k, 3);
+            var v = target * eased;
+            el.textContent = group
+              ? Math.round(v).toLocaleString('en-US')
+              : v.toFixed(decimals);
+            if(k < 1){ el._raf = requestAnimationFrame(frame); }
+            else { el.textContent = final; el._raf = null; }
+          }
+          el.textContent = decimals ? (0).toFixed(decimals) : '0';
+          el._raf = requestAnimationFrame(frame);
+        });
+      }
 
       /* Removing .in restarts the CSS animations next time it is added, which
          is what makes them replay on the way back down. */
