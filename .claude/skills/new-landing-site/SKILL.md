@@ -1,14 +1,18 @@
 ---
 name: new-landing-site
-description: Build a new Google Ads landing site for a client from this repo's generator, or migrate one off HighLevel landing pages. Use when asked to spin up a landing site for an auto glass shop or similar local service business, clone this site for another client, or set up the GHL webhook, Google Ads conversion and call tracking for a new location.
+description: Build a new Google Ads landing site for a client from the phort6n2/landing-template generator, using la.speedywindshield.com as the layout model, or migrate a client off HighLevel landing pages without breaking their ad URLs. Use when asked to spin up a landing site for an auto glass shop or similar local service business, clone an existing client site for another client, or set up the GHL webhook, Google Ads conversion and call tracking for a new location.
 ---
 
 # New client landing site
 
-This repo is the template. `la.speedywindshield.com` is the reference build.
-The machinery is client-agnostic; the content is not.
+`phort6n2/landing-template` is the template: the machinery, plus a skeleton
+config full of `REPLACE__` markers that the build refuses to ship.
+**<https://la.speedywindshield.com>** is the reference build — use it as the
+model for layout, section order, motion and density. Its full source is in
+`phort6n2/speedyla`, which is the place to look when a decision here needs to be
+seen in finished form rather than described.
 
-**Start by copying the repo, never by rebuilding from the live site.** If
+**Start from the template repo, never by rebuilding from the live site.** If
 someone says "use la.speedywindshield.com as the model", they mean the layout
 and the finished look — treat the URL as a visual reference, and fetch it if a
 detail is easier to see than to read. Do not reconstruct the site from its
@@ -17,32 +21,67 @@ copying is invisible from the browser — the generator, the region markers, the
 config-driven content, the preflight, the four verification suites, the ads
 sheet. A page rebuilt from scraped HTML looks similar and carries none of it.
 
+Read the template repo's `README.md` first; it is the operating manual and this
+skill is the judgement that goes with it.
+
 ## What is reusable and what is not
 
-**Reuse unchanged** — `landing/build-pages.cjs` (generator), `landing/verify.cjs`
-(assertions), `qa/tracking-check.cjs`, `qa/render-check.cjs`,
-`landing/fetch-reviews.cjs`, `landing/ads-sheet.cjs`.
+**Reuse unchanged** — `landing/build-pages.cjs` (generator),
+`landing/verify.cjs`, `landing/preflight.cjs`, `landing/check-urls.cjs`,
+`qa/tracking-check.cjs`, `qa/render-check.cjs`, `landing/fetch-reviews.cjs`,
+`tools/make-icons.cjs`, and the machinery half of `landing/ads-sheet.cjs`.
+
+None of these contain a client name, a city, a phone number or a slug pattern.
+If you are about to type one into any of them, it belongs in the config — and
+the fix is to add a token or a region, not an exception.
 
 **Rewrite per client** — `landing/pages.config.cjs` and `landing/cities.config.cjs`
-(all page content), the `:root` colour block in `landing/speedy.html`, and
-`landing/img/`.
+(all page content), the `:root` colour block in `landing/template.html`,
+`landing/img/`, and the `GROUPS` data block in `landing/ads-sheet.cjs`.
 
-**Re-derive per client, never copy** — the compliance block and the ad copy rules.
-See "Compliance" below. Copying California auto-glass compliance to a client in
-another state or vertical is a legal problem, not a shortcut.
+**Re-derive per client, never copy** — `site.compliance` (the regulator line and
+the banned ad-copy patterns) and both `landing/legal-*.html` pages. See
+"Compliance" below. Carrying California auto-glass compliance across to a client
+in another state or trade is a legal problem, not a shortcut. Preflight blocks
+the build until the legal pages have been read and their
+`REPLACE__REVIEW_LEGAL` marker removed.
 
 ## Architecture, in one paragraph
 
-`landing/speedy.html` is a valid standalone page AND the master template.
+`landing/template.html` is a valid standalone page AND the master template.
 Content is injected between region markers `<!--PAGE:NAME-->…<!--/PAGE:NAME-->`,
 and `{{TOKENS}}` are substituted from `site` in `pages.config.cjs`. Asset paths
-are written as `/SPEEDY/...` in the template and rewritten at build time, so the
+are written as `/ASSET/...` in the template and rewritten at build time, so the
 template opens correctly from disk during design work. Images are content-hashed
 (md5, 8 chars) and served `immutable, max-age=31536000` — never reuse a filename
 and expect a change to appear.
 
-`region()` fills **every** occurrence of a marker, not the first. Two markers
-appear twice in the template.
+Three things about this that have each cost a debugging session:
+
+- `region()` fills **every** occurrence of a marker, not the first.
+  `FOOTER_AREA_A` and `FOOTER_AREA_B` each appear twice, and filling only the
+  first shipped empty footer columns that nobody noticed for days.
+- `section()` handles `<!--SECTION:NAME-->…<!--/SECTION:NAME-->` and **deletes
+  the whole band** when its content is empty — gallery, insurance, both rating
+  elements. A region can only fill a hole; it cannot remove the heading above
+  it, and an eyebrow over an empty grid reads as a broken page.
+  A region inside a strippable section must be filled **conditionally**, or the
+  build throws "missing region marker" the first time the section is dropped.
+- Internal links **inside config body copy** must be written `/ASSET/slug`.
+  Written as `/slug` they escape the rewrite and ship pointing at a path the
+  build never created. `verify` catches it, so read what it says rather than
+  assuming the link list is stale.
+
+In the `speedyla` reference repo the same two files are still called
+`landing/speedy.html` with a `/SPEEDY/` prefix — same mechanism, older names.
+That repo also predates `areaGroups`, `serviceCards`, `site.compliance` and the
+`SECTION` markers, so read it for finished copy and finished layout, and read
+the template for how the machinery is wired now.
+
+Pages carry `<meta name="page-kind" content="home|service|hub|city">`. The
+checkers classify by that rather than by slug pattern, so a client whose URLs
+look nothing like the reference build still gets the doorway-content check
+instead of silently getting nothing.
 
 ## If the client already has a landing page — do this FIRST
 
@@ -199,21 +238,31 @@ generated, so they cost nothing per client beyond real data.
 
 ## Build order for a new client
 
-1. **Copy the repo.** New GitHub repo, new Vercel project.
+1. **Create the repo from `phort6n2/landing-template`.** New GitHub repo, new
+   Vercel project.
 2. **Inventory existing URLs and harvest their photography** if this is a
    migration — the two sections above. Both read the same sources, so do them
    in one pass.
 3. **Fill `site` in `pages.config.cjs`.** Every field in the checklist below.
+   `npm run preflight` tells you what is still missing; run it early and often
+   rather than treating it as a final gate.
 4. **Palette.** Replace the `:root` variables. Compute contrast — do not
    estimate it. Body text needs 4.5:1, large text 3:1, and any colour carrying a
    border or an icon needs 3:1. The reference build's cyan failed at 2.62:1 and
    could not be used for text; the orange had to darken to `#CB4E1A` to reach
    4.52:1.
-5. **Content.** Home, service pages, county/region hubs, city pages.
-6. **Reviews.** Put the client's Google Place ID in `fetch-reviews.cjs`, set the
-   `GOOGLE_PLACES_API_KEY` secret, run `npm run check:placeid` to confirm it
+5. **Artwork.** `npm run make:icons -- path/to/logo.png` writes the whole
+   favicon / app-icon / OG set and copies the logo through. Preflight blocks the
+   build while the shipped placeholders are still in place, by hash — so a
+   forgotten logo cannot reach production.
+6. **Content.** Home, service pages, area hubs, city pages. The skeleton bodies
+   are briefs describing what each page must cover, not copy to paraphrase.
+7. **Reviews.** Set `site.reviews.placeId` and the `expect*` guards, set the
+   `GOOGLE_PLACES_API_KEY` secret, and run `npm run check:placeid` to confirm it
    resolves to the right business before trusting it.
-7. **Verify, then deploy.** See the gates below.
+8. **Legal pages.** Read both against what this client actually collects, then
+   remove the `REPLACE__REVIEW_LEGAL` marker.
+9. **Verify, then deploy.** See the gates below.
 
 ## Per-client checklist
 
@@ -224,23 +273,36 @@ client's phone number sends leads to the wrong business.
 |---|---|
 | `site` | `domain`, `legalName`, `brandShort`, `email` |
 | `site` | `phoneFormatted` / `phoneE164` — the DNI-swapped number |
-| `site` | `barPhoneFormatted` / `barPhoneE164`, `barArd` — registered number, or blank |
+| `site` | `shortName`, `schemaType`, `sourceTag`, `logo`, `ogImage`, `themeColor` |
+| `site.serviceArea` | `label`, `short`, `coverageLead`, `mapNote`, `footerNote`, `qualifier` |
+| `site` | `regionPhrase`, `utilNote`, `utilNoteMore`, `footerBlurb`, `notFoundNote` |
+| `site.compliance.registration` | `authority`, `label`, `number`, registered phone — or all blank |
+| `site.compliance.adClaims` | `banned` patterns, re-derived for this state and trade |
 | `site` | `callAsset` — the Google call-forwarding number, excluded from DNI |
 | `site` | `address`, `geo.lat` / `geo.lng` (verify these, they are easy to leave approximate) |
 | `site.ads` | `conversionId` (`AW-…`), `conversionLabel`, `leadValue` |
 | `site.ghl` | `webhook`, `locationId`, `poolId` |
-| `fetch-reviews.cjs` | Place ID and the `EXPECT_*` guards |
+| `site.reviews` | `placeId` and the three `expect*` guards |
 | `landing/img/` | logo, OG image, favicons, photography |
-| `ads-sheet.cjs` | the `GROUPS` data block |
-| `pages.config.cjs` | `trust` (hero strip), `gallery` (photos), `migration` |
+| `ads-sheet.cjs` | the `GROUPS` data block and the negatives |
+| `pages.config.cjs` | `trust`, `gallery`, `migration`, `areaGroups`, `serviceCards`, `insurance`, `nav` |
 | `landing/img/` | `warranty-badge.png` only if that client offers the warranty |
+| `landing/legal-*.html` | both, read in full, marker removed |
+
+Do not work from this table alone — `npm run preflight` walks the entire config
+recursively and fails on any surviving `REPLACE__`, including inside page bodies
+and FAQ answers. The table tells you what matters most; preflight tells you what
+is actually left.
 
 ## Form
 
-The form is currently auto-glass shaped: vehicle, VIN, insurance, carrier,
-service. For another glass client it is already correct. For a different
-vertical the field list, labels, validation rules and options need to become
-config-driven first — do that work in the template, do not fork it.
+The form is auto-glass shaped: vehicle, VIN, insurance, carrier, service. For
+another glass client it is already correct. For a different trade the field
+list, labels, validation rules and `<option>` values need to become
+config-driven first — do that work **in the template repo**, do not fork it.
+`svcValue` on every page must match an `<option value>`, and `qa:tracking`
+asserts the preselection, so a mismatch fails the build rather than silently
+sending the wrong service on every lead.
 
 Required fields must live **outside** the collapsible drawer. A required field
 inside a collapsed section means the visitor presses submit and the error lands
@@ -326,7 +388,7 @@ Keep the 44px box and give the gap back: `li{margin:0 0 8px}` with
 ### 5. The legal pages carry their own stylesheet
 
 `legal-privacy.html` and `legal-terms.html` are standalone and do not inherit
-`speedy.html`'s media queries. Identical footer markup measured 34.8px there
+`template.html`'s media queries. Identical footer markup measured 34.8px there
 against 44px on the main pages, and the reading measure was uncapped at 115
 characters per line. They are hand-synced today — **factor this into a shared
 partial rather than patching it twice again.**
@@ -364,13 +426,14 @@ justifies *claiming* one.
 All four must pass before deploy. They exist because each caught a real defect.
 
 ```
-npm run build:landing
-npm run verify        # preflight + 15 sections, must be 0 failures 0 warnings
-npm run qa:tracking   # 18 assertions in a real browser
-npm run qa:render     # overflow AND clipped overflow, console errors, tap targets
+npm run qa            # build + verify + render + tracking, in one go
 npm run build:adsheet # refuses to write if any asset breaks Google's limits
 npm run check:urls -- --file old-urls.txt   # migrations only, before cutover
 ```
+
+Individually: `build:landing`, then `verify` (preflight + 16 sections, must be
+0 failures 0 warnings), `qa:tracking` (18 assertions in a real browser),
+`qa:render` (overflow, clipped overflow, console errors, tap targets).
 
 `npm run verify` runs `preflight.cjs` first, which refuses to build while any
 client value is still a placeholder or still belongs to the previous client —
@@ -384,6 +447,17 @@ stayed silent while a card heading wrapped one word per line off the screen.
 
 When changing the template on an existing site, snapshot `quote-site/` first and
 diff after rebuilding. An empty diff proves a refactor changed nothing.
+
+When changing the **template repo**, the equivalent proof is to build a throwaway
+copy against real content — the speedyla config mapped onto the template's field
+names — and get `verify`, `qa:render` and `qa:tracking` all green on it.
+Placeholder bodies are too short to exercise the checks: the city-overlap and
+call-asset checks both fail on the skeleton for arithmetic reasons that have
+nothing to do with whether the code works.
+
+**Watch for double-escaped entities.** Config strings the docs describe as HTML
+carry `&amp;`; passing one through `esc()` a second time renders `&amp;amp;` on
+the page. `verify` fails on it now, but only because it shipped once.
 
 **Editing the generator: never slice by index.** Finding a function's end with
 `indexOf` overshot here and deleted 177 lines including seven functions and both
@@ -409,6 +483,13 @@ Root `vercel.json` sets `outputDirectory: "quote-site"`.
   persists until the action records attributable activity. Not a diagnosis.
 - **Only 2–5 review quotes.** The Places API returns at most 5 reviews. That is
   the ceiling, not a filter bug.
+- **Preflight failing on a fresh clone of the template.** That is the point.
+- **The skeleton failing the city-overlap check.** Two placeholder bodies really
+  are near-duplicates, and the texts are short enough that a couple of shared
+  5-grams blow past 5%. It clears as soon as real copy exists.
+- **A missing registration line in the footer, or no gallery band, or no rating
+  anywhere.** Each of those sections removes itself when its config is empty,
+  rather than rendering a heading over nothing.
 - **A lead arriving with blank `service` or `insurance`.** Impossible from this
   form — both always carry a value, defaults included. It came from somewhere
   else, usually a GHL workflow whose trigger is broader than the Inbound Webhook,
