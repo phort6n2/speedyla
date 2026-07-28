@@ -289,7 +289,7 @@ function statBandHtml() {
     stats.push([fmtCount(reviews.count), 'Google reviews']);
   }
   if (site.established) stats.push(['Since ' + site.established, 'serving California drivers']);
-  stats.push([String(cityPages.length), 'cities covered across 2 counties']);
+  stats.push([String(cityPages.length), 'cities covered']);
   return stats
     .map((s) => '<div class="stat"><b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>')
     .join('\n        ');

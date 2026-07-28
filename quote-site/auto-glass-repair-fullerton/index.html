@@ -533,6 +533,20 @@ select.input{
   border-radius:0 0 var(--r-sm) var(--r-sm);
 }
 .radios{ display:flex; flex-wrap:wrap; gap:8px; border:0; padding:0; margin:0; }
+/* Three options wrapped 2-then-1, leaving the third stranded beside dead space.
+   Two halves and a full-width third fills both rows. Kept on flex rather than
+   grid because the legend is a child here, and legends inside a grid fieldset
+   are handled inconsistently across browsers. */
+@media (max-width:719px){
+  .radios legend{ flex:1 1 100%; }
+  .radio{ flex:1 1 calc(50% - 4px); justify-content:center; }
+  .radio:last-child{ flex-basis:100%; }
+}
+/* Below 360px a half-width pill is too narrow for "Self-pay" and it wraps to a
+   second line, so the row runs 51px against the third's 44px. Stack all three. */
+@media (max-width:359px){
+  .radio{ flex-basis:100%; }
+}
 .radios legend{ font-size:.875rem; font-weight:600; padding:0; margin:0 0 8px; }
 .radio{
   display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px;
@@ -1213,7 +1227,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
               <fieldset class="radios">
                 <legend>Filing through insurance?</legend>
                 <label class="radio"><input type="radio" name="insurance" id="ins-y" value="yes"> Yes</label>
-                <label class="radio"><input type="radio" name="insurance" id="ins-n" value="no"> Paying myself</label>
+                <label class="radio"><input type="radio" name="insurance" id="ins-n" value="no"> Self-pay</label>
                 <label class="radio"><input type="radio" name="insurance" id="ins-u" value="not-sure" checked> Not sure yet</label>
               </fieldset>
               <div class="field" id="carrierField" hidden>
@@ -1377,7 +1391,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     <div class="stats"><!--PAGE:STATS--><div class="stat"><b>4.9</b><span>average rating</span></div>
         <div class="stat"><b>1,110</b><span>Google reviews</span></div>
         <div class="stat"><b>Since 2018</b><span>serving California drivers</span></div>
-        <div class="stat"><b>12</b><span>cities covered across 2 counties</span></div><!--/PAGE:STATS--></div>
+        <div class="stat"><b>12</b><span>cities covered</span></div><!--/PAGE:STATS--></div>
   </div>
 </section>
 
