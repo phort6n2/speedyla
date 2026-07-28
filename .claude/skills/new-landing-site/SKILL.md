@@ -148,6 +148,46 @@ and a last pair takes half each. Every count from 1 to 8 fills its rows with no
 stranded photo beside empty cells. Add as many photos as the client has without
 counting them into threes.
 
+**Symmetry is the client's most frequent note.** Any repeating block needs to
+divide evenly at every column count it reaches, or fill the last row
+deliberately. The same rule already covers the insurance radios (two halves and
+a full-width third, all three stacked below 360px) and the stat band. When a
+label is the thing breaking a row — one caption wrapping to two lines while its
+neighbours fit — shorten the label rather than adjusting the grid.
+
+## What the page carries beyond text
+
+These exist on the reference build and are worth keeping. All of them are
+generated, so they cost nothing per client beyond real data.
+
+| Element | Where | Notes |
+|---|---|---|
+| Google mark + score | hero chip, sticky header, map card | `<span>`, never a link in the header — the call button is the only tap target there |
+| Star rows | hero, section heads, review cards | pop in on a stagger |
+| Stat band | after the three steps | figures **derived**, never authored; counts up on view |
+| Step timeline | how-it-works | connector joining the numbered discs, draws in on view |
+| Warranty badge | warranty section | self-issued, see above |
+| Photo watermarks | gallery | anchored to the image, not the figure |
+| Review cards | reviews section | avatar disc, name, relative date, Google mark |
+
+### Motion rules — all three are load-bearing
+
+1. **Additive, never required.** The default state must be the finished state.
+   A class the script adds (`.js-anim`) turns the *start* state on, so no JS and
+   no `prefers-reduced-motion` both leave the real content on screen. Getting
+   this backwards means a decoration failure removes the thing it decorates —
+   the step connector shipped that way until it was caught.
+2. **Counted numbers keep their final value in the HTML.** `data-count` drives
+   the animation; the element's own text is already the formatted result, and
+   the script restores that exact string when it finishes. Verify with
+   `javaScriptEnabled:false` and `reducedMotion:'reduce'`.
+3. **Two observers, not one.** Entry fires early (root bottom shrunk 30%, so the
+   block reaches the upper two thirds before it counts); exit fires only when
+   the block leaves the viewport completely. Without that hysteresis the
+   animation retriggers while the section is half on screen. A single
+   `threshold` also fires off the bottom edge on tall blocks — the animation
+   plays where nobody can see it.
+
 ## Build order for a new client
 
 1. **Copy the repo.** New GitHub repo, new Vercel project.
@@ -183,6 +223,8 @@ client's phone number sends leads to the wrong business.
 | `fetch-reviews.cjs` | Place ID and the `EXPECT_*` guards |
 | `landing/img/` | logo, OG image, favicons, photography |
 | `ads-sheet.cjs` | the `GROUPS` data block |
+| `pages.config.cjs` | `trust` (hero strip), `gallery` (photos), `migration` |
+| `landing/img/` | `warranty-badge.png` only if that client offers the warranty |
 
 ## Form
 
@@ -226,6 +268,88 @@ affiliation claims, no unqualified drive-away time, no invented prices, no
 superlatives — are insurance/auto-glass specific. Replace them; do not inherit
 them silently.
 
+## CSS traps that produced real bugs here
+
+Four defects on the reference build came from two root causes. Both will recur.
+
+### 1. Source order decides, because media queries add no specificity
+
+`a.card{display:block}` written after `@media(max-width:719px){ a.card{display:grid} }`
+silently wins at every width. This bit four times: a leftover `.seal` size from
+a superseded version, the card grid, `.nav + .hdr-cta{margin-left:0}` sitting
+outside a media query so it cancelled an auto-margin on mobile, and a `.seal`
+rule from the SVG era overriding the PNG sizes.
+
+**Read the computed style in the browser, not the stylesheet.** Every one of
+these looked right in the source. `getComputedStyle(el).display` is the only
+thing that settles it.
+
+### 2. A dark band is not always `.sec-dark`
+
+`.final` is its own navy gradient and matches no `.sec-dark` selector. That
+produced an eyebrow at **1.33:1** — invisible, not merely low — and later a call
+button that stayed solid orange beside the solid orange submit so neither read
+as primary. Dark-background rules now use `:is(.sec-dark,.final)`. Any new rule
+written for a dark background needs both.
+
+Note the render check cannot catch the contrast half: it reads computed CSS, and
+that text sits on a gradient, so there is no single background colour to compare
+against. Contrast on gradients has to be measured from rendered pixels or worked
+out from the gradient stops by hand.
+
+### 3. "Empty space" is a property of the layout, not the element
+
+Anything absolutely positioned into a gap needs checking at every column count.
+The step watermark icons were placed in an empty top-right corner that only
+exists in the three-column layout; at one column that corner is the middle of a
+paragraph. Moving them to the gutter then collided with the timeline, and the
+480–899px band clipped them in half because their position depended on the
+paragraph's height. They were eventually deleted — two faint decorations
+competing in one box is worse than one clear one.
+
+### 4. Tap targets need size AND separation
+
+Absorbing a list's row gap into the link box hits 44px and leaves adjacent
+targets touching at **0px**, which is a coin flip for a thumb on the boundary.
+Keep the 44px box and give the gap back: `li{margin:0 0 8px}` with
+`a{padding:8px 0;min-height:44px}`.
+
+### 5. The legal pages carry their own stylesheet
+
+`legal-privacy.html` and `legal-terms.html` are standalone and do not inherit
+`speedy.html`'s media queries. Identical footer markup measured 34.8px there
+against 44px on the main pages, and the reading measure was uncapped at 115
+characters per line. They are hand-synced today — **factor this into a shared
+partial rather than patching it twice again.**
+
+### 6. `ch` is not a character
+
+`.prose{max-width:72ch}` rendered **96 characters per line**. The `ch` unit is
+the advance width of "0", far wider than average lowercase. 56ch lands at ~75,
+which is the top of the comfortable range. Measure per line with
+`Range.getBoundingClientRect()` rather than dividing by font size.
+
+## Do not invent facts about the business
+
+The compliance rules in this repo ban carrier logos, certifications and prices.
+The same rule covers anything a visitor could rely on, and it is easy to breach
+without noticing when research *feels* like evidence.
+
+Four city pages here shipped claiming bilingual staffing — "Spanish-speaking
+staff answering the phone and on the vans", "ask for one and you will get one",
+a heading reading "We speak Armenian" in Armenian, and two Spanish-language FAQs
+answering "Sí. Tenemos personal que habla español." The demographics behind them
+were correct and verified. **The staffing was an assumption**, and the client's
+own site made no bilingual claim anywhere.
+
+Worse than a wrong claim: those FAQs sat in the FAQPage JSON-LD, so they could
+surface in Google results and bring a Spanish- or Armenian-only caller to a line
+that could not serve them. A wasted paid click and a bad experience.
+
+The test is not "is this plausible for a business like this" but "did the client
+tell me this". Demographics justify *targeting* a language; only the client
+justifies *claiming* one.
+
 ## Verification gates
 
 All four must pass before deploy. They exist because each caught a real defect.
@@ -234,7 +358,7 @@ All four must pass before deploy. They exist because each caught a real defect.
 npm run build:landing
 npm run verify        # preflight + 15 sections, must be 0 failures 0 warnings
 npm run qa:tracking   # 18 assertions in a real browser
-npm run qa:render     # overflow, console errors, tap targets
+npm run qa:render     # overflow AND clipped overflow, console errors, tap targets
 npm run build:adsheet # refuses to write if any asset breaks Google's limits
 npm run check:urls -- --file old-urls.txt   # migrations only, before cutover
 ```
@@ -244,8 +368,18 @@ client value is still a placeholder or still belongs to the previous client —
 a copied repo that keeps the old GHL webhook sends the new client's leads to
 someone else's CRM, and nothing about the page looks wrong when it happens.
 
+`qa:render` flags two kinds of overflow. Content past the viewport while the
+document does **not** scroll is the more dangerous one — a parent is clipping it,
+so it is invisible rather than reachable, and the old scrollWidth-only test
+stayed silent while a card heading wrapped one word per line off the screen.
+
 When changing the template on an existing site, snapshot `quote-site/` first and
 diff after rebuilding. An empty diff proves a refactor changed nothing.
+
+**Editing the generator: never slice by index.** Finding a function's end with
+`indexOf` overshot here and deleted 177 lines including seven functions and both
+Google mark constants. Use exact string replacement and check `git diff --stat`
+before building.
 
 ## Deployment
 
