@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Being straight about our LA County coverage</h2><div class="prose"><p>Los Angeles County is around 4,000 square miles, and any mobile glass company claiming to cover all of it equally is either exaggerating or about to cancel on somebody. So here is our actual envelope:</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Being straight about our LA County coverage</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>Los Angeles County is around 4,000 square miles, and any mobile glass company claiming to cover all of it equally is either exaggerating or about to cancel on somebody. So here is our actual envelope:</p>
 <ul>
   <li><strong>South Bay</strong> — <a href="/auto-glass-repair-torrance">Torrance</a>, Redondo Beach, Hermosa Beach, Manhattan Beach, Gardena, Carson, El Segundo</li>
   <li><strong>Westside</strong> — <a href="/auto-glass-repair-santa-monica">Santa Monica</a>, Venice, Culver City, West LA, Mar Vista</li>
@@ -1430,7 +1436,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <div class="pchap"><h2>What breaks glass in LA County</h2><div class="prose"><p>The mix here is different from Orange County. Street parking and break-ins drive a great deal of <a href="/car-window-replacement">door glass</a> and <a href="/back-glass-replacement">back glass</a> work — considerably more than windshields in some neighbourhoods. The 710 corridor and the port approaches generate genuine rock-chip volume from heavy truck traffic, and the freeway construction that is permanently underway somewhere in this county does the rest.</p>
 <p>Then there is the commute itself. LA drivers spend more time in traffic than almost anyone in the country, which means more hours sitting directly behind other people's tyres. A chip you pick up on the 405 in the morning has all day in the sun and then a cold blast of air conditioning to help it spread.</p>
 </div></div>
-      <div class="pchap"><h2>Where we can actually work, in an LA context</h2><div class="prose"><p>This is the practical problem that matters here more than anywhere else. Residential driveways and office surface lots are straightforward. Street parking is usually workable but we need to know the block, because time-limited zones and street-sweeping days decide the appointment. Subterranean and tandem garages are the difficulty — many buildings ban vehicle work outright in their rules, and static camera calibration needs level ground and clear space in front of the vehicle that a tight garage bay will not give.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Where we can actually work, in an LA context</h2><figure><span class="shot"><img src="/img/work-gwagon-shop-front.09500d84.webp" width="765" height="1020" alt="Mercedes G-Class parked outside the Speedy Windshield Repair storefront" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. In Orange County and LA County we come to you instead.</figcaption></figure><div class="prose"><p>This is the practical problem that matters here more than anywhere else. Residential driveways and office surface lots are straightforward. Street parking is usually workable but we need to know the block, because time-limited zones and street-sweeping days decide the appointment. Subterranean and tandem garages are the difficulty — many buildings ban vehicle work outright in their rules, and static camera calibration needs level ground and clear space in front of the vehicle that a tight garage bay will not give.</p>
 <p>None of that is usually a dealbreaker. Most often the answer is your office instead of your building, or a nearby surface lot. Tell us the situation and we will solve it on the phone rather than in your driveway.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>

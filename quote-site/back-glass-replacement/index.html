@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>If your back window just went, read this first</h2><div class="prose"><p>Most people arriving here are standing next to a car with no rear window, glass across the parcel shelf and back seats, and a vehicle that is now open to the weather and to anyone walking past. Two immediate things:</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>If your back window just went, read this first</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.4b16cc0f.webp" width="896" height="1200" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p>Most people arriving here are standing next to a car with no rear window, glass across the parcel shelf and back seats, and a vehicle that is now open to the weather and to anyone walking past. Two immediate things:</p>
 <ul>
   <li><strong>Do not brush it out with your hands.</strong> Tempered glass breaks into small cubes with genuinely sharp corners, and they get into seat seams, seatbelt reels and the trunk channel where you will find them for months.</li>
   <li><strong>Get it covered if the car has to sit.</strong> If we cannot reach you until tomorrow, tape plastic sheeting over the opening — it will not stop a determined thief but it keeps the weather out and makes the car a less obvious target.</li>
@@ -1420,7 +1426,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 </div></div>
       <div class="pchap"><h2>Why rear glass behaves so differently from a windshield</h2><div class="prose"><p>Your windshield is laminated — two layers of glass bonded to a plastic interlayer, which is why it cracks and holds together rather than falling out. Back glass is almost always tempered, which is engineered to shatter into small blunt-ish cubes rather than dagger shards. That is much safer in a collision, and it is why there is no such thing as repairing a chip in your rear window. Once it goes, it is all gone.</p>
 </div></div>
-      <div class="pchap"><h2>The two things that make back glass a specialist job</h2><div class="prose"><p><strong>The defroster grid.</strong> Those fine horizontal lines are a heating element printed onto the glass, wired to tabs at the edges. The replacement has to have the correct grid for your vehicle and the tabs have to be reconnected properly, or you have a rear window that never clears.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>The two things that make back glass a specialist job</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.66dc3696.webp" width="896" height="1200" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p><strong>The defroster grid.</strong> Those fine horizontal lines are a heating element printed onto the glass, wired to tabs at the edges. The replacement has to have the correct grid for your vehicle and the tabs have to be reconnected properly, or you have a rear window that never clears.</p>
 <p><strong>The embedded antenna.</strong> On a lot of vehicles the radio — sometimes also the keyless entry — runs through an antenna printed into the rear glass. Fit a piece of glass without it, or leave the connection off, and the owner discovers weeks later that their radio has been poor since the glass was done and nobody mentioned why.</p>
 <p>We check both against your VIN before ordering, and we test them before we leave.</p>
 

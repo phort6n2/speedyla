@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Let us deal with the obvious obstacle first</h2><div class="prose"><p>Every mobile glass company says it comes to you. In Santa Monica the honest question is <em>where</em>, because a windshield replacement needs a vehicle that can sit undisturbed with room to work around it, and this city is built to prevent exactly that. Time-limited street parking, permit-only residential blocks, street sweeping, and apartment buildings whose garages ban vehicle work — any one of those can sink an appointment booked without asking.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Let us deal with the obvious obstacle first</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.4b16cc0f.webp" width="896" height="1200" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p>Every mobile glass company says it comes to you. In Santa Monica the honest question is <em>where</em>, because a windshield replacement needs a vehicle that can sit undisturbed with room to work around it, and this city is built to prevent exactly that. Time-limited street parking, permit-only residential blocks, street sweeping, and apartment buildings whose garages ban vehicle work — any one of those can sink an appointment booked without asking.</p>
 <p>So here is how Santa Monica jobs actually get done, in rough order of how often each works:</p>
 <ol>
   <li><strong>Your workplace car park.</strong> Comfortably the best option and the most common. Santa Monica imports more than half again its resident population every working day — the daytime population swells by over 50% — so most people reading this work somewhere with parking. You work, we work, nobody moves the car.</li>
@@ -1429,7 +1435,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <div class="pchap"><h2>The freeway ends here, and the highway north is a work zone</h2><div class="prose"><p>Santa Monica is the only city in our service area that an Interstate is named after, and I-10 <em>ends</em> here — freeway traffic is delivered straight into a surface grid, then through the 1936 McClure Tunnel onto Pacific Coast Highway. Lincoln Boulevard carries regional traffic through town as a continuous signalised arterial.</p>
 <p>What matters for your glass is what is happening immediately north. Following the January 2025 Palisades Fire and the storms after it, Caltrans has had multiple emergency projects running along roughly eight and a half miles of PCH from the McClure Tunnel up into Malibu — debris-flow nets, catchment and secant walls, slope reinforcement, guardrail replacement and landslide analysis, with reduced speed limits and single-lane closures on the northern sections. That is a documented rock-and-debris environment starting at this city's own northern edge. If you drive PCH north with any regularity, you are driving through active rockfall mitigation, and that is exactly where windshields get hit.</p>
 </div></div>
-      <div class="pchap"><h2>Break-ins drive more of our work here than road damage</h2><div class="prose"><p>Santa Monica has serious vehicle break-in exposure — beach-adjacent lots, the structures around the Promenade and Ocean Avenue, and long stretches of street parking near the parks and the beach. The result is that <a href="/car-window-replacement">side glass</a> is a bigger share of our Santa Monica work than windshields, which is unusual.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Break-ins drive more of our work here than road damage</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.66dc3696.webp" width="896" height="1200" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>Santa Monica has serious vehicle break-in exposure — beach-adjacent lots, the structures around the Promenade and Ocean Avenue, and long stretches of street parking near the parks and the beach. The result is that <a href="/car-window-replacement">side glass</a> is a bigger share of our Santa Monica work than windshields, which is unusual.</p>
 <p>If yours has been done: leave the glass rather than sweeping it out by hand, because tempered glass breaks into small sharp cubes that migrate into seat seams and down inside the door. And before ringing your insurer, get our cash price — a single door window commonly costs less than a comprehensive deductible, and if that is true for you then claiming just means paying the whole thing and carrying a claim for nothing.</p>
 </div></div>
       <div class="pchap"><h2>The newest, most electric fleet we work on</h2><div class="prose"><p>This is the highest-income and newest-vehicle profile of any city we serve, and it has a real operational consequence: the forward-camera recalibration rate here is effectively 100% on current-model cars. Santa Monica also has an unusually dense EV and plug-in population — several thousand registered, with hundreds of public charging points including DC fast chargers. EVs matter for glass specifically because they tend to run large single-piece windshields, heavier curb weights, and heated, acoustic or heads-up-display glass with camera brackets. Not harder, but not a routine sedan windshield either.</p>

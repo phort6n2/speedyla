@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>The freeway that stops mid-city</h2><div class="prose"><p>Costa Mesa is the only city in Orange County where two state freeways terminate inside the city limits — SR-55's southern end and SR-73's northern end are both here — with I-405 crossing the north as well.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>The freeway that stops mid-city</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.4b16cc0f.webp" width="896" height="1200" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p>Costa Mesa is the only city in Orange County where two state freeways terminate inside the city limits — SR-55's southern end and SR-73's northern end are both here — with I-405 crossing the north as well.</p>
 <p>The SR-55 terminus is the interesting one for glass. Its freeway lanes physically stop at 19th Street, handing eight lanes of freeway-speed traffic straight onto surface Newport Boulevard. That is a hard-braking, high-debris transition zone inside a residential city, and there is nothing else like it in our service area. Chips picked up around it, and around the merge-heavy 405/55/73 convergence, tend to land in odd places — the passenger third, or high near the top edge — rather than the classic dead-centre strike, because merging traffic throws stone sideways rather than straight back.</p>
 <p>Where the chip lands changes what we can do. Dead centre in your sightline usually means replacement even when a repair is technically possible, because repairs leave slight distortion. Off to the passenger side, the same damage is a straightforward <a href="/windshield-repair">resin repair</a>. Send a photo and we will tell you which you have.</p>
 </div></div>
@@ -1424,7 +1430,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <p>Eastside Costa Mesa and the older tracts near the fairgrounds have plenty of high-mileage cars where a cash price and a fast turnaround is the entire brief. A few minutes away, Newport Beach and Newport Coast run newer, camera-equipped, frequently leased vehicles where OEM glass and a documented ADAS calibration matter more than saving forty dollars. Costa Mesa also imports about 22% more people by day than it houses, so a lot of the cars here belong to people who work rather than live in the city. We serve all of that properly instead of pretending everyone wants the same thing — tell us which situation you are in and the conversation goes differently.</p>
 </div>
 </div></div>
-      <div class="pchap"><h2>Newport Beach coverage</h2><div class="prose"><p>Newport Beach, Newport Coast, Corona del Mar and Balboa are all inside our normal Costa Mesa run. Two local notes. The peninsula and Balboa Island have genuinely tight streets and limited parking, so a replacement there needs a plan — often a nearby lot rather than the kerb outside your house. And harbour-adjacent vehicles pick up the same salt-air seal and corrosion issues as anywhere on the water, which matters when new glass is being bonded in.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Newport Beach coverage</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.66dc3696.webp" width="896" height="1200" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>Newport Beach, Newport Coast, Corona del Mar and Balboa are all inside our normal Costa Mesa run. Two local notes. The peninsula and Balboa Island have genuinely tight streets and limited parking, so a replacement there needs a plan — often a nearby lot rather than the kerb outside your house. And harbour-adjacent vehicles pick up the same salt-air seal and corrosion issues as anywhere on the water, which matters when new glass is being bonded in.</p>
 </div></div>
       <div class="pchap"><h2>Where we work</h2><div class="prose"><p>Driveways across Eastside and Westside Costa Mesa, Mesa Verde and College Park, office lots around South Coast Metro, the fairgrounds side, and through Newport. Mobile throughout — there is no shop for you to visit.</p></div></div></div><!--/PAGE:BODY-->
   </div>

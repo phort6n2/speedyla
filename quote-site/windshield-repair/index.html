@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters

@@ -88,6 +88,20 @@ function region(html, name, replacement) {
   return out + rest;
 }
 
+/**
+ * Fill a region, or delete it and its markers when there is nothing to put
+ * there. A client with no review data and no configured badges would otherwise
+ * ship an empty region, which verify.cjs correctly refuses — the trust cluster
+ * is optional by design, so its absence must not be a build failure.
+ */
+function optionalRegion(html, name, filling) {
+  if (filling) return region(html, name, filling);
+  return html.replace(
+    new RegExp('<!--PAGE:' + name + '-->[\\s\\S]*?<!--/PAGE:' + name + '-->', 'g'),
+    ''
+  );
+}
+
 function url(slug) {
   const b = BASE || '';
   if (!slug || slug === '/') return b + '/';
@@ -911,7 +925,7 @@ function renderPage(page) {
       .replace(/\{\{REVIEW_COUNT\}\}/g, esc(fmtCount(reviews.count)));
   }
 
-  s = region(s, 'BARTRUST', barTrustHtml());
+  s = optionalRegion(s, 'BARTRUST', barTrustHtml());
   s = applyBarBlock(s);
 
   /* ---- site-wide tokens ---- */
@@ -1086,7 +1100,7 @@ function build() {
     s = region(s, 'FOOTER_SERVICES', footerServices);
     s = region(s, 'FOOTER_OC', footerOC);
     s = region(s, 'FOOTER_LA', footerLA);
-    s = region(s, 'BARTRUST', barTrustHtml());
+    s = optionalRegion(s, 'BARTRUST', barTrustHtml());
     s = applyBarBlock(s);
     s = s
       .replace(/\{\{PHONE_E164\}\}/g, esc(site.phoneE164))

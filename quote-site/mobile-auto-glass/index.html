@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>The practical questions nobody answers on their website</h2><div class="prose"><p>If you have already decided you do not want to spend a morning in a waiting room, you do not need convincing that mobile service is good. You need to know whether it will actually work where your car is. So:</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>The practical questions nobody answers on their website</h2><figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="595" height="320" alt="Mercedes G-Class close up, showing the windshield and A-pillar" loading="lazy" decoding="async"></span><figcaption>The person who quotes you is connected to the person who turns up.</figcaption></figure><div class="prose"><p>If you have already decided you do not want to spend a morning in a waiting room, you do not need convincing that mobile service is good. You need to know whether it will actually work where your car is. So:</p>
 
 <h3>Where we can work</h3>
 <ul>
@@ -1437,7 +1443,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <p>A lot of shops advertise mobile service and then attach a trip fee, so people reasonably assume everyone does. We do not — the mobile visit is how we work, not an upgrade. It is also worth saying that not driving on a spreading crack is the safer choice regardless of convenience.</p>
 </div>
 </div></div>
-      <div class="pchap"><h2>Which jobs we do mobile</h2><div class="prose"><p>All of them: <a href="/windshield-replacement">windshield replacement</a>, <a href="/windshield-repair">chip and crack repair</a>, <a href="/back-glass-replacement">back glass</a>, <a href="/car-window-replacement">door and side windows</a>, and <a href="/adas-calibration">ADAS recalibration</a>. The only genuine constraints are the physical ones above, plus rare vehicles needing a specialist part we have to order in first.</p></div></div></div><!--/PAGE:BODY-->
+      <div class="pchap pchap-fig pchap-alt"><h2>Which jobs we do mobile</h2><figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit.</figcaption></figure><div class="prose"><p>All of them: <a href="/windshield-replacement">windshield replacement</a>, <a href="/windshield-repair">chip and crack repair</a>, <a href="/back-glass-replacement">back glass</a>, <a href="/car-window-replacement">door and side windows</a>, and <a href="/adas-calibration">ADAS recalibration</a>. The only genuine constraints are the physical ones above, plus rare vehicles needing a specialist part we have to order in first.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 

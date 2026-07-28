@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>The 710 is the worst road for windshields in our entire service area</h2><div class="prose"><p>The Long Beach Freeway's southern terminus is inside this city, splitting into spurs that feed the container terminals directly. This is where the nation's port drayage fleet begins and ends its runs. The Port of Long Beach moved 9,881,595 TEUs in 2025 — its busiest year in 115 years — and every container that does not leave by rail leaves on a chassis behind a tractor.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>The 710 is the worst road for windshields in our entire service area</h2><figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="595" height="320" alt="Mercedes G-Class close up, showing the windshield and A-pillar" loading="lazy" decoding="async"></span><figcaption>The person who quotes you is connected to the person who turns up.</figcaption></figure><div class="prose"><p>The Long Beach Freeway's southern terminus is inside this city, splitting into spurs that feed the container terminals directly. This is where the nation's port drayage fleet begins and ends its runs. The Port of Long Beach moved 9,881,595 TEUs in 2025 — its busiest year in 115 years — and every container that does not leave by rail leaves on a chassis behind a tractor.</p>
 <p>Metro's own corridor data puts heavy-duty trucks at 14 to 19% of I-710 traffic, and at over 30% of the daytime traffic stream on the Long Beach segment between Ocean Boulevard and 9th Street. No other freeway in our service area comes close to that share. Every one of those trucks throws grit, and a proportion are hauling aggregate or debris.</p>
 <p>Damage from that corridor also runs worse than average. A stone off a container truck at freeway speed arrives with real energy, so we see fewer neat little bullseyes here and more combination breaks and long cracks that were never going to be repairable. If you have just taken a hit on the 710, look at it properly before assuming it is a quick fix.</p>
 <p>Two things to have on your radar: the Shoemaker Bridge — the 710 connector into Downtown — came out of service in May 2026 with demolition following, and a large Caltrans I-405 rehabilitation covering 118 lane-miles of concrete pavement began in late July 2026 and runs to 2031. Both mean years of active work zones on the roads you use daily.</p>
@@ -1424,7 +1430,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <p>Long Beach residents identify by neighbourhood and so do we, because the parking reality changes completely across town. <strong>Belmont Shore and Naples</strong> — narrow streets, permit parking, tight kerbside. <strong>Downtown and the East Village</strong> — towers and structures, often subterranean. <strong>Bixby Knolls, California Heights and Los Cerritos</strong> — proper driveways, the easiest work in the city. <strong>Signal Hill</strong> — slopes, which matter for camera calibration. Knowing which one you are in tells us immediately whether we can work at your address or should suggest a nearby lot.</p>
 </div>
 </div></div>
-      <div class="pchap"><h2>A city with two very different fleets</h2><div class="prose"><p>The east and south-east side — Naples, Belmont Shore, Belmont Heights, Bluff Park, Los Cerritos, Bixby Knolls — runs newer, camera-equipped vehicles where a documented recalibration after glass replacement is standard. The west side and the port belt run Class 8 tractors, drayage chassis and work trucks. And CSULB, with over 42,000 students, adds a large pool of older high-mileage cars where a repair beats a replacement every time. Central Long Beach is more price-sensitive again. Tell us which of those you are and the quote conversation changes.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>A city with two very different fleets</h2><figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit.</figcaption></figure><div class="prose"><p>The east and south-east side — Naples, Belmont Shore, Belmont Heights, Bluff Park, Los Cerritos, Bixby Knolls — runs newer, camera-equipped vehicles where a documented recalibration after glass replacement is standard. The west side and the port belt run Class 8 tractors, drayage chassis and work trucks. And CSULB, with over 42,000 students, adds a large pool of older high-mileage cars where a repair beats a replacement every time. Central Long Beach is more price-sensitive again. Tell us which of those you are and the quote conversation changes.</p>
 <p>One more local hazard nobody expects: Los Alamitos Circle carries over 60,000 vehicles a day and is the only high-volume traffic circle in Southern California. Heavy merging at speed with very close following is exactly the condition that picks a stone off the car in front.</p>
 </div></div>
       <div class="pchap"><h2>Where we work in Long Beach</h2><div class="prose"><p>Driveways and streets across Bixby Knolls, Los Cerritos, California Heights, Wrigley and the East Side; Belmont Shore, Belmont Heights and Naples with a parking plan; Downtown, the East Village and Alamitos Beach where a structure allows it; the CSULB area; and Signal Hill. Everything mobile — there is no shop here to drive to.</p>

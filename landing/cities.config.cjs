@@ -48,6 +48,16 @@ module.exports = [
     h1: 'Auto glass repair in Anaheim — mobile, wherever you\'re parked',
     sub: '<p>Anaheim is Orange County\'s biggest city, its biggest employer sits on one campus, and a large share of the cars on its roads belong to visitors. We work at hotels, driveways and industrial lots across all of it.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-suv-windshield.webp' },
+      { chapter: 2, src: 'work-volvo-xc90-adas.webp' }
+    ],
     body: `
 <h2>A tourism city stacked on top of a truck corridor</h2>
 <p>Anaheim is an unusual driving environment, and the reason is that two completely different traffic systems overlap here. The Disneyland Resort employs around 36,000 people at a single site and the city drew a record 26.5 million visitors in 2025, which puts an enormous, permanent volume of unfamiliar drivers on Harbor Boulevard, Katella Avenue, Ball Road and Disney Way. Layered directly on top of that are Interstate 5 running the length of the city, SR-91 across the north, and SR-57 down the eastern side — all three carrying heavy freight.</p>
@@ -95,6 +105,16 @@ module.exports = [
     h1: 'Auto glass repair in Santa Ana from a registered shop',
     sub: '<p>Santa Ana has no shortage of people who will fit a windshield out of the back of a van. Fewer of them are registered with the state. We are, our registration number is at the bottom of this page, and we quote a firm number before we drive out.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-glass-detail-hands.webp' },
+      { chapter: 2, src: 'work-crack-from-cabin.webp' }
+    ],
     body: `
 
 <h2>Why we lead with a registration number here</h2>
@@ -144,6 +164,16 @@ module.exports = [
     h1: 'Auto glass repair in Irvine with same-visit ADAS calibration',
     sub: '<p>Irvine has the newest vehicle fleet in Orange County, which means nearly every windshield here has a camera bonded behind it. We fit the glass and recalibrate the camera on the same visit — not at a second appointment somewhere else.</p>',
     svcValue: 'adas-calibration',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-bmw-mobile-visit.webp' },
+      { chapter: 2, src: 'work-gwagon-shop-front.webp' }
+    ],
     body: `
 <h2>Almost every Irvine windshield we replace needs recalibrating</h2>
 <p>With a median household income around $129,647 and a very high lease-and-replace rate, this city runs newer cars than anywhere else in the county. Practically all of them carry a forward-facing camera mounted to the windshield, driving lane-keeping assist, adaptive cruise control and automatic emergency braking.</p>
@@ -200,6 +230,16 @@ module.exports = [
     h1: 'Auto glass repair in Huntington Beach — built for the coast',
     sub: '<p>Caltrans periodically has to clear blown sand off Pacific Coast Highway here. That tells you most of what you need to know about what this environment does to a windshield, and to the seals holding it in.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-suv-windshield.webp' },
+      { chapter: 2, src: 'work-volvo-xc90-adas.webp' }
+    ],
     body: `
 <h2>Salt air is not a marketing line, it is a failure mode</h2>
 <p>Coastal Huntington Beach vehicles age differently, and it shows up in glass work. Salt-laden air corrodes the pinchweld — the metal channel a windshield actually bonds to — and degrades rubber mouldings and seals faster than inland air does. Two consequences:</p>
@@ -253,6 +293,16 @@ module.exports = [
     h1: 'Auto glass repair in Costa Mesa and Newport Beach',
     sub: '<p>Two state freeways dead-end inside Costa Mesa, and the country\'s highest-grossing shopping centre sits on its northern edge. For a small city that is a remarkable amount of traffic, and a remarkable amount of broken glass.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-glass-detail-hands.webp' },
+      { chapter: 2, src: 'work-crack-from-cabin.webp' }
+    ],
     body: `
 <h2>The freeway that stops mid-city</h2>
 <p>Costa Mesa is the only city in Orange County where two state freeways terminate inside the city limits — SR-55's southern end and SR-73's northern end are both here — with I-405 crossing the north as well.</p>
@@ -298,6 +348,16 @@ module.exports = [
     h1: 'Auto glass repair in Fullerton — cash prices, no claim needed',
     sub: '<p>Roughly 60,000 students drive to class in this city, a lot of them in older cars on liability-only cover. We quote a straight cash number, we come to you, and no insurer needs to be involved at all.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-bmw-mobile-visit.webp' },
+      { chapter: 2, src: 'work-gwagon-shop-front.webp' }
+    ],
     body: `
 <h2>You do not need insurance to get this fixed</h2>
 <p>Most glass advertising assumes everybody has comprehensive coverage and a cooperative carrier. In Fullerton that assumption falls apart fast. Cal State Fullerton is the largest campus in the entire CSU system with over 43,000 students, Fullerton College — the oldest continuously operating community college in California — enrols roughly 17,000 a semester, and both are overwhelmingly commuter campuses. That is around 60,000 mostly older, higher-mileage vehicles, many on liability-only cover, which does not pay for your own glass at all.</p>
@@ -347,6 +407,16 @@ module.exports = [
     h1: 'Auto glass repair in Long Beach — port city, port problems',
     sub: '<p>The 710 dead-ends into the Port of Long Beach, which just posted the busiest year in its 115-year history. If you drive that corridor, a chipped windshield is not bad luck — it is a schedule.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-suv-windshield.webp' },
+      { chapter: 2, src: 'work-volvo-xc90-adas.webp' }
+    ],
     body: `
 <h2>The 710 is the worst road for windshields in our entire service area</h2>
 <p>The Long Beach Freeway's southern terminus is inside this city, splitting into spurs that feed the container terminals directly. This is where the nation's port drayage fleet begins and ends its runs. The Port of Long Beach moved 9,881,595 TEUs in 2025 — its busiest year in 115 years — and every container that does not leave by rail leaves on a chassis behind a tractor.</p>
@@ -394,6 +464,16 @@ module.exports = [
     h1: 'Auto glass repair in Torrance without the dealer service drive',
     sub: '<p>Torrance is Honda\'s American headquarters city and home to more Japanese-affiliated companies than anywhere else in the area. Which means a lot of people here get quoted for glass at a dealership service drive. Same glass, same calibration, at your house.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-glass-detail-hands.webp' },
+      { chapter: 2, src: 'work-crack-from-cabin.webp' }
+    ],
     body: `
 <h2>What you are actually comparing us against</h2>
 <p>In most cities our competition is another glass shop. In Torrance it is the dealership. American Honda runs its US headquarters from Torrance Boulevard, the city hosts 246-plus Japanese-affiliated companies — more than any other city in the area — and Hawthorne Boulevard carries an extraordinary density of franchised dealers. So when a Torrance driver spots a crack, the reflex is to ring the service department.</p>
@@ -449,6 +529,16 @@ module.exports = [
     h1: 'Auto glass repair in Pasadena and the west San Gabriel Valley',
     sub: '<p>Pasadena is the northern end of the oldest freeway in America — and its 1940 geometry has no shoulders, which means there is nowhere to pull over when a rock hits your glass. We come to you instead.</p>',
     svcValue: 'adas-calibration',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-bmw-mobile-visit.webp' },
+      { chapter: 2, src: 'work-gwagon-shop-front.webp' }
+    ],
     body: `
 <h2>The 110 is a genuinely unusual hazard</h2>
 <p>The Arroyo Seco Parkway terminates in Pasadena, and it is the first freeway built in the United States — a National Historic Civil Engineering Landmark still operating in essentially its original 1940 form. That is charming and it is also the problem. It was designed for 1940 traffic and now carries over four times that volume, and its crash rate runs at roughly twice that of other freeways, largely attributed to the outdated design.</p>
@@ -501,6 +591,16 @@ module.exports = [
     h1: 'Auto glass repair in Glendale CA — mobile across the Verdugos',
     sub: '<p>Glendale, California — in Los Angeles County, wrapped around the southern end of the Verdugo Mountains. Not Glendale, Arizona. If you are looking at a cracked windshield in the Verdugos, you are in the right place.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-suv-windshield.webp' },
+      { chapter: 2, src: 'work-volvo-xc90-adas.webp' }
+    ],
     body: `
 <h2>The right Glendale</h2>
 <p>Worth settling in the first line, because a lot of people searching for a Glendale glass shop end up looking at one in Arizona. This page is about <strong>Glendale, California</strong> — the city in Los Angeles County bordered by Burbank, Eagle Rock and La Cañada Flintridge, with I-5 running through the flat south-western side, SR-134 crossing east–west, the SR-2 Glendale Freeway heading north, and I-210 across the northern Crescenta Valley end. If that is where your car is, we cover it.</p>
@@ -550,6 +650,16 @@ module.exports = [
     h1: 'Auto glass repair in Santa Monica — parking solved first',
     sub: '<p>Santa Monica has the most difficult parking of anywhere we work, and for mobile glass that is the entire problem. So we settle where the job will actually happen before talking about anything else.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-glass-detail-hands.webp' },
+      { chapter: 2, src: 'work-crack-from-cabin.webp' }
+    ],
     body: `
 <h2>Let us deal with the obvious obstacle first</h2>
 <p>Every mobile glass company says it comes to you. In Santa Monica the honest question is <em>where</em>, because a windshield replacement needs a vehicle that can sit undisturbed with room to work around it, and this city is built to prevent exactly that. Time-limited street parking, permit-only residential blocks, street sweeping, and apartment buildings whose garages ban vehicle work — any one of those can sink an appointment booked without asking.</p>
@@ -608,6 +718,16 @@ module.exports = [
     h1: 'Auto glass repair in Downey from a state-registered shop',
     sub: '<p>Downey is hemmed in by three freeways on three sides, and there is no shortage of people who will fit a windshield out of a van here. We are a registered California repair dealer, our number is on this page, and we quote a firm price.</p>',
     svcValue: 'windshield-replacement',
+    /* Two figures, at the same chapters the service pages use, so a city page
+       has the same rhythm as the rest of the site rather than reading as a
+       wall of text with a photo grid bolted underneath. The pool is small and
+       these repeat across pages — that is fine, nobody reads two city pages,
+       and a real photograph reused beats a stock one that is not this
+       business. */
+    figures: [
+      { chapter: 0, src: 'work-bmw-mobile-visit.webp' },
+      { chapter: 2, src: 'work-gwagon-shop-front.webp' }
+    ],
     body: `
 <h2>Four questions to ask before anyone touches your glass</h2>
 <p>Whoever you end up using — us or somebody else — these are worth asking, because the answers separate a proper installation from a fast one:</p>

@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Why we lead with a registration number here</h2><div class="prose"><p>Santa Ana is, by the city's own figures, the fourth most densely populated place in the United States among cities over 300,000 — around 12,471 people per square mile. Density like that supports a large informal auto glass trade: operators working from a van with no registration, no insurance, and no address you could find again if the glass leaked.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Why we lead with a registration number here</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.4b16cc0f.webp" width="896" height="1200" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p>Santa Ana is, by the city's own figures, the fourth most densely populated place in the United States among cities over 300,000 — around 12,471 people per square mile. Density like that supports a large informal auto glass trade: operators working from a van with no registration, no insurance, and no address you could find again if the glass leaked.</p>
 <p>Plenty of them do acceptable work. The problem is that you cannot tell which from a phone call, and if it goes wrong there is nobody to go back to. Every automotive repair dealer in California is required to be registered with the Bureau of Automotive Repair. Ours is printed in the footer of this page, next to the business name exactly as it appears on the certificate and the phone number the Bureau has on file. You can check it — and it is the single most useful question to put to anyone quoting you for mobile glass. A registered dealer hands you a number you can verify; an unregistered one changes the subject.</p>
 
 <div class="callout">
@@ -1422,7 +1428,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <div class="pchap"><h2>The city is currently rebuilding its main arterial</h2><div class="prose"><p>This is worth knowing because it is actively affecting your windshield. Santa Ana is partway through a phased reconstruction of Bristol Street — a 3.9-mile arterial rebuild that has been running in stages, widening the roadway, adding protected bike lanes and a raised median. Combine that with the OC Streetcar's years of embedded-rail construction along Santa Ana Boulevard and Fourth Street, and you have torn-up arterials across a dense street grid.</p>
 <p>Roadworks are a glass problem specifically because of what they leave on the surface: loose aggregate, temporary asphalt lips, milled pavement and steel plates. At 12,471 people per square mile, everybody is driving over all of it, several times a day, a couple of car lengths behind somebody else.</p>
 </div></div>
-      <div class="pchap"><h2>County-seat traffic, which nowhere else in OC has</h2><div class="prose"><p>Santa Ana is the county seat, and the County of Orange is by far its largest employer with roughly 19,000 staff, most of them at the Civic Center. The justice centre here hears matters for cities across the whole county, so jury summonses, court dates and permit appointments pull drivers in from all 34 Orange County cities and send them home again the same day. Add the SR-55 and SR-22 wrapped around the city, I-5 running through it, and the Orange Crush interchange nearby handling something on the order of 540,000 vehicles a day, and there is no quiet direction out of Santa Ana.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>County-seat traffic, which nowhere else in OC has</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.66dc3696.webp" width="896" height="1200" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>Santa Ana is the county seat, and the County of Orange is by far its largest employer with roughly 19,000 staff, most of them at the Civic Center. The justice centre here hears matters for cities across the whole county, so jury summonses, court dates and permit appointments pull drivers in from all 34 Orange County cities and send them home again the same day. Add the SR-55 and SR-22 wrapped around the city, I-5 running through it, and the Orange Crush interchange nearby handling something on the order of 540,000 vehicles a day, and there is no quiet direction out of Santa Ana.</p>
 <p>Because so much local driving is short-hop, chips here often go unnoticed for weeks and then run in one hot afternoon. If there is a star in your glass now, <a href="/windshield-repair">a repair</a> is quick and most carriers waive the deductible on repair. Left until it crosses your eyeline, it becomes a replacement.</p>
 </div></div>
       <div class="pchap"><h2>Parking is the real scheduling constraint</h2><div class="prose"><p>Much of Santa Ana is apartments and subdivided older housing with tight shared lots, tandem spaces, or permit street parking that fills by early evening. A windshield replacement needs the vehicle stationary with room to work around it while the adhesive cures.</p>

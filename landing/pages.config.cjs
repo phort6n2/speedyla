@@ -529,13 +529,11 @@ module.exports = {
       eyebrow: 'Mobile service',
       h1: 'Mobile auto glass — we come to you across OC &amp; LA',
       sub: '<p>There is no shop for you to drive to in Orange County or Los Angeles County. We are a mobile operation, mobile service is included rather than surcharged, and we will tell you straight whether we can work where your car is parked.</p>',
-      /* Photos beside the body. `chapter` is the 0-based index of the <h2> the
-         photo illustrates; `src` names an entry in the gallery array above, so the
-         alt text and caption are written once. A photo used here is dropped from
-         this page's gallery. */
-      /* No figure. Every body photo is spoken for, and the six-up gallery below
-         already carries the mobile-visit shots this page would reach for. */
       svcValue: 'windshield-replacement',
+      figures: [
+        { chapter: 0, src: 'work-suv-windshield.webp' },
+        { chapter: 2, src: 'work-volvo-xc90-adas.webp' }
+      ],
       body: `
 <h2>The practical questions nobody answers on their website</h2>
 <p>If you have already decided you do not want to spend a morning in a waiting room, you do not need convincing that mobile service is good. You need to know whether it will actually work where your car is. So:</p>
@@ -590,6 +588,10 @@ module.exports = {
       h1: 'Back glass replacement across Orange County &amp; LA County',
       sub: '<p>Rear glass does not crack — it goes all at once, into thousands of pebbles across your back seat. We replace it, match the defroster grid and antenna, and vacuum the glass out of the cabin and the trunk seams.</p>',
       svcValue: 'back-glass',
+      figures: [
+        { chapter: 0, src: 'work-glass-detail-hands.webp' },
+        { chapter: 2, src: 'work-crack-from-cabin.webp' }
+      ],
       body: `
 <h2>If your back window just went, read this first</h2>
 <p>Most people arriving here are standing next to a car with no rear window, glass across the parcel shelf and back seats, and a vehicle that is now open to the weather and to anyone walking past. Two immediate things:</p>
@@ -637,6 +639,10 @@ module.exports = {
       h1: 'Car window replacement for door and side glass',
       sub: '<p>Broken into overnight? Door glass is usually cheaper than a comprehensive deductible, which is why most people simply pay cash and never involve their insurer at all. We come to you, fit the glass, and vacuum out the door.</p>',
       svcValue: 'door-side-glass',
+      figures: [
+        { chapter: 0, src: 'work-bmw-mobile-visit.webp' },
+        { chapter: 2, src: 'work-gwagon-shop-front.webp' }
+      ],
       body: `
 <h2>The thing most shops will not tell you</h2>
 <p>If someone put your side window through last night, you are probably assuming this is an insurance claim. For a single door glass, it very often should not be. A comprehensive deductible is commonly several hundred dollars, and a single side window frequently costs less than that — which means filing a claim would have you paying the whole thing anyway, plus having a claim on your record for no benefit.</p>
@@ -737,6 +743,10 @@ module.exports = {
       h1: 'Auto glass insurance claim, handled for you',
       sub: '<p>Give us your carrier and your vehicle and we will check what your policy covers and what your deductible actually is — before anyone is dispatched, and before any claim is filed.</p>',
       svcValue: 'windshield-replacement',
+      figures: [
+        { chapter: 0, src: 'work-suv-windshield.webp' },
+        { chapter: 2, src: 'work-volvo-xc90-adas.webp' }
+      ],
       body: `
 <h2>We check the coverage first, not after</h2>
 <p>The usual sequence at a glass shop is that you book, the technician arrives, and only then does anyone work out what your insurer will pay. We do it the other way round. Tell us your carrier, your policy number and your vehicle, and we will confirm what is covered and what your deductible is before we send anyone. Nothing is filed until you tell us to go ahead — so if the numbers do not work for you, you have lost nothing but a phone call.</p>
@@ -799,6 +809,16 @@ module.exports = {
       h1: 'Auto glass repair in Orange County — mobile, county-wide',
       sub: '<p>From Fullerton down to San Clemente, we cover Orange County end to end. There is no shop to drive to: tell us where the vehicle is parked and we bring the glass and the calibration gear to it.</p>',
       svcValue: 'windshield-replacement',
+      /* Two figures, at the same chapters the service pages use, so a hub or
+         a city page has the same rhythm as the rest of the site rather than
+         reading as a wall of text with a photo grid bolted underneath. The
+         pool is small and these repeat across pages — that is fine, nobody
+         reads two city pages, and a real photograph reused beats a stock one
+         that is not this business. */
+      figures: [
+        { chapter: 0, src: 'work-glass-detail-hands.webp' },
+        { chapter: 2, src: 'work-crack-from-cabin.webp' }
+      ],
       body: `
 <h2>Where we go in Orange County</h2>
 <p>Orange County is about 948 square miles and, unlike LA County, it is coherent to serve end to end — no mountain passes, no hour-long dispatch into a high desert. We take work across the whole county.</p>
@@ -840,6 +860,16 @@ module.exports = {
       h1: 'Auto glass repair in Los Angeles County — mobile service',
       sub: '<p>We cover the parts of LA County we can genuinely reach and service well: the South Bay, the Westside, Long Beach and the Gateway Cities, the San Gabriel Valley, and the Glendale–Burbank corridor.</p>',
       svcValue: 'windshield-replacement',
+      /* Two figures, at the same chapters the service pages use, so a hub or
+         a city page has the same rhythm as the rest of the site rather than
+         reading as a wall of text with a photo grid bolted underneath. The
+         pool is small and these repeat across pages — that is fine, nobody
+         reads two city pages, and a real photograph reused beats a stock one
+         that is not this business. */
+      figures: [
+        { chapter: 0, src: 'work-bmw-mobile-visit.webp' },
+        { chapter: 2, src: 'work-gwagon-shop-front.webp' }
+      ],
       body: `
 <h2>Being straight about our LA County coverage</h2>
 <p>Los Angeles County is around 4,000 square miles, and any mobile glass company claiming to cover all of it equally is either exaggerating or about to cancel on somebody. So here is our actual envelope:</p>

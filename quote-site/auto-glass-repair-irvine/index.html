@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Almost every Irvine windshield we replace needs recalibrating</h2><div class="prose"><p>With a median household income around $129,647 and a very high lease-and-replace rate, this city runs newer cars than anywhere else in the county. Practically all of them carry a forward-facing camera mounted to the windshield, driving lane-keeping assist, adaptive cruise control and automatic emergency braking.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Almost every Irvine windshield we replace needs recalibrating</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>With a median household income around $129,647 and a very high lease-and-replace rate, this city runs newer cars than anywhere else in the county. Practically all of them carry a forward-facing camera mounted to the windshield, driving lane-keeping assist, adaptive cruise control and automatic emergency braking.</p>
 <p>Replace the glass and that camera sits in a marginally different position — and marginally is enough. A fraction of a degree at the lens becomes several feet of error at the distance the system is actually making braking decisions about. So in Irvine the real question is not the price of a windshield. It is whether whoever fits it also calibrates it, properly, and can prove it. We do, on the same visit, and you get the pre- and post-scan report in your hand. Shops that subcontract calibration out turn your one-visit job into two appointments across two businesses, and that handoff is exactly where calibrations quietly get skipped.</p>
 
 <div class="callout">
@@ -1428,7 +1434,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 </ul>
 <p>We will tell you which of those your vehicle actually left the factory with — that is what the VIN is for — and what your policy will authorise. Then you choose. What we will not do is fit a cheaper variant and let you discover the difference on the drive home.</p>
 </div></div>
-      <div class="pchap"><h2>The freeway situation, and the landfill nobody mentions</h2><div class="prose"><p>Interstate 405 begins here, splitting from I-5 at the El Toro Y, which is one of the county's worst morning conflict points and precisely the close-following condition that turns a truck's dropped stone into a chip. Four toll routes touch the local network too — SR-133, SR-241, SR-261 and SR-73 — and those run through open foothill terrain at sustained free-flow speeds. Higher speed means higher-energy impacts, which is why toll-road damage skews toward outright replacement rather than a repairable chip.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>The freeway situation, and the landfill nobody mentions</h2><figure><span class="shot"><img src="/img/work-gwagon-shop-front.09500d84.webp" width="765" height="1020" alt="Mercedes G-Class parked outside the Speedy Windshield Repair storefront" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. In Orange County and LA County we come to you instead.</figcaption></figure><div class="prose"><p>Interstate 405 begins here, splitting from I-5 at the El Toro Y, which is one of the county's worst morning conflict points and precisely the close-following condition that turns a truck's dropped stone into a chip. Four toll routes touch the local network too — SR-133, SR-241, SR-261 and SR-73 — and those run through open foothill terrain at sustained free-flow speeds. Higher speed means higher-energy impacts, which is why toll-road damage skews toward outright replacement rather than a repairable chip.</p>
 <p>Then there is the Frank R. Bowerman Landfill, which sits inside Irvine's city limits — 725 acres, one of the largest landfills in the United States, open to commercial haulers only, six days a week. That is a continuous stream of loaded refuse and transfer trucks on the eastern foothill roads and the SR-241, SR-133 and I-5 on-ramps. It is the most concrete rock-chip mechanism in the city and almost nobody connects it to their windshield.</p>
 
 <div class="callout">

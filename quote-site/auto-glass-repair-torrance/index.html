@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>What you are actually comparing us against</h2><div class="prose"><p>In most cities our competition is another glass shop. In Torrance it is the dealership. American Honda runs its US headquarters from Torrance Boulevard, the city hosts 246-plus Japanese-affiliated companies — more than any other city in the area — and Hawthorne Boulevard carries an extraordinary density of franchised dealers. So when a Torrance driver spots a crack, the reflex is to ring the service department.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>What you are actually comparing us against</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.4b16cc0f.webp" width="896" height="1200" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p>In most cities our competition is another glass shop. In Torrance it is the dealership. American Honda runs its US headquarters from Torrance Boulevard, the city hosts 246-plus Japanese-affiliated companies — more than any other city in the area — and Hawthorne Boulevard carries an extraordinary density of franchised dealers. So when a Torrance driver spots a crack, the reflex is to ring the service department.</p>
 <p>That is a perfectly safe choice. It is also usually the most expensive one, and it costs you the car for a day. The honest comparison:</p>
 <ul>
   <li><strong>The glass.</strong> Dealers fit OEM. So can we, if that is what you want and what your policy authorises — and we will tell you when quality aftermarket is genuinely the sensible call instead.</li>
@@ -1430,7 +1436,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <p>Torrance is not only suburbs — there is a substantial industrial and logistics district in the north and east, and we see more work trucks in our bookings here than in most cities. If you run a van or a pickup for a trade, a cracked windshield is a vehicle you cannot sensibly use, and the downtime is the real cost rather than the glass. Say it is a work vehicle when you call and we will schedule accordingly. If you have several, ask about doing them in one visit.</p>
 </div>
 </div></div>
-      <div class="pchap"><h2>Hawthorne Boulevard is about to get dug up</h2><div class="prose"><p>Worth flagging because it will affect the next several years of driving here. In January 2026 Metro certified the environmental review and approved extending the K Line light rail to Torrance along the <strong>Hawthorne Boulevard</strong> alignment — a decision the City of Torrance publicly opposed. Construction could begin as early as 2027. Hawthorne is Torrance's main retail spine and the road most residents use daily, and multi-year rail construction on an arterial means exactly the loose aggregate, plate steel and lane shifts that produce chipped glass.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Hawthorne Boulevard is about to get dug up</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.66dc3696.webp" width="896" height="1200" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>Worth flagging because it will affect the next several years of driving here. In January 2026 Metro certified the environmental review and approved extending the K Line light rail to Torrance along the <strong>Hawthorne Boulevard</strong> alignment — a decision the City of Torrance publicly opposed. Construction could begin as early as 2027. Hawthorne is Torrance's main retail spine and the road most residents use daily, and multi-year rail construction on an arterial means exactly the loose aggregate, plate steel and lane shifts that produce chipped glass.</p>
 <p>It is also worth noting Torrance has no rail transit at all today, which is part of why so much regional movement here happens by car on surface streets.</p>
 </div></div>
       <div class="pchap"><h2>South Bay coverage from the same runs</h2><div class="prose"><p>Redondo Beach, Hermosa Beach, Manhattan Beach, Gardena, Carson and El Segundo are all on our Torrance routes. The three beach cities come with the coastal caveat — salt air degrades seals and corrodes the channel the glass bonds to, so preparation matters more there than inland. El Segundo is mostly a workday-at-the-office job, which suits us well: the aerospace and tech campuses have exactly the level surface parking that both the glass work and a static calibration need.</p>

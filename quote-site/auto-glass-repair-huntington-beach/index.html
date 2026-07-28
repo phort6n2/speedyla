@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Salt air is not a marketing line, it is a failure mode</h2><div class="prose"><p>Coastal Huntington Beach vehicles age differently, and it shows up in glass work. Salt-laden air corrodes the pinchweld — the metal channel a windshield actually bonds to — and degrades rubber mouldings and seals faster than inland air does. Two consequences:</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Salt air is not a marketing line, it is a failure mode</h2><figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="595" height="320" alt="Mercedes G-Class close up, showing the windshield and A-pillar" loading="lazy" decoding="async"></span><figcaption>The person who quotes you is connected to the person who turns up.</figcaption></figure><div class="prose"><p>Coastal Huntington Beach vehicles age differently, and it shows up in glass work. Salt-laden air corrodes the pinchweld — the metal channel a windshield actually bonds to — and degrades rubber mouldings and seals faster than inland air does. Two consequences:</p>
 <ul>
   <li><strong>Old leaks are often corrosion, not glass.</strong> If your windshield has started weeping in the rain and nobody has touched it, the cause is frequently a deteriorated seal or rust creeping under the bond line rather than the glass itself.</li>
   <li><strong>The preparation matters more here than anywhere inland.</strong> New glass bonded onto a corroded channel will leak again, however good the glass is. We clean the channel back and treat it properly before laying urethane, and if we find corrosion serious enough to need more than that, we will tell you instead of bonding over it and taking the money.</li>
@@ -1422,7 +1428,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <p>There has also been active Caltrans work along PCH through the city, including median work and turn-lane modifications at Magnolia, Brookhurst and Warner, with daytime and overnight closures. Work zones mean milled pavement, loose aggregate and steel plates on the coastal artery everyone uses.</p>
 <p>Add the city's own oil field, which is still producing under and around town, and there is a steady flow of oilfield service trucks and workover equipment on local arterials on top of everything else.</p>
 </div></div>
-      <div class="pchap"><h2>The Beach Boulevard funnel</h2><div class="prose"><p>Here is the structural fact about driving in Huntington Beach: I-405 runs along the north-eastern edge rather than through town, and Beach Boulevard is the city's main north–south connector between the freeway and the sand. Everything funnels through it. That produces long stop-and-go queues on a single arterial, which means a lot of time sitting a couple of car lengths behind somebody else's rear tyres — the ordinary, unglamorous way most windshields actually get chipped.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>The Beach Boulevard funnel</h2><figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit.</figcaption></figure><div class="prose"><p>Here is the structural fact about driving in Huntington Beach: I-405 runs along the north-eastern edge rather than through town, and Beach Boulevard is the city's main north–south connector between the freeway and the sand. Everything funnels through it. That produces long stop-and-go queues on a single arterial, which means a lot of time sitting a couple of car lengths behind somebody else's rear tyres — the ordinary, unglamorous way most windshields actually get chipped.</p>
 <p>It is worth knowing that Huntington Beach has no rail service at all. Commuting here is essentially 100% car-dependent, and the city is a net job exporter — around 17% of its daytime population commutes out. More miles per vehicle, more exposure.</p>
 </div></div>
       <div class="pchap"><h2>Boards, racks and the top edge of your glass</h2><div class="prose"><p>This is a genuinely local damage pattern. Huntington Beach has more roof racks per capita than anywhere else we work, and boards and bikes loaded over the front of a vehicle chip the top edge of the windshield and scuff the upper trim. Damage right at the edge is the kind that keeps spreading, because the perimeter is where structural stress concentrates — so an edge chip from a board strap is usually a replacement even when it looks trivial. If you load over the roof regularly, look at that top edge now rather than in August.</p>

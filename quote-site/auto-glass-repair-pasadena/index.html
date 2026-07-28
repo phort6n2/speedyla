@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,13 +1417,13 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>The 110 is a genuinely unusual hazard</h2><div class="prose"><p>The Arroyo Seco Parkway terminates in Pasadena, and it is the first freeway built in the United States — a National Historic Civil Engineering Landmark still operating in essentially its original 1940 form. That is charming and it is also the problem. It was designed for 1940 traffic and now carries over four times that volume, and its crash rate runs at roughly twice that of other freeways, largely attributed to the outdated design.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>The 110 is a genuinely unusual hazard</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>The Arroyo Seco Parkway terminates in Pasadena, and it is the first freeway built in the United States — a National Historic Civil Engineering Landmark still operating in essentially its original 1940 form. That is charming and it is also the problem. It was designed for 1940 traffic and now carries over four times that volume, and its crash rate runs at roughly twice that of other freeways, largely attributed to the outdated design.</p>
 <p>Specifically: <strong>no shoulders.</strong> On-ramps that start from a dead stop with almost no acceleration distance. Hairpin exits with next to no braking distance. Lanes narrower than anything built since. For glass, the consequences are direct — constant hard braking and acceleration means constant stone throw, narrow lanes mean less lateral distance from the vehicle ahead, and if something does hit your windshield there is literally nowhere to pull over and look at it.</p>
 <p>Meanwhile I-210 runs along the north of the city and SR-134 heads west, both hugging the base of the San Gabriel Mountains.</p>
 </div></div>
       <div class="pchap"><h2>Foothill geography puts grit on the road</h2><div class="prose"><p>Pasadena backs onto the mountains, and the roads on that northern edge — plus the Arroyo Seco corridor — collect sand, gravel and small rock washed down off the slopes. After rain there is measurably more loose material on those surfaces than on a flat inland grid, and loose material on the road is what ends up in your windshield. There is also a steady volume of contractor, gravel and concrete trucks working the foothill streets.</p>
 </div></div>
-      <div class="pchap"><h2>Two vehicle populations, one city</h2><div class="prose"><p>Pasadena has a genuinely unusual spread, and the right answer depends which end you are at.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Two vehicle populations, one city</h2><figure><span class="shot"><img src="/img/work-gwagon-shop-front.09500d84.webp" width="765" height="1020" alt="Mercedes G-Class parked outside the Speedy Windshield Repair storefront" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. In Orange County and LA County we come to you instead.</figcaption></figure><div class="prose"><p>Pasadena has a genuinely unusual spread, and the right answer depends which end you are at.</p>
 <p><strong>Older and vintage vehicles</strong> are common in the historic neighbourhoods — Bungalow Heaven, Madison Heights, the streets around the Arroyo. Glass for these can take longer to source, and on genuinely old cars the gaskets and trim are often more of the job than the glass. Tell us the year and model when you call so we can check what is actually available before promising a date.</p>
 <p><strong>Newer, camera-equipped vehicles</strong> are everywhere else. Pasadena has a high share of them, helped by an engineer-and-scientist household base — JPL alone employs around 5,000 people here and Caltech close to 4,000. Those vehicles need a documented <a href="/adas-calibration">ADAS recalibration</a> after glass replacement, which we do on the same visit and back with a pre- and post-scan report rather than an assurance.</p>
 

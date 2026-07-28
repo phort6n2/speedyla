@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Four questions to ask before anyone touches your glass</h2><div class="prose"><p>Whoever you end up using — us or somebody else — these are worth asking, because the answers separate a proper installation from a fast one:</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Four questions to ask before anyone touches your glass</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>Whoever you end up using — us or somebody else — these are worth asking, because the answers separate a proper installation from a fast one:</p>
 <ol>
   <li><strong>"What is your BAR number?"</strong> Every California repair dealer must hold one, and it is public — the Bureau of Automotive Repair publishes a licence lookup you can check in a minute. Ask for the number and check it. Somebody who cannot produce one is operating outside the system, and you will have nowhere to go if the bond leaks.</li>
   <li><strong>"Are you cleaning and priming the pinchweld?"</strong> The channel your glass bonds into decides whether the job holds. Skipping that prep is invisible on the day and shows up as a wet footwell in January.</li>
@@ -1430,7 +1436,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 <p>Both I-5 and I-605 are primary goods-movement corridors, and the warehouse belt immediately east and north — Santa Fe Springs, Norwalk, Commerce — puts tractor-trailers onto Firestone, Imperial Highway, Telegraph Road and Florence Avenue all day. The port freight corridor is only a couple of miles west, with those same arterials as the connectors. There is also a large beverage distribution operation in the city, which means heavy delivery trucks cycling through local streets constantly.</p>
 <p>Two roadwork notes: the city has had construction at the Firestone and Lakewood intersection — its busiest crossroads — and has approved design work for pavement rehabilitation on Imperial Highway, Lakewood Boulevard and Washburn Road. Metro's I-105 ExpressLanes programme is also building eastward along the city's southern edge through the late 2020s.</p>
 </div></div>
-      <div class="pchap"><h2>Family cars, firm prices, and a night shift</h2><div class="prose"><p>The vehicle mix here is mostly family transport — minivans, mid-size SUVs, sedans doing real mileage — plus a solid share of work trucks. Practically that means two things.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Family cars, firm prices, and a night shift</h2><figure><span class="shot"><img src="/img/work-gwagon-shop-front.09500d84.webp" width="765" height="1020" alt="Mercedes G-Class parked outside the Speedy Windshield Repair storefront" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. In Orange County and LA County we come to you instead.</figcaption></figure><div class="prose"><p>The vehicle mix here is mostly family transport — minivans, mid-size SUVs, sedans doing real mileage — plus a solid share of work trucks. Practically that means two things.</p>
 <p>First, price clarity matters more than options. Most Downey callers do not want a discussion of glass tiers; they want to know what it costs and when. So we quote a firm number for the specific glass the vehicle takes, mobile visit included, and we do not revise it in your driveway. That is what the VIN is for. A lot of these are cash jobs too — either no comprehensive cover, or a deductible bigger than the work. Both are normal; just say so and we will quote accordingly rather than routing you through an insurance conversation you did not ask for.</p>
 <p>Second, and unusually: Downey runs a substantial 24-hour healthcare workforce. Kaiser Permanente's Downey medical centre employs over 6,000 people and Rancho Los Amigos a couple of thousand more, which puts a lot of local drivers on the freeway at night and before dawn — <strong>exactly when truck volumes are highest.</strong> If you work those shifts, your windshield exposure per mile is meaningfully worse than a nine-to-five commuter's, and it is worth dealing with chips early rather than at the next inspection.</p>
 </div></div>

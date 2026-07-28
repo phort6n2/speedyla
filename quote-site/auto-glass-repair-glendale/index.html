@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>The right Glendale</h2><div class="prose"><p>Worth settling in the first line, because a lot of people searching for a Glendale glass shop end up looking at one in Arizona. This page is about <strong>Glendale, California</strong> — the city in Los Angeles County bordered by Burbank, Eagle Rock and La Cañada Flintridge, with I-5 running through the flat south-western side, SR-134 crossing east–west, the SR-2 Glendale Freeway heading north, and I-210 across the northern Crescenta Valley end. If that is where your car is, we cover it.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>The right Glendale</h2><figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="595" height="320" alt="Mercedes G-Class close up, showing the windshield and A-pillar" loading="lazy" decoding="async"></span><figcaption>The person who quotes you is connected to the person who turns up.</figcaption></figure><div class="prose"><p>Worth settling in the first line, because a lot of people searching for a Glendale glass shop end up looking at one in Arizona. This page is about <strong>Glendale, California</strong> — the city in Los Angeles County bordered by Burbank, Eagle Rock and La Cañada Flintridge, with I-5 running through the flat south-western side, SR-134 crossing east–west, the SR-2 Glendale Freeway heading north, and I-210 across the northern Crescenta Valley end. If that is where your car is, we cover it.</p>
 </div></div>
       <div class="pchap"><h2>Apartment garages are the defining local problem</h2><div class="prose"><p>Glendale is dense, and much of that density is mid-rise apartment buildings around Brand Boulevard, Central Avenue and the downtown core — which sits between two adjacent thriving regional malls, so the arterial congestion is constant. Most of our Glendale customers park in a subterranean or tandem garage, and that is the single most common reason a mobile appointment here needs planning.</p>
 <p>Three obstacles, and what resolves them:</p>
@@ -1422,7 +1428,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 </ul>
 <p>None of it is a dealbreaker. Most Glendale jobs happen either at the customer's workplace or in a nearby surface lot, and it takes one phone conversation. Just do not book a driveway appointment for a car that lives on level P2.</p>
 </div></div>
-      <div class="pchap"><h2>The mountain highway on your northern doorstep</h2><div class="prose"><p>Here is something specific to Glendale: the SR-2 Glendale Freeway runs north and continues, past I-210, as the Angeles Crest Highway — an 80-plus mile mountain road climbing to nearly 7,900 feet. Caltrans currently has an active winter-storm repair project on it, with landslides, rockfalls and slope erosion at roughly 40 identified locations and about a 30-mile stretch closed indefinitely.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>The mountain highway on your northern doorstep</h2><figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit.</figcaption></figure><div class="prose"><p>Here is something specific to Glendale: the SR-2 Glendale Freeway runs north and continues, past I-210, as the Angeles Crest Highway — an 80-plus mile mountain road climbing to nearly 7,900 feet. Caltrans currently has an active winter-storm repair project on it, with landslides, rockfalls and slope erosion at roughly 40 identified locations and about a 30-mile stretch closed indefinitely.</p>
 <p>The accessible lower section runs straight off Glendale's northern edge, and it is a real rockfall and loose-gravel corridor. If you drive it for recreation, or you live up in Montrose, La Crescenta or the Crescenta Highlands and use those approaches, that is a very likely source of edge damage — the kind that spreads and usually means replacement rather than repair.</p>
 <p>The hillside neighbourhoods more generally — Chevy Chase Canyon, Glenoaks Canyon, Verdugo Woodlands, Sparr Heights — sit on decomposed granite slopes that shed rock onto the pavement, with steep grades that compress following distances. Easy parking, harder roads. And note that steeply pitched driveways invalidate a static calibration, so we will often do the glass at your house and the calibration on level ground nearby.</p>
 </div></div>

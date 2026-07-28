@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,14 +1417,14 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>You do not need insurance to get this fixed</h2><div class="prose"><p>Most glass advertising assumes everybody has comprehensive coverage and a cooperative carrier. In Fullerton that assumption falls apart fast. Cal State Fullerton is the largest campus in the entire CSU system with over 43,000 students, Fullerton College — the oldest continuously operating community college in California — enrols roughly 17,000 a semester, and both are overwhelmingly commuter campuses. That is around 60,000 mostly older, higher-mileage vehicles, many on liability-only cover, which does not pay for your own glass at all.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>You do not need insurance to get this fixed</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>Most glass advertising assumes everybody has comprehensive coverage and a cooperative carrier. In Fullerton that assumption falls apart fast. Cal State Fullerton is the largest campus in the entire CSU system with over 43,000 students, Fullerton College — the oldest continuously operating community college in California — enrols roughly 17,000 a semester, and both are overwhelmingly commuter campuses. That is around 60,000 mostly older, higher-mileage vehicles, many on liability-only cover, which does not pay for your own glass at all.</p>
 <p>So we will just quote you a number. Tell us the vehicle and which glass, and you get a cash price with the mobile visit included — no claim, no carrier, no waiting on an adjuster. If you do have comprehensive cover we will check what it pays before dispatching and bill the carrier directly, but it is not the default assumption here.</p>
 </div></div>
       <div class="pchap"><h2>Five numbered routes and a first-tier rail chokepoint</h2><div class="prose"><p>Fullerton is served by five different numbered state and interstate routes — I-5, SR-39, SR-57, SR-90 and SR-91 — which is more than any other city in our service area. SR-91 runs along the southern boundary as the main Orange County to Inland Empire freight corridor, and SR-57 crosses north–south.</p>
 <p>The less obvious factor is rail. Fullerton sits at the western end of BNSF's Southern Transcon and at the junction where the line to San Diego splits off, and the tracks through Fullerton station carry something like 50 to 80 freight trains a day plus up to 52 passenger trains. It is the busiest train station in Orange County — the county's only Amtrak long-distance stop as well as both Metrolink lines. All that rail traffic brings heavy drayage and intermodal trucking onto the Orangethorpe and Commonwealth corridors, and rough crossing approaches and truck queues are a reliable source of chipped glass.</p>
 <p>Fullerton also has a chronic, publicly acknowledged pavement problem — the city has been sequencing repaving behind water main replacement and has approved multi-year street rehabilitation programmes, including work on State College Boulevard and residential streets off Euclid. Broken pavement generates loose aggregate, and loose aggregate is what ends up in your windshield.</p>
 </div></div>
-      <div class="pchap"><h2>Student cars have a specific problem</h2><div class="prose"><p>Two things arrive together on these vehicles: damage that has been ignored for a while, and street parking.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Student cars have a specific problem</h2><figure><span class="shot"><img src="/img/work-gwagon-shop-front.09500d84.webp" width="765" height="1020" alt="Mercedes G-Class parked outside the Speedy Windshield Repair storefront" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. In Orange County and LA County we come to you instead.</figcaption></figure><div class="prose"><p>Two things arrive together on these vehicles: damage that has been ignored for a while, and street parking.</p>
 <p><strong>Ignored damage.</strong> A chip that has sat in the glass for eight months has had dirt and moisture worked into the fracture, which reduces how well resin bonds. An old chip is therefore less reliably repairable than a fresh one at the same size. It is not always a no — but if you have been putting it off, expect a more honest conversation about whether a repair will actually hold.</p>
 <p><strong>Street parking.</strong> A car left overnight on a residential street near campus is the classic break-in scenario, and <a href="/car-window-replacement">door glass</a> is a large share of what we do here. It is also almost always cheaper than a deductible, which is why most of these end up as cash jobs.</p>
 

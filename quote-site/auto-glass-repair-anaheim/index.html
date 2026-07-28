@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>A tourism city stacked on top of a truck corridor</h2><div class="prose"><p>Anaheim is an unusual driving environment, and the reason is that two completely different traffic systems overlap here. The Disneyland Resort employs around 36,000 people at a single site and the city drew a record 26.5 million visitors in 2025, which puts an enormous, permanent volume of unfamiliar drivers on Harbor Boulevard, Katella Avenue, Ball Road and Disney Way. Layered directly on top of that are Interstate 5 running the length of the city, SR-91 across the north, and SR-57 down the eastern side — all three carrying heavy freight.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>A tourism city stacked on top of a truck corridor</h2><figure><span class="shot"><img src="/img/work-suv-windshield.c207430f.webp" width="595" height="320" alt="Mercedes G-Class close up, showing the windshield and A-pillar" loading="lazy" decoding="async"></span><figcaption>The person who quotes you is connected to the person who turns up.</figcaption></figure><div class="prose"><p>Anaheim is an unusual driving environment, and the reason is that two completely different traffic systems overlap here. The Disneyland Resort employs around 36,000 people at a single site and the city drew a record 26.5 million visitors in 2025, which puts an enormous, permanent volume of unfamiliar drivers on Harbor Boulevard, Katella Avenue, Ball Road and Disney Way. Layered directly on top of that are Interstate 5 running the length of the city, SR-91 across the north, and SR-57 down the eastern side — all three carrying heavy freight.</p>
 <p>For glass, the freight matters more than the tourists. SR-91 is the primary corridor between Orange County and the Inland Empire and it is dense with trucks; SR-57 is a commuter artery north toward the San Gabriel Valley where following distances are chronically short. Short following distance behind a loaded trailer is the textbook chip scenario, and it is why the 5 and the 91 produce most of the damage we see here.</p>
 <p>There is also a specific and less obvious source: refuse haulers. Commercial trucks bound for the Olinda Alpha landfill are directed off SR-57 at Imperial Highway, which puts a steady stream of loaded and empty transfer trailers through the north-east of the city all working day.</p>
 </div></div>
@@ -1423,7 +1429,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <p>With 26.5 million visitors a year, a real share of our Anaheim work is on rental cars and out-of-state vehicles in hotel car parks around the convention centre. That means paperwork most glass shops handle badly: a rental company's authorisation route, or an out-of-state policy that has to be verified before anyone is dispatched. We are used to both. If your windshield took a hit on the drive in and you have just been told it is your problem, call us and we will tell you what the process actually is.</p>
 </div>
 </div></div>
-      <div class="pchap"><h2>Heads-up on two multi-year work zones</h2><div class="prose"><p>Caltrans began work on the SR-57 northbound widening between Orangewood and Katella in early 2026, running to about mid-2028, and a larger SR-91 project between SR-57 and SR-55 — covering Anaheim, Fullerton, Orange and Placentia — starts in summer 2026 and runs into 2030. Active work zones mean milled pavement, temporary lane shifts, steel plates and loose aggregate. If your commute uses either stretch, assume more chips over the next few years rather than fewer, and deal with them while they are still <a href="/windshield-repair">repairable</a>.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>Heads-up on two multi-year work zones</h2><figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit.</figcaption></figure><div class="prose"><p>Caltrans began work on the SR-57 northbound widening between Orangewood and Katella in early 2026, running to about mid-2028, and a larger SR-91 project between SR-57 and SR-55 — covering Anaheim, Fullerton, Orange and Placentia — starts in summer 2026 and runs into 2030. Active work zones mean milled pavement, temporary lane shifts, steel plates and loose aggregate. If your commute uses either stretch, assume more chips over the next few years rather than fewer, and deal with them while they are still <a href="/windshield-repair">repairable</a>.</p>
 </div></div>
       <div class="pchap"><h2>Where we work in Anaheim</h2><div class="prose"><p>Hotel and convention-centre car parks, driveways across West Anaheim and the historic Colony district, apartment lots along Brookhurst and Euclid, the Anaheim Canyon industrial and R&amp;D district along the 91/57 corridor, business parks in the Platinum Triangle, and up through the hills. Standard surface parking is all we need. Everything is mobile — there is no Anaheim shop to drive to, which on a spreading crack is the point.</p>
 </div></div>

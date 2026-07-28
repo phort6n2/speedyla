@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>The thing most shops will not tell you</h2><div class="prose"><p>If someone put your side window through last night, you are probably assuming this is an insurance claim. For a single door glass, it very often should not be. A comprehensive deductible is commonly several hundred dollars, and a single side window frequently costs less than that — which means filing a claim would have you paying the whole thing anyway, plus having a claim on your record for no benefit.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>The thing most shops will not tell you</h2><figure><span class="shot"><img src="/img/work-bmw-mobile-visit.fc137773.webp" width="440" height="900" alt="BMW sedan on a paved driveway with the service van parked behind it" loading="lazy" decoding="async"></span><figcaption>A driveway appointment. The customer kept their morning.</figcaption></figure><div class="prose"><p>If someone put your side window through last night, you are probably assuming this is an insurance claim. For a single door glass, it very often should not be. A comprehensive deductible is commonly several hundred dollars, and a single side window frequently costs less than that — which means filing a claim would have you paying the whole thing anyway, plus having a claim on your record for no benefit.</p>
 <p>So ask us for the cash price first. If it comes in under your deductible, pay it, keep it off your policy entirely, and be done. If the damage is worse than one window — several windows, or glass plus interior or bodywork damage — then a claim starts making sense and we will bill your carrier directly.</p>
 </div></div>
       <div class="pchap"><h2>What we replace</h2><div class="prose"><ul>
@@ -1421,7 +1427,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <li><strong>Fixed rear side glass</strong> on SUVs and wagons</li>
 </ul>
 </div></div>
-      <div class="pchap"><h2>What we do not do — worth being clear</h2><div class="prose"><p>A lot of people searching for "car window repair" have a window that will not go up or down. That is almost always mechanical rather than glass — a failed regulator, a dead window motor, a cable off its track, or a bad switch. The glass itself is fine. We are a glass shop, so that is not our work, and we would rather say so now than send a technician out to tell you in person. If your glass is intact and the window just will not move, you want a general mechanic or an auto electrician.</p>
+      <div class="pchap pchap-fig pchap-alt"><h2>What we do not do — worth being clear</h2><figure><span class="shot"><img src="/img/work-gwagon-shop-front.09500d84.webp" width="765" height="1020" alt="Mercedes G-Class parked outside the Speedy Windshield Repair storefront" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. In Orange County and LA County we come to you instead.</figcaption></figure><div class="prose"><p>A lot of people searching for "car window repair" have a window that will not go up or down. That is almost always mechanical rather than glass — a failed regulator, a dead window motor, a cable off its track, or a bad switch. The glass itself is fine. We are a glass shop, so that is not our work, and we would rather say so now than send a technician out to tell you in person. If your glass is intact and the window just will not move, you want a general mechanic or an auto electrician.</p>
 
 <div class="callout">
   <h3>The door cavity is where the glass hides</h3>

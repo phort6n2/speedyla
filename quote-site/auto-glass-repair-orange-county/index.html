@@ -990,7 +990,12 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
    (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
    this size. The divider is decorative, so it is a white wash rather than
    --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
-.bar-trust{ display:grid; gap:12px; }
+/* On a phone the panel is one column, so the cluster needs the same separation
+   the desktop divider gives it — without this the first badge sat directly
+   under the address line and read as a fourth line of the address. */
+.bar{ display:grid; gap:16px; }
+.bar-trust{ display:grid; gap:12px; padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.16); }
 .bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
 .bt b{ display:block; line-height:1.35; }
 .bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
@@ -1084,7 +1089,8 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
      badges size to their content and the identity block keeps the remainder. */
   .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
         align-items:center; padding:18px 22px; }
-  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+  .bar-trust{ grid-auto-flow:column; gap:30px;
+              padding:0 0 0 30px; border-top:0;
               border-left:1px solid rgba(255,255,255,.16); }
 
   /* -------------------------------------------------- body chapters
@@ -1411,7 +1417,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   <div class="wrap">
     <!-- No .prose wrapper here: the generator emits one .prose per chapter, and
          wrapping the chapter grid in a 56ch box crushed every column inside it. -->
-    <!--PAGE:BODY--><div class="chaps"><div class="pchap"><h2>Where we go in Orange County</h2><div class="prose"><p>Orange County is about 948 square miles and, unlike LA County, it is coherent to serve end to end — no mountain passes, no hour-long dispatch into a high desert. We take work across the whole county.</p>
+    <!--PAGE:BODY--><div class="chaps"><div class="pchap pchap-fig"><h2>Where we go in Orange County</h2><figure><span class="shot"><img src="/img/work-glass-detail-hands.4b16cc0f.webp" width="896" height="1200" alt="Gloved hands of a technician working along the edge of a windshield during a fitting" loading="lazy" decoding="async"></span><figcaption>The pinchweld is the step that decides whether the bond holds, and the step most often rushed.</figcaption></figure><div class="prose"><p>Orange County is about 948 square miles and, unlike LA County, it is coherent to serve end to end — no mountain passes, no hour-long dispatch into a high desert. We take work across the whole county.</p>
 <p>We have dedicated pages for the cities we get asked about most: <a href="/auto-glass-repair-anaheim">Anaheim</a>, <a href="/auto-glass-repair-santa-ana">Santa Ana</a>, <a href="/auto-glass-repair-irvine">Irvine</a>, <a href="/auto-glass-repair-huntington-beach">Huntington Beach</a>, <a href="/auto-glass-repair-costa-mesa">Costa Mesa</a> and <a href="/auto-glass-repair-fullerton">Fullerton</a>. We also regularly work in Newport Beach, Orange, Garden Grove, Tustin, Brea, Placentia, La Habra, Yorba Linda, Westminster, Fountain Valley, Mission Viejo, Lake Forest, Laguna Niguel, San Juan Capistrano, Dana Point and San Clemente.</p>
 <p>If your city is not on that list, it does not mean no. Send us your ZIP and you will get a straight answer.</p>
 
@@ -1423,7 +1429,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
       <div class="pchap"><h2>What Orange County drivers actually call us about</h2><div class="prose"><p>Two patterns dominate. The first is freeway chip damage — the 5, the 405, the 55, the 91 and the 57 all carry heavy truck traffic, and sitting behind a gravel or construction load at 65mph is how most windshields in this county get hit. Those chips are cheap and quick to fix in the first week and expensive to ignore for a month.</p>
 <p>The second is camera recalibration, because Orange County has one of the newer vehicle fleets in Southern California. A large share of the windshields we replace here have a forward-facing camera bonded behind them, which means the job is not finished when the glass goes in. We do the <a href="/adas-calibration">recalibration</a> on the same visit rather than sending you elsewhere.</p>
 </div></div>
-      <div class="pchap"><h2>Mobile, at your home or your office</h2><div class="prose"><p>A great deal of our Orange County work happens in business parks during the workday — Irvine especially, but also the Anaheim resort corridor, South Coast Metro and the Santa Ana civic and industrial areas. Leave the car in your employer's lot, hand us the keys, and it is done by the time you finish. There is no charge for coming to you.</p></div></div></div><!--/PAGE:BODY-->
+      <div class="pchap pchap-fig pchap-alt"><h2>Mobile, at your home or your office</h2><figure><span class="shot"><img src="/img/work-crack-from-cabin.66dc3696.webp" width="896" height="1200" alt="A long crack across a windshield seen from the driver's seat on a palm-lined street" loading="lazy" decoding="async"></span><figcaption>What a chip looks like a few months after it was still repairable.</figcaption></figure><div class="prose"><p>A great deal of our Orange County work happens in business parks during the workday — Irvine especially, but also the Anaheim resort corridor, South Coast Metro and the Santa Ana civic and industrial areas. Leave the car in your employer's lot, hand us the keys, and it is done by the time you finish. There is no charge for coming to you.</p></div></div></div><!--/PAGE:BODY-->
   </div>
 </section>
 
