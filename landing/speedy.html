@@ -127,6 +127,10 @@
   --gold:#F5A524;           /* star FILL — always paired with the stroke below */
   --gold-stroke:#A15C06;    /* 5.2:1, so stars are not colour-only */
   --gold-on-dark:#FFC53D;
+  /* Cyan lightened for dark panels. --cyan itself is 2.6:1 on white and only
+     4.58:1 on --band-dark-3; this is 7.44:1 there, so it holds up on an icon
+     without being mistaken for a text colour. Measured, not picked. */
+  --cyan-on-dark:#7FD8F5;
 
   --ring:#004B81;
   --ring-w:3px;
@@ -981,6 +985,17 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 }
 .bar b{ color:#fff; }
 .bar a{ color:var(--gold-on-dark); font-weight:700; }
+
+/* Trust cluster beside the registered identity. Measured on --band-dark-3
+   (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
+   this size. The divider is decorative, so it is a white wash rather than
+   --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
+.bar-trust{ display:grid; gap:12px; }
+.bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
+.bt b{ display:block; line-height:1.35; }
+.bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
+.bt .rb-g{ width:18px; height:18px; flex:0 0 auto; }
+.bt-i{ color:var(--cyan-on-dark); }
 .disclaimer{ font-size:.78125rem; line-height:1.6; color:var(--text-on-dark-2); }
 
 /* --------------------------------------------------------- sticky bar */
@@ -1064,41 +1079,71 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .sticky{ display:none; }
   body.has-sticky{ padding-bottom:0; }
 
-  /* -------------------------------------------------- body chapters
-     Two variants, deliberately the same total width and both centred, so the
-     prose column only ever lands in one of two x positions. Alternating the
-     photo then reads as rhythm; letting each chapter size itself would read as
-     text that will not sit still.
+  /* The panel was one column of identity text with two thirds of its own width
+     empty. Identity left, trust right, divided. auto on the second track so the
+     badges size to their content and the identity block keeps the remainder. */
+  .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
+        align-items:center; padding:18px 22px; }
+  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+              border-left:1px solid rgba(255,255,255,.16); }
 
-     The prose column stays at 56ch in both. That figure is measured, not
+  /* -------------------------------------------------- body chapters
+     A chapter with a photo breaks into two columns and alternates side. A
+     chapter without one stays a single centred column.
+
+     The first draft gave every chapter a 380px heading rail. It looked right
+     where the heading and the body were comparable in height and badly wrong
+     the moment they were not: a two-word heading beside a long list left a
+     600px empty rectangle hard against the left edge, which reads worse than
+     symmetric margin does. Centred prose is what long-form text is supposed to
+     look like; the photographs are what break it up.
+
+     The prose column stays at 56ch either way. That figure is measured, not
      chosen — 72ch rendered 96 characters per line — so filling the container
      had to come from what sits BESIDE the text, never from widening it. */
   .chaps{ gap:64px; }
-  .pchap{
-    display:grid; grid-template-columns:minmax(0,380px) minmax(0,56ch);
+  .pchap-fig{
+    /* Ratio tracks inside a capped width, not two max-widths. With
+       minmax(0,380px) each track sized to its own CONTENT, so a chapter whose
+       caption happened to be short gave the photo 282px and the prose 596 —
+       every illustrated chapter came out a different shape. fr keeps the
+       proportion and scales the pair down at 900px instead of overflowing. */
+    max-width:934px; margin-inline:auto;
+    display:grid; grid-template-columns:380fr 498fr;
     /* Column gap only. `gap:56px` also opened 56px between the heading row and
-       the prose row of a figure chapter, which read as a missing paragraph —
-       the h2's own 12px bottom margin is the spacing that belongs there. */
+       the prose row, which read as a missing paragraph — the h2's own 12px
+       bottom margin is the spacing that belongs there. */
     gap:0 56px; justify-content:center; align-items:start;
+    /* The figure spans both rows of its own column, so heading and prose stack
+       against it. Areas rather than order: the three are siblings precisely so
+       a phone gets heading -> photo -> text from source order. */
+    grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr;
   }
-  /* A 380px rail holding one heading is generous on purpose: it is the same
-     column the photographs use, so the two chapter types line up instead of
-     each finding its own edges. */
-  /* Sticky needs room to travel, and align-items:start sizes the heading to
-     its own text. Stretch it to the row so it can follow its chapter, and let
-     it release naturally at the chapter boundary. 96px clears the 72px sticky
-     header. */
-  .pchap > h2{ align-self:stretch; position:sticky; top:96px; }
-  /* The figure spans both rows of its own column, so heading and prose stack
-     against it. Areas rather than order: the three are siblings precisely so
-     the phone gets heading -> photo -> text from source order. */
-  .pchap-fig{ grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr; }
-  .pchap-alt{ grid-template-columns:minmax(0,56ch) minmax(0,380px);
+  .pchap-alt{ grid-template-columns:498fr 380fr;
               grid-template-areas:"head fig" "prose fig"; }
-  .pchap-fig > h2{ grid-area:head; position:static; }
+  .pchap-fig > h2{ grid-area:head; }
   .pchap-fig > figure{ grid-area:fig; align-self:center; margin:0; }
   .pchap-fig > .prose{ grid-area:prose; max-width:none; }
-  .pchap-fig img{ max-height:none; }
+  /* Portraits otherwise ran to their natural height and towered over the text
+     they illustrate — the 440x900 driveway shot was twice the height of its own
+     two paragraphs. Cropping to a cap keeps every chapter in proportion
+     whichever orientation the client's photo happens to be. */
+  .pchap-fig img{ max-height:470px; object-fit:cover; }
+  /* Text-only chapters: one centred column at the same measure the illustrated
+     ones use, so the two kinds do not read as different pages.
+
+     The column is on the GRID, not on the children. `max-width:56ch` set on the
+     heading resolves against the heading's own font — 1170px at this size, so
+     it constrained nothing and the h2 ran the full width while its paragraphs
+     sat centred beneath it. ch is a property of the element you put it on. */
+  /* :not(), not source order. .pchap and .pchap-fig have equal specificity, so
+     whichever is written second wins — and this one was, which quietly replaced
+     the two-column illustrated grid with a single column plus an implicit auto
+     track. The exclusion says what is meant and cannot be undone by moving a
+     block. */
+  .pchap:not(.pchap-fig){ display:grid; grid-template-columns:minmax(0,56ch);
+                          justify-content:center; }
+  .pchap:not(.pchap-fig) > .prose{ max-width:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
    to a column is behind min-width:900px. Functional, but the highest-value
@@ -1637,10 +1682,15 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
          numbers and must never rewrite this one.
          ============================================================ -->
     <div class="bar">
-      <b>{{LEGAL_NAME}}</b> · Bureau of Automotive Repair ARD Registration <b>{{BAR_ARD}}</b><br>
-      Registered telephone: <a class="ghl-no-swap" data-no-swap="true" href="tel:{{BAR_PHONE_E164}}">{{BAR_PHONE}}</a><br>
-      Orange County &amp; LA County: <a class="ghl-no-swap" data-no-swap="true" href="tel:{{CALL_ASSET_E164}}">{{CALL_ASSET}}</a><br>
-      {{ADDRESS_STREET}}, {{ADDRESS_CITY}}, {{ADDRESS_REGION}} {{ADDRESS_ZIP}}
+      <div class="bar-id">
+        <b>{{LEGAL_NAME}}</b> · Bureau of Automotive Repair ARD Registration <b>{{BAR_ARD}}</b><br>
+        Registered telephone: <a class="ghl-no-swap" data-no-swap="true" href="tel:{{BAR_PHONE_E164}}">{{BAR_PHONE}}</a><br>
+        Orange County &amp; LA County: <a class="ghl-no-swap" data-no-swap="true" href="tel:{{CALL_ASSET_E164}}">{{CALL_ASSET}}</a><br>
+        {{ADDRESS_STREET}}, {{ADDRESS_CITY}}, {{ADDRESS_REGION}} {{ADDRESS_ZIP}}
+      </div>
+      <!-- Restates claims made further up this page. Never a third-party mark.
+           See barTrustHtml() in build-pages.cjs. -->
+      <!--PAGE:BARTRUST--><!--/PAGE:BARTRUST-->
     </div>
 
     <div class="ftr-legal">

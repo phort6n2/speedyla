@@ -359,11 +359,15 @@ function figureHtml(g) {
  *  text and caption are written once. A page names a photo; it does not
  *  re-describe it. */
 function galleryEntry(src) {
-  const g = (cfg.gallery || []).find((x) => x.src === src);
+  /* bodyPhotos first: keeping the two pools separate is what lets the gallery
+     stay a full six-up grid on every page while the bodies still get their own
+     photography. A photo that IS in the gallery may still be named here — it is
+     then dropped from that page's grid, which is the older behaviour. */
+  const g = (cfg.bodyPhotos || []).concat(cfg.gallery || []).find((x) => x.src === src);
   if (!g) {
     throw new Error(
-      'figures references "' + src + '", which is not in cfg.gallery. Add the photo ' +
-      'to the gallery array (that is where src/w/h/alt/caption live) and name it here.'
+      'figures references "' + src + '", which is in neither cfg.bodyPhotos nor ' +
+      'cfg.gallery. Those arrays are where src/w/h/alt/caption live; name it here.'
     );
   }
   return g;
@@ -765,6 +769,45 @@ function jsonLdHtml(page) {
     .join('\n');
 }
 
+/**
+ * Trust cluster inside the footer identity panel.
+ *
+ * That panel exists to state the registered identity, and on desktop it left
+ * most of its own width empty. What fills it has to be things this page has
+ * ALREADY substantiated further up — the footer is the last place to introduce
+ * a new claim, because it is exactly where a cautious buyer goes to check the
+ * ones already made.
+ *
+ * So: the real Google rating, omitted entirely when there is no live review
+ * data, plus whatever site.footerBadges lists. Those badges must restate page
+ * facts. Never a third-party accreditation, certification or carrier
+ * relationship the business does not hold — a badge shape reads as "somebody
+ * else verified this", which is the whole reason it is tempting and the whole
+ * reason it is a problem.
+ */
+function barTrustHtml() {
+  const items = [];
+
+  if (reviews) {
+    items.push(
+      '<div class="bt">' + GOOGLE_G_SM +
+      '<div><b>' + esc(reviews.rating) + ' out of 5 on Google</b>' +
+      '<span>' + esc(fmtCount(reviews.count)) + ' reviews</span></div></div>'
+    );
+  }
+
+  for (const b of site.footerBadges || []) {
+    items.push(
+      '<div class="bt">' + icon(b.icon, { size: 18, cls: 'bt-i' }) +
+      '<div><b>' + b.label + '</b>' +
+      (b.sub ? '<span>' + b.sub + '</span>' : '') + '</div></div>'
+    );
+  }
+
+  if (!items.length) return '';
+  return '<div class="bar-trust">' + items.join('') + '</div>';
+}
+
 /* ------------------------------------------------ BAR compliance block state
  * 16 CCR § 3371.2 requires a registered Automotive Repair Dealer's internet
  * advertising to show the registered firm name, the ARD registration number and
@@ -868,6 +911,7 @@ function renderPage(page) {
       .replace(/\{\{REVIEW_COUNT\}\}/g, esc(fmtCount(reviews.count)));
   }
 
+  s = region(s, 'BARTRUST', barTrustHtml());
   s = applyBarBlock(s);
 
   /* ---- site-wide tokens ---- */
@@ -1042,6 +1086,7 @@ function build() {
     s = region(s, 'FOOTER_SERVICES', footerServices);
     s = region(s, 'FOOTER_OC', footerOC);
     s = region(s, 'FOOTER_LA', footerLA);
+    s = region(s, 'BARTRUST', barTrustHtml());
     s = applyBarBlock(s);
     s = s
       .replace(/\{\{PHONE_E164\}\}/g, esc(site.phoneE164))

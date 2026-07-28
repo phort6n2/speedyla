@@ -127,6 +127,10 @@
   --gold:#F5A524;           /* star FILL — always paired with the stroke below */
   --gold-stroke:#A15C06;    /* 5.2:1, so stars are not colour-only */
   --gold-on-dark:#FFC53D;
+  /* Cyan lightened for dark panels. --cyan itself is 2.6:1 on white and only
+     4.58:1 on --band-dark-3; this is 7.44:1 there, so it holds up on an icon
+     without being mistaken for a text colour. Measured, not picked. */
+  --cyan-on-dark:#7FD8F5;
 
   --ring:#004B81;
   --ring-w:3px;
@@ -981,6 +985,17 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
 }
 .bar b{ color:#fff; }
 .bar a{ color:var(--gold-on-dark); font-weight:700; }
+
+/* Trust cluster beside the registered identity. Measured on --band-dark-3
+   (#123763): #FFFFFF 11.98:1, --text-on-dark-2 7.87:1 — both clear 4.5:1 at
+   this size. The divider is decorative, so it is a white wash rather than
+   --line-on-dark, which sits at 1.15:1 against this panel and disappears. */
+.bar-trust{ display:grid; gap:12px; }
+.bt{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:center; }
+.bt b{ display:block; line-height:1.35; }
+.bt span{ display:block; color:var(--text-on-dark-2); font-size:.75rem; line-height:1.4; }
+.bt .rb-g{ width:18px; height:18px; flex:0 0 auto; }
+.bt-i{ color:var(--cyan-on-dark); }
 .disclaimer{ font-size:.78125rem; line-height:1.6; color:var(--text-on-dark-2); }
 
 /* --------------------------------------------------------- sticky bar */
@@ -1064,41 +1079,71 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
   .sticky{ display:none; }
   body.has-sticky{ padding-bottom:0; }
 
-  /* -------------------------------------------------- body chapters
-     Two variants, deliberately the same total width and both centred, so the
-     prose column only ever lands in one of two x positions. Alternating the
-     photo then reads as rhythm; letting each chapter size itself would read as
-     text that will not sit still.
+  /* The panel was one column of identity text with two thirds of its own width
+     empty. Identity left, trust right, divided. auto on the second track so the
+     badges size to their content and the identity block keeps the remainder. */
+  .bar{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px;
+        align-items:center; padding:18px 22px; }
+  .bar-trust{ grid-auto-flow:column; gap:30px; padding-left:30px;
+              border-left:1px solid rgba(255,255,255,.16); }
 
-     The prose column stays at 56ch in both. That figure is measured, not
+  /* -------------------------------------------------- body chapters
+     A chapter with a photo breaks into two columns and alternates side. A
+     chapter without one stays a single centred column.
+
+     The first draft gave every chapter a 380px heading rail. It looked right
+     where the heading and the body were comparable in height and badly wrong
+     the moment they were not: a two-word heading beside a long list left a
+     600px empty rectangle hard against the left edge, which reads worse than
+     symmetric margin does. Centred prose is what long-form text is supposed to
+     look like; the photographs are what break it up.
+
+     The prose column stays at 56ch either way. That figure is measured, not
      chosen — 72ch rendered 96 characters per line — so filling the container
      had to come from what sits BESIDE the text, never from widening it. */
   .chaps{ gap:64px; }
-  .pchap{
-    display:grid; grid-template-columns:minmax(0,380px) minmax(0,56ch);
+  .pchap-fig{
+    /* Ratio tracks inside a capped width, not two max-widths. With
+       minmax(0,380px) each track sized to its own CONTENT, so a chapter whose
+       caption happened to be short gave the photo 282px and the prose 596 —
+       every illustrated chapter came out a different shape. fr keeps the
+       proportion and scales the pair down at 900px instead of overflowing. */
+    max-width:934px; margin-inline:auto;
+    display:grid; grid-template-columns:380fr 498fr;
     /* Column gap only. `gap:56px` also opened 56px between the heading row and
-       the prose row of a figure chapter, which read as a missing paragraph —
-       the h2's own 12px bottom margin is the spacing that belongs there. */
+       the prose row, which read as a missing paragraph — the h2's own 12px
+       bottom margin is the spacing that belongs there. */
     gap:0 56px; justify-content:center; align-items:start;
+    /* The figure spans both rows of its own column, so heading and prose stack
+       against it. Areas rather than order: the three are siblings precisely so
+       a phone gets heading -> photo -> text from source order. */
+    grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr;
   }
-  /* A 380px rail holding one heading is generous on purpose: it is the same
-     column the photographs use, so the two chapter types line up instead of
-     each finding its own edges. */
-  /* Sticky needs room to travel, and align-items:start sizes the heading to
-     its own text. Stretch it to the row so it can follow its chapter, and let
-     it release naturally at the chapter boundary. 96px clears the 72px sticky
-     header. */
-  .pchap > h2{ align-self:stretch; position:sticky; top:96px; }
-  /* The figure spans both rows of its own column, so heading and prose stack
-     against it. Areas rather than order: the three are siblings precisely so
-     the phone gets heading -> photo -> text from source order. */
-  .pchap-fig{ grid-template-areas:"fig head" "fig prose"; grid-template-rows:auto 1fr; }
-  .pchap-alt{ grid-template-columns:minmax(0,56ch) minmax(0,380px);
+  .pchap-alt{ grid-template-columns:498fr 380fr;
               grid-template-areas:"head fig" "prose fig"; }
-  .pchap-fig > h2{ grid-area:head; position:static; }
+  .pchap-fig > h2{ grid-area:head; }
   .pchap-fig > figure{ grid-area:fig; align-self:center; margin:0; }
   .pchap-fig > .prose{ grid-area:prose; max-width:none; }
-  .pchap-fig img{ max-height:none; }
+  /* Portraits otherwise ran to their natural height and towered over the text
+     they illustrate — the 440x900 driveway shot was twice the height of its own
+     two paragraphs. Cropping to a cap keeps every chapter in proportion
+     whichever orientation the client's photo happens to be. */
+  .pchap-fig img{ max-height:470px; object-fit:cover; }
+  /* Text-only chapters: one centred column at the same measure the illustrated
+     ones use, so the two kinds do not read as different pages.
+
+     The column is on the GRID, not on the children. `max-width:56ch` set on the
+     heading resolves against the heading's own font — 1170px at this size, so
+     it constrained nothing and the h2 ran the full width while its paragraphs
+     sat centred beneath it. ch is a property of the element you put it on. */
+  /* :not(), not source order. .pchap and .pchap-fig have equal specificity, so
+     whichever is written second wins — and this one was, which quietly replaced
+     the two-column illustrated grid with a single column plus an implicit auto
+     track. The exclusion says what is meant and cannot be undone by moving a
+     block. */
+  .pchap:not(.pchap-fig){ display:grid; grid-template-columns:minmax(0,56ch);
+                          justify-content:center; }
+  .pchap:not(.pchap-fig) > .prose{ max-width:none; }
 }
 /* Tablet: the card stretches to the full container because the rule pinning it
    to a column is behind min-width:900px. Functional, but the highest-value
@@ -1521,7 +1566,7 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
     <div class="gal"><!--PAGE:GALLERY--><figure><span class="shot"><img src="/img/work-van-mobile-callout.94f751e0.webp" width="1360" height="1020" alt="Speedy Windshield Repair service van parked outside a modern home for a mobile auto glass call" loading="lazy" decoding="async"></span><figcaption>The van carries the glass, the adhesive and the calibration targets. Nothing gets towed anywhere.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-4runner-fresh-install.6771ecf5.webp" width="450" height="600" alt="Retention tape holding the moulding on a freshly fitted windshield in a white Toyota 4Runner" loading="lazy" decoding="async"></span><figcaption>Retention tape stays on while the urethane cures — we tell you when it comes off and when the vehicle is safe to drive.</figcaption></figure>
         <figure><span class="shot"><img src="/img/work-sclass-van-driveway.3de883e5.webp" width="1360" height="1020" alt="Technician tool case beside a Mercedes S-Class on a driveway with the service van behind it" loading="lazy" decoding="async"></span><figcaption>A driveway call from start to finish. The customer never left the house.</figcaption></figure>
-        <figure><span class="shot"><img src="/img/work-volvo-xc90-adas.3f4b00ee.webp" width="500" height="400" alt="Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass" loading="lazy" decoding="async"></span><figcaption>Cars like this carry a camera behind the windshield. It is recalibrated on the same visit as the glass.</figcaption></figure>
+        <figure><span class="shot"><img src="/img/work-sclass-door-driveway.b5c4735e.webp" width="1360" height="1020" alt="Mercedes S-Class with the driver door open on a residential driveway during a mobile visit" loading="lazy" decoding="async"></span><figcaption>Front lawn, side street, office lot — wherever the car already is.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-bay-exotic.2dd7249b.webp" width="500" height="400" alt="Black Ferrari in the Speedy Windshield Repair workshop bay beneath the wall sign" loading="lazy" decoding="async"></span><figcaption>Exotics and late-model vehicles go through exactly the same process as everything else.</figcaption></figure>
         <figure><span class="shot"><img src="/img/shop-front-san-diego.b5db48bd.webp" width="500" height="400" alt="The Speedy Windshield Repair storefront in San Diego with vehicles parked outside" loading="lazy" decoding="async"></span><figcaption>Our San Diego shop. Across Orange County and LA County we come to you instead.</figcaption></figure><!--/PAGE:GALLERY--></div>
   </div>
@@ -1704,9 +1749,14 @@ a.card:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--paper),0 0 0 5px 
          numbers and must never rewrite this one.
          ============================================================ -->
     <div class="bar">
-      <b>Speedy Windshield Repair</b><br>
-      Orange County &amp; LA County: <a class="ghl-no-swap" data-no-swap="true" href="tel:+19497365211">(949) 736-5211</a><br>
-      2710 Garnet Ave Suite 201, San Diego, CA 92109
+      <div class="bar-id">
+        <b>Speedy Windshield Repair</b><br>
+        Orange County &amp; LA County: <a class="ghl-no-swap" data-no-swap="true" href="tel:+19497365211">(949) 736-5211</a><br>
+        2710 Garnet Ave Suite 201, San Diego, CA 92109
+      </div>
+      <!-- Restates claims made further up this page. Never a third-party mark.
+           See barTrustHtml() in build-pages.cjs. -->
+      <!--PAGE:BARTRUST--><div class="bar-trust"><div class="bt"><svg class="rb-g" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><div><b>4.9 out of 5 on Google</b><span>1,110 reviews</span></div></div><div class="bt"><svg class="bt-i" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4Z"/></svg><div><b>Lifetime workmanship warranty</b><span>For as long as you own the vehicle</span></div></div><div class="bt"><svg class="bt-i" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8Z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><b>Mobile at no extra charge</b><span>Orange County &amp; LA County</span></div></div></div><!--/PAGE:BARTRUST-->
     </div>
 
     <div class="ftr-legal">

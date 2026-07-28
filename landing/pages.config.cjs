@@ -92,6 +92,25 @@ module.exports = {
     ogImage: 'og-image.png',
     themeColor: '#0A2650',
 
+    /* ---------------------------------------------------------------------
+     * Trust cluster in the footer identity panel, beside the registered name
+     * and address. The real Google rating is added automatically ahead of
+     * these when reviews.json exists.
+     *
+     * EVERY ENTRY MUST RESTATE A CLAIM MADE FURTHER UP THIS PAGE. The footer
+     * is where a cautious buyer checks the claims already made, not where new
+     * ones get introduced — and a badge shape reads as "somebody else verified
+     * this", which is exactly why a third-party accreditation, certification
+     * or carrier relationship the business does not hold must never go here.
+     * Both below are stated and defined in full elsewhere on the page.
+     * ------------------------------------------------------------------- */
+    footerBadges: [
+      { icon: 'shield', label: 'Lifetime workmanship warranty',
+        sub: 'For as long as you own the vehicle' },
+      { icon: 'van',    label: 'Mobile at no extra charge',
+        sub: 'Orange County &amp; LA County' }
+    ],
+
     /* Google Ads — paste from Ads → Tools → Conversions → action → Tag setup.
      * Empty is safe: the whole tracking block no-ops until these are filled. */
     ads: {
@@ -203,9 +222,9 @@ module.exports = {
       caption: 'A driveway call from start to finish. The customer never left the house.'
     },
     {
-      src: 'work-volvo-xc90-adas.webp', w: 500, h: 400,
-      alt: 'Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass',
-      caption: 'Cars like this carry a camera behind the windshield. It is recalibrated on the same visit as the glass.'
+      src: 'work-sclass-door-driveway.webp', w: 1360, h: 1020,
+      alt: 'Mercedes S-Class with the driver door open on a residential driveway during a mobile visit',
+      caption: 'Front lawn, side street, office lot — wherever the car already is.'
     },
     {
       src: 'shop-bay-exotic.webp', w: 500, h: 400,
@@ -219,6 +238,51 @@ module.exports = {
       src: 'shop-front-san-diego.webp', w: 500, h: 400,
       alt: 'The Speedy Windshield Repair storefront in San Diego with vehicles parked outside',
       caption: 'Our San Diego shop. Across Orange County and LA County we come to you instead.'
+    }
+  ],
+
+  /* ======================== body photography ========================
+   * A SEPARATE pool from the gallery above. Keeping them apart is what lets
+   * the gallery stay a full six-up grid on every page while the page bodies
+   * still get their own photography — drawing both from one array meant every
+   * illustrated page lost a tile from its grid.
+   *
+   * These lean toward process and detail: hands on the glass, a crack from the
+   * driver's seat, a van on a driveway. They sit beside prose that explains
+   * what is happening, so they carry more than a vehicle beauty shot would.
+   *
+   * Harvested from the client's own site — real work by this business, which is
+   * the only kind of photograph that belongs on a local service page. */
+  bodyPhotos: [
+    {
+      src: 'work-glass-detail-hands.webp', w: 896, h: 1200,
+      alt: 'Gloved hands of a technician working along the edge of a windshield during a fitting',
+      caption: 'The pinchweld is the step that decides whether the bond holds, and the step most often rushed.'
+    },
+    {
+      src: 'work-crack-from-cabin.webp', w: 896, h: 1200,
+      alt: 'A long crack across a windshield seen from the driver\'s seat on a palm-lined street',
+      caption: 'What a chip looks like a few months after it was still repairable.'
+    },
+    {
+      src: 'work-bmw-mobile-visit.webp', w: 440, h: 900,
+      alt: 'BMW sedan on a paved driveway with the service van parked behind it',
+      caption: 'A driveway appointment. The customer kept their morning.'
+    },
+    {
+      src: 'work-gwagon-shop-front.webp', w: 765, h: 1020,
+      alt: 'Mercedes G-Class parked outside the Speedy Windshield Repair storefront',
+      caption: 'Our San Diego shop. In Orange County and LA County we come to you instead.'
+    },
+    {
+      src: 'work-suv-windshield.webp', w: 595, h: 320,
+      alt: 'Mercedes G-Class close up, showing the windshield and A-pillar',
+      caption: 'The person who quotes you is connected to the person who turns up.'
+    },
+    {
+      src: 'work-volvo-xc90-adas.webp', w: 500, h: 400,
+      alt: 'Volvo XC90 in for windshield work, a vehicle with a forward-facing camera behind the glass',
+      caption: 'Cars like this carry a camera behind the windshield. It is recalibrated on the same visit.'
     }
   ],
 
@@ -258,8 +322,8 @@ module.exports = {
        98 chapters on this site and six photographs; the chapters without one
        are not missing anything. */
     figures: [
-      { chapter: 0, src: 'work-van-mobile-callout.webp' },
-      { chapter: 2, src: 'shop-bay-exotic.webp' }
+      { chapter: 0, src: 'work-bmw-mobile-visit.webp' },
+      { chapter: 2, src: 'work-suv-windshield.webp' }
     ],
     svcValue: 'windshield-replacement',
     body: `
@@ -315,7 +379,7 @@ module.exports = {
          alt text and caption are written once. A photo used here is dropped from
          this page's gallery. */
       figures: [
-        { chapter: 2, src: 'work-4runner-fresh-install.webp' }
+        { chapter: 2, src: 'work-glass-detail-hands.webp' }
       ],
       svcValue: 'windshield-replacement',
       body: `
@@ -369,6 +433,9 @@ module.exports = {
       h1: 'Windshield repair for chips and cracks — we come to you',
       sub: '<p>Caught the rock chip early? A resin repair takes about half an hour, keeps your original factory glass in the car, and most carriers waive the deductible on repair because it costs them far less than a replacement.</p>',
       svcValue: 'chip-crack-repair',
+      figures: [
+        { chapter: 0, src: 'work-crack-from-cabin.webp' }
+      ],
       body: `
 <h2>Can yours be repaired? Here is the actual test</h2>
 <p>Most people searching for "windshield repair" genuinely do not know whether they need a repair or a replacement, and plenty of shops are happy to leave that ambiguity in place. So here is the honest rule of thumb, and you can apply it in your own driveway right now:</p>
@@ -466,9 +533,8 @@ module.exports = {
          photo illustrates; `src` names an entry in the gallery array above, so the
          alt text and caption are written once. A photo used here is dropped from
          this page's gallery. */
-      figures: [
-        { chapter: 0, src: 'work-sclass-van-driveway.webp' }
-      ],
+      /* No figure. Every body photo is spoken for, and the six-up gallery below
+         already carries the mobile-visit shots this page would reach for. */
       svcValue: 'windshield-replacement',
       body: `
 <h2>The practical questions nobody answers on their website</h2>
@@ -621,7 +687,7 @@ module.exports = {
          alt text and caption are written once. A photo used here is dropped from
          this page's gallery. */
       figures: [
-        { chapter: 1, src: 'shop-front-san-diego.webp' }
+        { chapter: 1, src: 'work-gwagon-shop-front.webp' }
       ],
       svcValue: 'not-sure',
       body: `
