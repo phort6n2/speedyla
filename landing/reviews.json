@@ -1,23 +1,23 @@
 {
-  "fetched_at": "2026-11-02T19:28:55.185Z",
+  "fetched_at": "2026-11-09T19:48:24.280Z",
   "place_id": "ChIJPwUJ9McB3IARzGaoGOoPHLw",
   "name": "Speedy Windshield Repair",
   "address": "2710 Garnet Ave Ste 201, San Diego, CA 92109, USA",
   "rating": 4.9,
-  "count": 1208,
+  "count": 1229,
   "maps_uri": "https://maps.google.com/?cid=13554726476588803788&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
   "quotes": [
+    {
+      "text": "My windshield was cracked by a rock so it had to be replaced.  Speedy Windshield Repair was first on my Google search, and because the customer rating were very high, I went with Speedy.  It was a great choice.  The installer was friendly and worked efficiently. The windshield has a lot of electronics.  Took a little over an hour, and also required recalibration. He worked until about 7:45 to make sure we could use the car for work in the morning.  Very happy with the install.  Speedy was also great with the insurance company.  He contacted USAA, and helped with answering questions.  I will use Speedy again if needed.  Highly recommend!",
+      "author": "John Kazalunas",
+      "stars": 5,
+      "when": "a week ago"
+    },
     {
       "text": "I had a great experience with Speedy Windshield Repair! They replaced the rear windshield of my car quickly and efficiently. The entire process was smooth, and the customer service was excellent from start to finish. The staff was friendly, professional, and made everything easy. I really appreciated how fast they got me back on the road. I highly recommend them if you’re looking for quality work and great service!",
       "author": "Winy Mello",
       "stars": 5,
       "when": "3 months ago"
-    },
-    {
-      "text": "Amazing customer service! Excellent work and yes they are speedy! Got my windshield replaced and was so pleasantly surprised when Michael presented me with a \"thank you\" gift bag. So rare to see engaged service - this place has it..highly recommend.",
-      "author": "sylvia tamayo",
-      "stars": 5,
-      "when": "4 months ago"
     }
   ]
 }
